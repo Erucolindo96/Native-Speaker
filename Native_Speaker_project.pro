@@ -17,22 +17,18 @@ QMAKE_CXXFLAGS += -std=c++14
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    record.cpp \
-    speakermodel.cpp \
-    gmmmodel.cpp \
-    UbmModel.cpp \
     feature_generator.cpp \
-    learning_algo.cpp
+    utils/utils.cpp \
+    models/diagonal_model.cpp \
+    models/gmmmodel.cpp \
+    models/learning_algo.cpp
 
 HEADERS  += mainwindow.hpp \
-    speaker.hpp \
-    record.hpp \
-    speakermodel.hpp \
-    gmmmodel.hpp \
-    DataAccessObjects.hpp \
-    UbmModel.hpp \
-    learning_algo.hpp \
-    feature_generator.hpp
+    feature_generator.hpp \
+    models/diagonal_model.hpp \
+    models/gmmmodel.hpp \
+    models/learning_algo.hpp \
+    utils/utils.hpp
 
 FORMS    += mainwindow.ui \
     wybormodelu.ui
