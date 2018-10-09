@@ -4,31 +4,13 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+include(include.pri)
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+TEMPLATE = subdirs
+SUBDIRS = common main \
+      models/tests/diagonal-model-test \
+      models/tests/em-algo-test \
 
-TARGET = Native_Speaker_project
-TEMPLATE = app
 
-CONFIG += c++14
-LIBS += -L/usr/local/lib/libalize -lalize
-QMAKE_CXXFLAGS += -std=c++14
-
-SOURCES += main.cpp\
-        mainwindow.cpp \
-    feature_generator.cpp \
-    utils/utils.cpp \
-    models/diagonal_model.cpp \
-    models/gmmmodel.cpp \
-    models/learning_algo.cpp
-
-HEADERS  += mainwindow.hpp \
-    feature_generator.hpp \
-    models/diagonal_model.hpp \
-    models/gmmmodel.hpp \
-    models/learning_algo.hpp \
-    utils/utils.hpp
-
-FORMS    += mainwindow.ui \
-    wybormodelu.ui
+models/tests/diagonal-model-test.depends = common
+main.depends = common
