@@ -71,7 +71,7 @@ void ExpectationMaximalizationAlgo::countPosterioriPropabilities(const GmmModel 
   double val = 0;
   for(uint32_t i_f = 0;i_f < feature_vec.size(); ++i_f)
   {
-    for(uint32_t i_d = 0; i_d < model.getDistributionCount(); ++i_d )
+    for(uint32_t i_d = 0; i_d < model.getDistribCount(); ++i_d )
     {
       val = countOnePropability(model, feature_vec, i_f, i_d);
       setPosterioriPropability(i_f, i_d, val);
@@ -84,7 +84,7 @@ double ExpectationMaximalizationAlgo::countOnePropability(const GmmModel &model,
                                                         uint32_t feature_idx, uint32_t distrib_idx)
 {
   const Feature& current = feature_vec[feature_idx];
-  double ret = model.getDistributionWeight(distrib_idx);
+  double ret = model.getDistribWeight(distrib_idx);
   ret *= model.countLikehoodWithWeight(current, distrib_idx);
   ret /= model.countLikehoodWithWeight(current);
   return ret;

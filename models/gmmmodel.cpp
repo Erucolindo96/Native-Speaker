@@ -9,9 +9,9 @@ void GmmModel::reloadConfig()
 {
   throw std::runtime_error("TODO");
 }
-void GmmModel::initDefaultMixture()
+void GmmModel::initDefaultMixture(uint32_t distrib_cnt)
 {
-  s_.createMixture(DISTRIB_COUNT, type_);
+  s_.createMixture(distrib_cnt, type_);
 
 }
 
@@ -20,7 +20,8 @@ void GmmModel::initDefaultMixture()
  * Public
  */
 
-GmmModel::GmmModel(const alize::Config &conf):conf_(conf), s_(conf), features_(conf)
+GmmModel::GmmModel(const alize::Config &conf, uint32_t distrib_cnt):
+  conf_(conf), s_(conf), features_(conf), DISTRIB_COUNT(distrib_cnt)
 {}
 
 GmmModel::GmmModel(GmmModel &&other):GmmModel(other.conf_)
@@ -41,6 +42,10 @@ void GmmModel::addLearnAlgo(std::unique_ptr<LearningAlgo> &&algo_to_set)
 {
   algo_ = std::move(algo_to_set);
 }
+std::unique_ptr<LearningAlgo>& GmmModel::getLearnAlgo()
+{
+  return algo_;
+}
 
 void GmmModel::learnModelUsingLearnAlgo(std::unique_ptr<LearningAlgo> &algo)
 {
@@ -52,7 +57,7 @@ void GmmModel::learnModel()
   algo_->learnModel(*this, extractAllFeatures(features_) );
 }
 
-void GmmModel::addFeature(const alize::Feature &feature)
+void GmmModel::addTrainingFeature(const alize::Feature &feature)
 {
   if(!features_.addFeature(feature))
   {
@@ -60,7 +65,16 @@ void GmmModel::addFeature(const alize::Feature &feature)
   }
 }
 
-
+std::vector<alize::Feature> GmmModel::getTrainingFeatures()
+{
+  const uint32_t CNT = features_.getFeatureCount();
+  std::vector<alize::Feature> vec(CNT);
+  for(uint32_t i = 0; i < CNT; ++i)
+  {
+    features_.readFeature(vec[i]);
+  }
+  return vec;
+}
 
 
 double GmmModel::countLikehoodWithWeight(const alize::Feature &feature)const
@@ -77,15 +91,15 @@ double GmmModel::countLikehoodWithWeight(const alize::Feature &feature)const
 double GmmModel::countLikehoodWithWeight(const alize::Feature &arg, uint32_t distrib_idx)const
 {
   return s_.getMixture(MIXTURE_IDX).getDistrib(distrib_idx).computeLK(arg) *
-      getDistributionWeight(distrib_idx);
+      getDistribWeight(distrib_idx);
 }
 
-uint32_t GmmModel::getDistributionCount()const
+uint32_t GmmModel::getDistribCount()const
 {
   return s_.getDistribCount();
 }
 
-uint32_t GmmModel::getDistributionWeight(uint32_t distrib_idx)const
+uint32_t GmmModel::getDistribWeight(uint32_t distrib_idx)const
 {
   return s_.getMixture(MIXTURE_IDX).weight(distrib_idx);
 }
@@ -99,6 +113,10 @@ void GmmModel::setDistribMean(uint32_t distrib, alize::RealVector<double> new_me
 {
   alize::Distrib& distrib_ref = s_.getMixture(MIXTURE_IDX).getDistrib(distrib);
   distrib_ref.setMeanVect(new_mean);
+}
+alize::RealVector<double> GmmModel::getDistribMean(uint32_t distrib)const
+{
+  return s_.getMixture(MIXTURE_IDX).getDistrib(distrib).getMeanVect();
 }
 
 std::vector<alize::Feature> GmmModel::extractAllFeatures(alize::FeatureServer &s)
