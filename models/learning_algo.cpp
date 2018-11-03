@@ -40,25 +40,7 @@ double ExpectationMaximalizationAlgo::sumPosterioriByFeatures(uint32_t distrib_i
   return sum;
 }
 
-void ExpectationMaximalizationAlgo::performOneIteration(GmmModel &model, const std::vector<alize::Feature> &feature_vec)
-{
-  countPosterioriPropabilities(model, feature_vec);
-  const uint32_t DISTRIB_CNT = getDistribCount();
-  double weight = 0;
-  RealVector<double> mean(getFeatureCount());
-  RealVector<double> covariance(getFeatureCount());
-  for(uint32_t act_distrib; act_distrib < DISTRIB_CNT; ++act_distrib)
-  {
-    weight = countWeight(act_distrib);
-    mean = countMean(act_distrib, feature_vec);
-    covariance = countDiagonalCovariance(act_distrib, feature_vec,
-                                         mean);
-    model.setDistribWeight(act_distrib, weight);
-    model.setDistribMean(act_distrib,mean);
-    model.setDistribCovariance(act_distrib, covariance);
-  }
-  clearAfterIteration();
-}
+
 
 void ExpectationMaximalizationAlgo::clearAfterIteration()
 {
@@ -155,4 +137,24 @@ void ExpectationMaximalizationAlgo::learnModel(GmmModel &model, const std::vecto
     performOneIteration(model, feature_vec);
   }
 
+}
+
+void ExpectationMaximalizationAlgo::performOneIteration(GmmModel &model, const std::vector<alize::Feature> &feature_vec)
+{
+  countPosterioriPropabilities(model, feature_vec);
+  const uint32_t DISTRIB_CNT = getDistribCount();
+  double weight = 0;
+  RealVector<double> mean(getFeatureCount());
+  RealVector<double> covariance(getFeatureCount());
+  for(uint32_t act_distrib; act_distrib < DISTRIB_CNT; ++act_distrib)
+  {
+    weight = countWeight(act_distrib);
+    mean = countMean(act_distrib, feature_vec);
+    covariance = countDiagonalCovariance(act_distrib, feature_vec,
+                                         mean);
+    model.setDistribWeight(act_distrib, weight);
+    model.setDistribMean(act_distrib,mean);
+    model.setDistribCovariance(act_distrib, covariance);
+  }
+  clearAfterIteration();
 }

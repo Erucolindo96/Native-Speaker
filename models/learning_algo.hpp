@@ -33,8 +33,6 @@ protected:
   inline uint32_t getDistribCount()const;
   double sumPosterioriByFeatures(uint32_t distrib_idx)const;
 
-
-  void performOneIteration(GmmModel &model, const std::vector<alize::Feature> &feature_vec );
   void clearAfterIteration();
   void countPosterioriPropabilities(const GmmModel &model,
                                   const std::vector<alize::Feature> &feature_vec);
@@ -59,6 +57,7 @@ public:
 
   ExpectationMaximalizationAlgo(ExpectationMaximalizationAlgo &&other) = default;
   ExpectationMaximalizationAlgo& operator =(ExpectationMaximalizationAlgo &&other) = default;
+  void performOneIteration(GmmModel &model, const std::vector<alize::Feature> &feature_vec );
 
   void learnModel(GmmModel &model, const std::vector<alize::Feature> &feature_vec ) override;
 
