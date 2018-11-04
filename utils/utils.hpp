@@ -4,9 +4,9 @@
 #include<vector>
 namespace utils
 {
-  const alize::RealVector<double> convert(const alize::Feature &f);
-  const alize::RealVector<double> convert(const std::vector<double> &vec);
-  const alize::Feature convert(const std::vector<double> vec);
+  const alize::RealVector<double> toRealVector(const alize::Feature &f);
+  const alize::RealVector<double> toRealVector(const std::vector<double> &vec);
+  const alize::Feature toFeature(const std::vector<double> &vec);
 }//namespace utils
 
 

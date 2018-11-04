@@ -15,12 +15,17 @@ using namespace alize;
 using namespace utils;
 const double EPS = 0.00001;
 
-BOOST_AUTO_TEST_SUITE( convertionToAlizeRealVectors )
+BOOST_AUTO_TEST_SUITE( convertionToAlizeStructures )
 
-BOOST_AUTO_TEST_CASE(convertToAlizeRealVectorFromStdVector)
+BOOST_AUTO_TEST_CASE(convertToAlizeRealVectorFromFeature)
 {
-  vector<double> sample = {1.0, -5.0, -11.33, -133.52};
-  RealVector<double> converted(convert(sample));
+  const uint32_t FEATURE_SIZE = 4;
+  Feature sample(FEATURE_SIZE);
+  sample[0] = 1.0;
+  sample[1] = -5.0;
+  sample[2] = -11.33;
+  sample[3] = -133.52;
+  RealVector<double> converted = toRealVector(sample);
 
   BOOST_CHECK_CLOSE(converted[0], 1.0, EPS);
   BOOST_CHECK_CLOSE(converted[1], -5.0, EPS);
@@ -28,6 +33,34 @@ BOOST_AUTO_TEST_CASE(convertToAlizeRealVectorFromStdVector)
   BOOST_CHECK_CLOSE(converted[3], -133.52, EPS);
 
 }
+
+
+
+BOOST_AUTO_TEST_CASE(convertToAlizeRealVectorFromStdVector)
+{
+  vector<double> sample = {1.0, -5.0, -11.33, -133.52};
+  RealVector<double> converted(toRealVector(sample));
+
+  BOOST_CHECK_CLOSE(converted[0], 1.0, EPS);
+  BOOST_CHECK_CLOSE(converted[1], -5.0, EPS);
+  BOOST_CHECK_CLOSE(converted[2], -11.33, EPS);
+  BOOST_CHECK_CLOSE(converted[3], -133.52, EPS);
+
+}
+
+BOOST_AUTO_TEST_CASE(convertToFeatureFromStdDoubleVector)
+{
+  vector<double> sample = {1.0, -5.0, -11.33, -133.52};
+  Feature converted(toFeature(sample));
+
+  BOOST_CHECK_CLOSE(converted[0], 1.0, EPS);
+  BOOST_CHECK_CLOSE(converted[1], -5.0, EPS);
+  BOOST_CHECK_CLOSE(converted[2], -11.33, EPS);
+  BOOST_CHECK_CLOSE(converted[3], -133.52, EPS);
+
+}
+
+
 
 
 BOOST_AUTO_TEST_SUITE_END()
