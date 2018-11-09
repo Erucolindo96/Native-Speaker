@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include <vector>
 #include "models/learning_algo.hpp"
-class LearningAlgo;
 
 class IndexOutOfBounds : std::out_of_range
 {
@@ -26,31 +25,22 @@ class GmmModel
 {
 public:
 
-  const uint32_t  MIXTURE_IDX = 0; //, DISTRIB_COUNT
-  alize::Config conf_;
-  alize::MixtureServer s_;
-  std::unique_ptr<LearningAlgo> algo_;
+  const uint32_t  MIXTURE_IDX = 0, DISTRIB_CNT, FEATURE_SIZE,
+  MAX_LLK = 100, MIN_LLK = -100;
+  std::unique_ptr<alize::MixtureServer> s_;
   alize::DistribType type_;
-  //alize::FeatureServer features_;
   std::vector<alize::Feature> features_;
 
   virtual void initDefaultMixture(uint32_t distrib_cnt);
 
 public:
   GmmModel() = delete;
-  explicit GmmModel(const alize::Config &conf);
+  explicit GmmModel(uint32_t distrib_cnt, uint32_t feature_size);
   GmmModel(const GmmModel &other) = delete;
   GmmModel& operator=(const GmmModel &other) = delete;
 
   GmmModel(GmmModel &&other);
   GmmModel& operator =(GmmModel &&other) = delete;
-
-  alize::Config getConfig()const;
-
-  virtual void addLearnAlgo(std::unique_ptr<LearningAlgo> &&algo_to_set);
-  virtual std::unique_ptr<LearningAlgo>& getLearnAlgo();
-  virtual void learnModelUsingLearnAlgo(std::unique_ptr<LearningAlgo> &algo);
-  void learnModel();
 
   void addTrainingFeature(const alize::Feature &feature);
   std::vector<alize::Feature> getTrainingFeatures();

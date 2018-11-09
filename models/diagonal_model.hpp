@@ -11,7 +11,7 @@ protected:
   void initDefaultMixture(uint32_t distrib_cnt) override;
 public:
   DiagonalModel() = delete;
-  DiagonalModel(const alize::Config &conf);
+  explicit DiagonalModel(uint32_t distrib_cnt, uint32_t feature_size);
   DiagonalModel(const DiagonalModel &other) = delete;
   DiagonalModel(DiagonalModel &&other);
   const DiagonalModel& operator =(const DiagonalModel &other) = delete;

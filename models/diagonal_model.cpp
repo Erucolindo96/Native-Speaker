@@ -7,10 +7,10 @@ void DiagonalModel::initDefaultMixture(uint32_t distrib_cnt)
 }
 
 
-DiagonalModel::DiagonalModel(const alize::Config &conf): GmmModel(conf)
+DiagonalModel::DiagonalModel(uint32_t distrib_cnt, uint32_t feature_size): GmmModel(distrib_cnt, feature_size)
 {
   GmmModel::type_ = alize::DistribType_GD;
-  initDefaultMixture(stoi(conf_.getParam("mixtureDistribCount").c_str()));
+  initDefaultMixture(distrib_cnt);
 }
 
 DiagonalModel::DiagonalModel(DiagonalModel &&other):GmmModel(std::move(other))
@@ -23,7 +23,7 @@ void DiagonalModel::setDistribCovariance(uint32_t distrib, const alize::RealVect
                                     to set in configuration of model");
   try
   {
-    alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( s_.getMixture(MIXTURE_IDX).getDistrib(distrib));
+    alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( s_->getMixture(MIXTURE_IDX).getDistrib(distrib));
     distrib_ref.getCovVect() = diagonal_covariance;
     distrib_ref.computeAll();
   }
@@ -41,7 +41,7 @@ alize::RealVector<double> DiagonalModel::getDistribCovariance(uint32_t distrib)c
 {
   try
   {
-    alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( s_.getMixture(MIXTURE_IDX).getDistrib(distrib));
+    alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( s_->getMixture(MIXTURE_IDX).getDistrib(distrib));
     return distrib_ref.getCovVect();
   }
   catch(alize::IndexOutOfBoundsException e)

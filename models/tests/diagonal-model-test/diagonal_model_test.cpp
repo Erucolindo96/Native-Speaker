@@ -16,47 +16,22 @@ using namespace std;
 using namespace alize;
 
 
-const uint32_t FEATURE_SIZE = 2;
+const uint32_t FEATURE_SIZE = 2, DISTRIB_CNT = 10;
 const uint32_t FEATURE_CNT = 10;
 const double EPS = 0.00001;
 
-static Config def_config;
-//static unique_ptr<Config> def_config("config");
 static vector<Feature> training_vec(FEATURE_CNT, Feature(FEATURE_SIZE));
 
-void initConfig()
-{
-  def_config.setParam("vectSize", to_string(FEATURE_SIZE).c_str());
- // def_config.setParam("distribType", "GD");
-  def_config.setParam("mixtureDistribCount", "10");
-  def_config.setParam("maxLLK", "100");
-  def_config.setParam("minLLK", "-100");
-  def_config.setParam("featureServerMemAlloc", "1000000");
-}
 
 BOOST_AUTO_TEST_SUITE( SettersAndGettersTest )
 
 
-BOOST_AUTO_TEST_CASE(ConfigInit)
-{
-  initConfig();
-}
-
-
-BOOST_AUTO_TEST_CASE( getCorrectAlgoIfItWasSet )
-{
-    DiagonalModel model(def_config);
-    unique_ptr<ExpectationMaximalizationAlgo> algo = make_unique<ExpectationMaximalizationAlgo>();
-    model.addLearnAlgo(std::move(algo));
-    BOOST_CHECK( typeid(*model.getLearnAlgo() ) == typeid(ExpectationMaximalizationAlgo) ) ;
-}
-
 BOOST_AUTO_TEST_CASE( getCorrectFeaturesIfTheyWasSet )
 {
-    DiagonalModel model(def_config);
+    DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
     const uint32_t F_CNT = 5;
-    vector<Feature> features(F_CNT, Feature(def_config));
-    random_device random;
+    vector<Feature> features(F_CNT, Feature(FEATURE_SIZE));
+
     for(uint32_t i=0; i < F_CNT; ++i)
     {
       for(uint32_t j=0; j < FEATURE_SIZE; ++j)
@@ -82,14 +57,14 @@ BOOST_AUTO_TEST_CASE( getCorrectFeaturesIfTheyWasSet )
 
 BOOST_AUTO_TEST_CASE(getCorrectVectorSizeIfThatWasSetInConfig)
 {
-  DiagonalModel model(def_config);
-  BOOST_CHECK_EQUAL(model.getFeatureVectorSize(), stoi(def_config.getParam("vectSize").c_str()));
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  BOOST_CHECK_EQUAL(model.getFeatureVectorSize(), FEATURE_SIZE);
 }
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInGetWeight)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   BOOST_CHECK_THROW(model.getDistribWeight(-1), IndexOutOfBounds);
   BOOST_CHECK_THROW(model.getDistribWeight(DISTRIB_CNT + 1), IndexOutOfBounds);
 
@@ -97,8 +72,8 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInGetWeight)
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInSetWeight)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   BOOST_CHECK_THROW(model.setDistribWeight(-1, 0.1), IndexOutOfBounds);
   BOOST_CHECK_THROW(model.setDistribWeight(DISTRIB_CNT + 1, 0.1), IndexOutOfBounds);
 
@@ -107,16 +82,16 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInSetWeight)
 
 BOOST_AUTO_TEST_CASE(getCorrectNumberOfDistribIfParamsAreCorrect)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   BOOST_CHECK_NO_THROW(model.getDistribCount());
   BOOST_CHECK_EQUAL(model.getDistribCount(), DISTRIB_CNT);
 }
 
 BOOST_AUTO_TEST_CASE(getCorrectWeightIfIndexOfDistributionIsCorrect)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   BOOST_CHECK_NO_THROW(model.setDistribWeight(DISTRIB_CNT - 1, 0.5));
   model.getDistribWeight(DISTRIB_CNT - 1);
   BOOST_CHECK_CLOSE(model.getDistribWeight(DISTRIB_CNT - 1), 0.5, EPS);
@@ -125,8 +100,8 @@ BOOST_AUTO_TEST_CASE(getCorrectWeightIfIndexOfDistributionIsCorrect)
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInGetMean)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   BOOST_CHECK_THROW(model.getDistribMean(-1), IndexOutOfBounds);
   BOOST_CHECK_THROW(model.getDistribMean(DISTRIB_CNT + 1), IndexOutOfBounds);
 
@@ -134,11 +109,10 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInGetMean)
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInSetMean)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
 
   RealVector<double> vec(FEATURE_SIZE, FEATURE_SIZE);
-  //vec[FEATURE_SIZE - 1] = 12;
   BOOST_REQUIRE_EQUAL(vec.size(),FEATURE_SIZE);
   BOOST_CHECK_THROW(model.setDistribMean(-1, vec), IndexOutOfBounds);
   BOOST_CHECK_THROW(model.setDistribMean(DISTRIB_CNT + 1, vec), IndexOutOfBounds);
@@ -147,10 +121,9 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInSetMean)
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfSizeOfSettedMeanIsIncorrect)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   RealVector<double> vec(FEATURE_SIZE - 2,FEATURE_SIZE - 2);
-  //vec[FEATURE_SIZE - 2 - 1] = 1.0;
   BOOST_CHECK_THROW(model.setDistribMean(1, vec), InvalidFeatureVectorSize);
 
 }
@@ -159,8 +132,8 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfSizeOfSettedMeanIsIncorrect)
 BOOST_AUTO_TEST_CASE(getCorrectMeanIfIndexOfDistributionIsCorrect)
 {
 
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   RealVector<double> correct_mean(FEATURE_SIZE, FEATURE_SIZE), ret;
   for(uint32_t i=0; i < FEATURE_SIZE; ++i)
   {
@@ -177,8 +150,8 @@ BOOST_AUTO_TEST_CASE(getCorrectMeanIfIndexOfDistributionIsCorrect)
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInGetCovariance)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   BOOST_CHECK_THROW(model.getDistribCovariance(-1), IndexOutOfBounds);
   BOOST_CHECK_THROW(model.getDistribCovariance(DISTRIB_CNT + 1), IndexOutOfBounds);
 
@@ -186,8 +159,8 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInGetCovariance)
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInSetCovariance)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
 
   BOOST_CHECK_THROW(model.setDistribCovariance(-1, RealVector<double>(FEATURE_SIZE, FEATURE_SIZE)), IndexOutOfBounds);
   BOOST_CHECK_THROW(model.setDistribCovariance(DISTRIB_CNT + 1, RealVector<double>(FEATURE_SIZE, FEATURE_SIZE)), IndexOutOfBounds);
@@ -196,8 +169,8 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInSetCovariance)
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfSizeOfSettedCovarianceIsIncorrect)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
 
   RealVector<double> vec(FEATURE_SIZE - 2, FEATURE_SIZE - 2);
   BOOST_CHECK_THROW(model.setDistribCovariance(1, vec), InvalidFeatureVectorSize);
@@ -207,8 +180,8 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfSizeOfSettedCovarianceIsIncorrect)
 
 BOOST_AUTO_TEST_CASE(getCorrectCovarianceIfIndexOfDistributionIsCorrect)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   RealVector<double> correct_cov(FEATURE_SIZE, FEATURE_SIZE), ret;
   for(uint32_t i=0; i < FEATURE_SIZE; ++i)
   {
@@ -231,8 +204,8 @@ BOOST_AUTO_TEST_SUITE( CountingLikehood )
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInCountLikehood)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   RealVector<double> mean(FEATURE_SIZE,FEATURE_SIZE), cov(FEATURE_SIZE, FEATURE_SIZE);
   Feature f(FEATURE_SIZE);
   for(uint32_t i=0; i< FEATURE_SIZE; ++i)
@@ -256,8 +229,8 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInCountLikehood)
 
 BOOST_AUTO_TEST_CASE(countCorrectLikehoodOneDistribWithWeightIfParametersAreCorrect)
 {
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   RealVector<double> mean(FEATURE_SIZE, FEATURE_SIZE), cov(FEATURE_SIZE,FEATURE_SIZE);
   Feature f(FEATURE_SIZE);
   for(uint32_t i=0; i< FEATURE_SIZE; ++i)
@@ -291,8 +264,8 @@ BOOST_AUTO_TEST_CASE(countCorrectLikehoodOneDistribWithWeightIfParametersAreCorr
 BOOST_AUTO_TEST_CASE(countCorrectLikehoodAllDistribIfParametersAreCorrect)
 {
 
-  const uint32_t DISTRIB_CNT = stoi(def_config.getParam("mixtureDistribCount").c_str());
-  DiagonalModel model(def_config);
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   RealVector<double> mean(FEATURE_SIZE, FEATURE_SIZE), cov(FEATURE_SIZE, FEATURE_SIZE);
   Feature f(FEATURE_SIZE);
   for(uint32_t i=0; i< FEATURE_SIZE; ++i)

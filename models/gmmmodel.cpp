@@ -8,7 +8,7 @@ using namespace std;
 
 void GmmModel::initDefaultMixture(uint32_t distrib_cnt)
 {
-  s_.createMixture(distrib_cnt, type_);
+  s_->createMixture(distrib_cnt, type_);
 
 }
 
@@ -16,61 +16,30 @@ void GmmModel::initDefaultMixture(uint32_t distrib_cnt)
 /*
  * Public
  */
+GmmModel::GmmModel(uint32_t distrib_cnt,uint32_t feature_size):
+  DISTRIB_CNT(distrib_cnt),FEATURE_SIZE(feature_size), features_()
+{
+  alize::Config conf;
+  conf.setParam("vectSize", std::to_string(feature_size).c_str());
+  conf.setParam("mixtureDistribCount", std::to_string(distrib_cnt).c_str());
+  conf.setParam("maxLLK", std::to_string(MAX_LLK).c_str());
+  conf.setParam("minLLK", std::to_string(MIN_LLK).c_str());
+  s_ = std::make_unique<alize::MixtureServer>(conf);
+}
 
-GmmModel::GmmModel(const alize::Config &conf):
-  conf_(conf), s_(conf), features_()
+GmmModel::GmmModel(GmmModel &&other):GmmModel(other.DISTRIB_CNT, other.FEATURE_SIZE)
 {}
-
-GmmModel::GmmModel(GmmModel &&other):GmmModel(other.conf_)
-{}
-
-
-alize::Config GmmModel::getConfig()const
-{
-  return conf_;
-}
-
-void GmmModel::addLearnAlgo(std::unique_ptr<LearningAlgo> &&algo_to_set)
-{
-  algo_ = std::move(algo_to_set);
-}
-std::unique_ptr<LearningAlgo>& GmmModel::getLearnAlgo()
-{
-  return algo_;
-}
-
-void GmmModel::learnModelUsingLearnAlgo(std::unique_ptr<LearningAlgo> &algo)
-{
-  algo->learnModel(*this, features_ );
-}
-
-void GmmModel::learnModel()
-{
-  algo_->learnModel(*this, features_ );
-}
 
 void GmmModel::addTrainingFeature(const alize::Feature &feature)
 {
   features_.push_back(feature);
-/*  if(!features_.addFeature(feature))
-  {
-    throw std::runtime_error("TODO");
-  }
-*/
+
 }
 
 std::vector<alize::Feature> GmmModel::getTrainingFeatures()
 {
   return features_;
-  /*
-  const uint32_t CNT = features_.size();
-  std::vector<alize::Feature> vec(CNT);
-  for(uint32_t i = 0; i < CNT; ++i)
-  {
-    features_.readFeature(vec[i]);
-  }
-  return vec;
-  */
+
 }
 
 
@@ -97,7 +66,7 @@ double GmmModel::countLikehoodWithWeight(const alize::Feature &arg, uint32_t dis
 {
   try
   {
-    return s_.getMixture(MIXTURE_IDX).getDistrib(distrib_idx).computeLK(arg) *
+    return s_->getMixture(MIXTURE_IDX).getDistrib(distrib_idx).computeLK(arg) *
       getDistribWeight(distrib_idx);
 
   }
@@ -108,14 +77,14 @@ double GmmModel::countLikehoodWithWeight(const alize::Feature &arg, uint32_t dis
 }
 uint32_t GmmModel::getDistribCount()const
 {
-  return s_.getMixture(MIXTURE_IDX).getDistribCount();
+  return s_->getMixture(MIXTURE_IDX).getDistribCount();
 }
 
 double GmmModel::getDistribWeight(uint32_t distrib_idx)const
 {
   try
   {
-    return s_.getMixture(MIXTURE_IDX).weight(distrib_idx);
+    return s_->getMixture(MIXTURE_IDX).weight(distrib_idx);
 
   }
   catch(alize::IndexOutOfBoundsException e)
@@ -127,7 +96,7 @@ void GmmModel::setDistribWeight(uint32_t distrib, double new_weight)
 {
   try
   {
-    s_.getMixture(MIXTURE_IDX).weight(distrib) = new_weight;
+    s_->getMixture(MIXTURE_IDX).weight(distrib) = new_weight;
   }
   catch(alize::IndexOutOfBoundsException e)
   {
@@ -144,7 +113,7 @@ void GmmModel::setDistribMean(uint32_t distrib, const alize::RealVector<double> 
                                     to set in configuration of model");
   try
   {
-    alize::Distrib& distrib_ref = s_.getMixture(MIXTURE_IDX).getDistrib(distrib);
+    alize::Distrib& distrib_ref = s_->getMixture(MIXTURE_IDX).getDistrib(distrib);
     distrib_ref.setMeanVect(new_mean);
     distrib_ref.computeAll();
   }
@@ -157,7 +126,7 @@ alize::RealVector<double> GmmModel::getDistribMean(uint32_t distrib)const
 {
   try
   {
-    return s_.getMixture(MIXTURE_IDX).getDistrib(distrib).getMeanVect();
+    return s_->getMixture(MIXTURE_IDX).getDistrib(distrib).getMeanVect();
 
   }
   catch(alize::IndexOutOfBoundsException e)
@@ -168,7 +137,7 @@ alize::RealVector<double> GmmModel::getDistribMean(uint32_t distrib)const
 
 uint32_t GmmModel::getFeatureVectorSize()const
 {
-  return s_.getVectSize();
+  return s_->getVectSize();
 }
 
 std::vector<alize::Feature> GmmModel::extractAllFeatures(alize::FeatureServer &s)
