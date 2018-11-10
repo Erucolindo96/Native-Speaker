@@ -5,13 +5,17 @@
 #include<alize/alize.h>
 #include"models/gmmmodel.hpp"
 #include"utils/utils.hpp"
-
+#include <stdexcept>
 using namespace std;
 
+class LearningModelWithoutFeaturesException: public invalid_argument
+{
+public:
+  explicit LearningModelWithoutFeaturesException(const std::string &msg): invalid_argument(msg)
+  {}
+};
 
-class GmmModel;
 class LearningAlgo {
-
 
 public:
   LearningAlgo() = default;
@@ -32,6 +36,7 @@ protected:
   inline uint32_t getFeatureCount()const;
   inline uint32_t getDistribCount()const;
   double sumPosterioriByFeatures(uint32_t distrib_idx)const;
+  double sumPosterioriMatrix()const;
 
   void initializePropabilities(uint32_t feature_cnt, uint32_t distrib_cnt);
   void clearAfterIteration();

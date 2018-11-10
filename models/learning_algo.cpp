@@ -40,6 +40,16 @@ double ExpectationMaximalizationAlgo::sumPosterioriByFeatures(uint32_t distrib_i
   return sum;
 }
 
+double ExpectationMaximalizationAlgo::sumPosterioriMatrix()const
+{
+  double sum = 0;
+  for(uint32_t distrib = 0; distrib < getDistribCount(); ++distrib)
+  {
+    sum += sumPosterioriByFeatures(distrib);
+  }
+  return sum;
+}
+
 void ExpectationMaximalizationAlgo::initializePropabilities
                (uint32_t feature_cnt, uint32_t distrib_cnt)
 {
@@ -105,7 +115,7 @@ void ExpectationMaximalizationAlgo::performOneIteration(GmmModel &model,
 double ExpectationMaximalizationAlgo::countWeight(uint32_t distrib_idx)const
 {
   double new_weight = sumPosterioriByFeatures(distrib_idx);
-  new_weight /= getFeatureCount();
+  new_weight /= sumPosterioriMatrix();
   return new_weight;
 }
 
@@ -164,6 +174,12 @@ void ExpectationMaximalizationAlgo::learnModel(GmmModel &model,
                                                const std::vector<alize::Feature> &feature_vec,
                                                const uint32_t iterations)
 {
+  if(feature_vec.empty())
+  {
+    throw LearningModelWithoutFeaturesException(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                                                + std::string(" - try to learn model empty feature vector"));
+  }
+
   initializePropabilities(feature_vec.size(), model.getDistribCount());
   for(uint32_t i=0; i< iterations; ++i)
   {
