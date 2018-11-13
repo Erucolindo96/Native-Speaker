@@ -6,8 +6,10 @@
 #include"models/gmmmodel.hpp"
 #include"utils/utils.hpp"
 #include <stdexcept>
+#include<cfloat>
 using namespace std;
 
+class GmmModel;
 class LearningModelWithoutFeaturesException: public invalid_argument
 {
 public:
@@ -35,6 +37,7 @@ protected:
   inline void setPosterioriPropability(uint32_t feature_idx, uint32_t distrib_idx, double val);
   inline uint32_t getFeatureCount()const;
   inline uint32_t getDistribCount()const;
+
   double sumPosterioriByFeatures(uint32_t distrib_idx)const;
   double sumPosterioriMatrix()const;
 

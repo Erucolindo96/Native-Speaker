@@ -25,8 +25,8 @@ class GmmModel
 {
 public:
 
-  const uint32_t  MIXTURE_IDX = 0, DISTRIB_CNT, FEATURE_SIZE,
-  MAX_LLK = 100, MIN_LLK = -100;
+  const uint32_t  MIXTURE_IDX = 0, DISTRIB_CNT, FEATURE_SIZE;
+  const double MAX_LLK = 100.0, MIN_LLK = -100.0;
   std::unique_ptr<alize::MixtureServer> s_;
   alize::DistribType type_;
   std::vector<alize::Feature> features_;

@@ -25,9 +25,10 @@ uint32_t ExpectationMaximalizationAlgo::getFeatureCount()const
 
 uint32_t ExpectationMaximalizationAlgo::getDistribCount()const
 {
-  const uint32_t FIRST_FEATURE = 0;
-  return aposteriori_propabilities_[FIRST_FEATURE].size();
+  const uint32_t FIRST_FEATURE_ROW = 0;
+  return aposteriori_propabilities_[FIRST_FEATURE_ROW].size();
 }
+
 
 
 double ExpectationMaximalizationAlgo::sumPosterioriByFeatures(uint32_t distrib_idx)const
@@ -84,8 +85,8 @@ double ExpectationMaximalizationAlgo::countOnePropability(const GmmModel &model,
                                                         uint32_t feature_idx, uint32_t distrib_idx)
 {
   const Feature& current = feature_vec[feature_idx];
-  double ret = model.getDistribWeight(distrib_idx);
-  ret *= model.countLikehoodWithWeight(current, distrib_idx);
+  double ret = 0;//model.getDistribWeight(distrib_idx);
+  ret = model.countLikehoodWithWeight(current, distrib_idx);
   ret /= model.countLikehoodWithWeight(current);
   return ret;
 }
@@ -93,12 +94,12 @@ double ExpectationMaximalizationAlgo::countOnePropability(const GmmModel &model,
 void ExpectationMaximalizationAlgo::performOneIteration(GmmModel &model,
                                                         const std::vector<alize::Feature> &feature_vec)
 {
-  countPosterioriPropabilities(model, feature_vec);
+  countPosterioriPropabilities(model, feature_vec);//expectation step
   const uint32_t DISTRIB_CNT = getDistribCount();
   double weight = 0;
   RealVector<double> mean(getFeatureCount());
   RealVector<double> covariance(getFeatureCount());
-  for(uint32_t act_distrib; act_distrib < DISTRIB_CNT; ++act_distrib)
+  for(uint32_t act_distrib = 0; act_distrib < DISTRIB_CNT; ++act_distrib)//maximization step
   {
     weight = countWeight(act_distrib);
     mean = countMean(act_distrib, feature_vec);
@@ -122,28 +123,39 @@ double ExpectationMaximalizationAlgo::countWeight(uint32_t distrib_idx)const
 RealVector<double> ExpectationMaximalizationAlgo::countMean(uint32_t distrib_idx,
                                                     const vector<Feature> &feature_vec )const
 {
-  RealVector<double> vec(getFeatureCount()), temp(getFeatureCount());
+
+  const uint32_t FEATURE_SIZE = feature_vec[0].getVectSize(), FEATURE_CNT = getFeatureCount();
+  RealVector<double> new_mean(FEATURE_SIZE, FEATURE_SIZE),
+      temp(FEATURE_SIZE, FEATURE_SIZE);
   //suma iloczynów prawdopodobieństw posteriori i wektorów cech
+  new_mean.setAllValues(0.0);
+  temp.setAllValues(0.0);
   double posteriori = 0;
-  for(uint32_t feature=0; feature < getFeatureCount(); ++feature)
+  for(uint32_t f_idx = 0; f_idx < getFeatureCount(); ++f_idx)
   {
-    const Feature& actual = feature_vec[feature];
-    posteriori = getPosterioriPropability(feature, distrib_idx);
+    const Feature& actual = feature_vec[f_idx];
+    posteriori = getPosterioriPropability(f_idx, distrib_idx);
     temp = utils::toRealVector(actual);
     temp *= posteriori;
-    vec += temp;
+    new_mean += temp;
   }
+
   //dzielimy sume przez sume p-stw posteriori po wektorach cech
-  vec *= 1/sumPosterioriByFeatures(distrib_idx);
-  return vec;
+  double sum_posteriori = sumPosterioriByFeatures(distrib_idx);
+  if(isinf(1/sum_posteriori))//zapobieżenie dzielenia przez zero
+    sum_posteriori = FLT_EPSILON;
+  new_mean *= 1/sum_posteriori;
+  return new_mean;
+
 }
 RealVector<double> ExpectationMaximalizationAlgo::countDiagonalCovariance(uint32_t distrib_idx,
                                                                   const vector<Feature> &feature_vec,
                                                                   const RealVector<double> &mean)const
 {
-  const uint32_t FEATURE_CNT = getFeatureCount();
+  const uint32_t FEATURE_CNT = getFeatureCount(),
+      FEATURE_SIZE = feature_vec[0].getVectSize();
   double act_posteriori = 0;
-  RealVector<double> diff(FEATURE_CNT), ret(FEATURE_CNT);
+  RealVector<double> diff(FEATURE_SIZE, FEATURE_SIZE), ret(FEATURE_SIZE, FEATURE_SIZE);
   //suma różnicy wektora cech i wektora średniego, pomnożona przez p-stwo posteriori
   for(uint32_t act_feature = 0; act_feature < FEATURE_CNT; ++act_feature)
   {

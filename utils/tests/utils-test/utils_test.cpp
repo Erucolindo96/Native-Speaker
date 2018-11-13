@@ -26,6 +26,7 @@ BOOST_AUTO_TEST_CASE(convertToAlizeRealVectorFromFeature)
   sample[2] = -11.33;
   sample[3] = -133.52;
   RealVector<double> converted = toRealVector(sample);
+  BOOST_REQUIRE_EQUAL(converted.size(), FEATURE_SIZE);
 
   BOOST_CHECK_CLOSE(converted[0], 1.0, EPS);
   BOOST_CHECK_CLOSE(converted[1], -5.0, EPS);
@@ -38,8 +39,10 @@ BOOST_AUTO_TEST_CASE(convertToAlizeRealVectorFromFeature)
 
 BOOST_AUTO_TEST_CASE(convertToAlizeRealVectorFromStdVector)
 {
+  const uint32_t FEATURE_SIZE = 4;
   vector<double> sample = {1.0, -5.0, -11.33, -133.52};
   RealVector<double> converted(toRealVector(sample));
+  BOOST_REQUIRE_EQUAL(converted.size(), FEATURE_SIZE);
 
   BOOST_CHECK_CLOSE(converted[0], 1.0, EPS);
   BOOST_CHECK_CLOSE(converted[1], -5.0, EPS);
@@ -50,8 +53,10 @@ BOOST_AUTO_TEST_CASE(convertToAlizeRealVectorFromStdVector)
 
 BOOST_AUTO_TEST_CASE(convertToFeatureFromStdDoubleVector)
 {
+  const uint32_t FEATURE_SIZE = 4;
   vector<double> sample = {1.0, -5.0, -11.33, -133.52};
   Feature converted(toFeature(sample));
+  BOOST_REQUIRE_EQUAL(converted.getVectSize(), FEATURE_SIZE);
 
   BOOST_CHECK_CLOSE(converted[0], 1.0, EPS);
   BOOST_CHECK_CLOSE(converted[1], -5.0, EPS);
