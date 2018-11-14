@@ -99,15 +99,15 @@ void ExpectationMaximalizationAlgo::performOneIteration(GmmModel &model,
   double weight = 0;
   RealVector<double> mean(getFeatureCount());
   RealVector<double> covariance(getFeatureCount());
-  for(uint32_t act_distrib = 0; act_distrib < DISTRIB_CNT; ++act_distrib)//maximization step
+  for(uint32_t act_d = 0; act_d < DISTRIB_CNT; ++act_d)//maximization step
   {
-    weight = countWeight(act_distrib);
-    mean = countMean(act_distrib, feature_vec);
-    covariance = countDiagonalCovariance(act_distrib, feature_vec,
-                                         mean);
-    model.setDistribWeight(act_distrib, weight);
-    model.setDistribMean(act_distrib,mean);
-    model.setDistribCovariance(act_distrib, covariance);
+    weight = countWeight(act_d);
+    mean = countMean(act_d, feature_vec);
+    covariance = countDiagonalCovariance(act_d, feature_vec,
+                                         model.getDistribMean(act_d));
+    model.setDistribWeight(act_d, weight);
+    model.setDistribMean(act_d,mean);
+    model.setDistribCovariance(act_d, covariance);
   }
   clearAfterIteration();
 }
@@ -116,9 +116,8 @@ void ExpectationMaximalizationAlgo::performOneIteration(GmmModel &model,
 double ExpectationMaximalizationAlgo::countWeight(uint32_t distrib_idx)const
 {
   double new_weight = sumPosterioriByFeatures(distrib_idx),
-      sum_posteriori = sumPosterioriMatrix();
-  if(isinf(1/sum_posteriori))//zapobieżenie dzielenia przez zero
-    sum_posteriori = FLT_EPSILON;
+      sum_posteriori = avoidZeroDivide(sumPosterioriMatrix());
+
   new_weight /= sum_posteriori;
   return new_weight;
 }
@@ -134,7 +133,7 @@ RealVector<double> ExpectationMaximalizationAlgo::countMean(uint32_t distrib_idx
   new_mean.setAllValues(0.0);
   temp.setAllValues(0.0);
   double posteriori = 0;
-  for(uint32_t f_idx = 0; f_idx < getFeatureCount(); ++f_idx)
+  for(uint32_t f_idx = 0; f_idx < FEATURE_CNT; ++f_idx)
   {
     const Feature& actual = feature_vec[f_idx];
     posteriori = getPosterioriPropability(f_idx, distrib_idx);
@@ -144,33 +143,41 @@ RealVector<double> ExpectationMaximalizationAlgo::countMean(uint32_t distrib_idx
   }
 
   //dzielimy sume przez sume p-stw posteriori po wektorach cech
-  double sum_posteriori = sumPosterioriByFeatures(distrib_idx);
-  if(isinf(1/sum_posteriori))//zapobieżenie dzielenia przez zero
-    sum_posteriori = FLT_EPSILON;
+  double sum_posteriori = avoidZeroDivide(sumPosterioriByFeatures(distrib_idx));
   new_mean *= 1/sum_posteriori;
   return new_mean;
 
 }
 RealVector<double> ExpectationMaximalizationAlgo::countDiagonalCovariance(uint32_t distrib_idx,
                                                                   const vector<Feature> &feature_vec,
-                                                                  const RealVector<double> &mean)const
+                                                                  const RealVector<double> &new_mean)const
 {
   const uint32_t FEATURE_CNT = getFeatureCount(),
       FEATURE_SIZE = feature_vec[0].getVectSize();
+  RealVector<double> ret(FEATURE_SIZE, FEATURE_SIZE)
+      ,diff(FEATURE_SIZE, FEATURE_SIZE);
+  ret.setAllValues(0.0);
+  //diff.setAllValues(0.0);
+  unique_ptr<Matrix<double>> f_and_mean_diff, f_and_mean_transpoze;
+  Matrix<double> temp(FEATURE_SIZE, FEATURE_SIZE);
   double act_posteriori = 0;
-  RealVector<double> diff(FEATURE_SIZE, FEATURE_SIZE), ret(FEATURE_SIZE, FEATURE_SIZE);
-  //suma różnicy wektora cech i wektora średniego, pomnożona przez p-stwo posteriori
-  for(uint32_t act_feature = 0; act_feature < FEATURE_CNT; ++act_feature)
+  //obliczanie sumy iloczynów macierzy (f_j - u_i)*(f_j - u_i)^T * posteriori(j,i)
+  for(uint32_t act_f = 0; act_f < FEATURE_CNT; ++act_f)
   {
-    act_posteriori = getPosterioriPropability(act_feature, distrib_idx);
-
-    diff = utils::toRealVector(feature_vec[act_feature]);
-    diff -= mean;
-    diff *= act_posteriori;
-    ret += diff;
+    diff = utils::toRealVector(feature_vec[act_f]);
+    diff -= new_mean;
+    act_posteriori = getPosterioriPropability(act_f, distrib_idx);
+    f_and_mean_transpoze = make_unique<Matrix<double>>(diff);
+    f_and_mean_diff  = make_unique<Matrix<double>>(diff);
+    f_and_mean_diff->transpose();
+    /*ponieważ w ALIZE wektor jest interpretowany jako wektor wierszowy, nie kolumnowy
+    to musimy transponować różnicę, a nie jej transpozycję*/
+    temp = (*f_and_mean_diff) * (*f_and_mean_transpoze);//opertory *, bo to wskaźniki
+    temp*= act_posteriori;
+    ret += utils::diag(temp);
   }
-  //teraz dzielimy całość przez sume p-stw posteriori
-  ret *= 1/sumPosterioriByFeatures(distrib_idx);
+  double sum_posteriori = avoidZeroDivide(sumPosterioriByFeatures(distrib_idx));
+  ret *= 1/sum_posteriori;
   return ret;
 }
 DoubleSquareMatrix ExpectationMaximalizationAlgo::countFullCovariance(uint32_t distrib_idx,
@@ -178,6 +185,13 @@ DoubleSquareMatrix ExpectationMaximalizationAlgo::countFullCovariance(uint32_t d
                                                                       const RealVector<double> &mean)const
 {
   throw std::runtime_error("TODO");
+}
+
+double ExpectationMaximalizationAlgo::avoidZeroDivide(double dividor)const
+{
+  if(isinf(1/dividor))//zapobieżenie dzielenia przez zero
+    dividor = DBL_EPSILON;
+  return dividor;
 }
 
 

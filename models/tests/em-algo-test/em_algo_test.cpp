@@ -20,7 +20,7 @@ const uint32_t FEATURE_SIZE = 3;
 const uint32_t DISTRIB_CNT = 10;
 const uint32_t FEATURE_CNT = 5;
 
-const double EPSILON = 0.0001;
+const double EPSILON = 0.001;
 
 static vector<Feature> training_vec;
 static unique_ptr<ExpectationMaximalizationAlgo> algo;
@@ -192,49 +192,55 @@ BOOST_AUTO_TEST_CASE( prepareCorrectFirstIterationOfLearningIfModelInitialatedAs
 
   checkWeights(*model, weights_expected);
   checkMeans(*model, means_expected);
-  //checkCovariances(*model, diag_cov_expected);
+  checkCovariances(*model, diag_cov_expected);
 
   BOOST_CHECK_GE(model->countLikehoodWithWeight(training_vec[0]), previous_lk);
 }
 
-/*
+
 BOOST_AUTO_TEST_CASE( prepareCorrectSecondIterationOfLearningIfModelInitialatedAsAbove )
 {
+
+  double previous_lk = model->countLikehoodWithWeight(training_vec[0]);
   algo->learnModel(*model, training_vec, 1);
-  RealVector<double> weights_expected = toRealVector({0.2377,1e-5,0.4731,0.1331,0.0002,
-                                                      0.0006, 0.1553, 1e-5, 1e-5, 1e-5});
+
+  RealVector<double> weights_expected = toRealVector({2.3955e-01,1.9606e-09,4.9558e-01,1.5898e-01,3.1592e-03,
+                                                      1.3891e-03, 1.0133e-01, 2.4812e-05, 1.4020e-09, 1.4510e-09});
   vector<RealVector<double>> means_expected =
   {
-    toRealVector({0.0856, -0.0298, -1.0624}),
-    toRealVector({-0.0625, 0.3096, -0.5687}),
-    toRealVector({-0.3384, 0.7077, -0.1981}),
-    toRealVector({0.0241, 0.3774, -0.3546}),
-    toRealVector({-0.3142, 0.6405, -0.2345}),
-    toRealVector({0.0670, 0.1994, -0.6109}),
-    toRealVector({-0.1748, 0.5508, -0.2512}),
-    toRealVector({-0.2117, 0.4819, -0.3614}),
-    toRealVector({-0.4755, 0.7694, -0.1357}),
-    toRealVector({-0.0673, 0.3532, -0.5153})
+    toRealVector({0.0897, -0.0156, -1.0723}),
+    toRealVector({-0.1214, 0.4089, -0.4750}),
+    toRealVector({-0.3302, 0.5169, 0.2561}),
+    toRealVector({0.0161, 0.1913, 0.3091}),
+    toRealVector({-0.0502, -0.0315, 1.1220}),
+    toRealVector({0.0163, 0.1463, 0.2570}),
+    toRealVector({-0.2071, 0.5718, -0.1964}),
+    toRealVector({-0.0567, -0.0879, 1.3700}),
+    toRealVector({-0.6147, 0.8787, -0.0815}),
+    toRealVector({-0.2123, 0.4838, -0.2286})
   },
   diag_cov_expected =
   {
-    toRealVector({0.0006, 0.1060, 0.1472}),
-    toRealVector({0.1221, 0.3001, 0.4717}),
-    toRealVector({0.2280, 0.1053, 0.0426}),
-    toRealVector({0.0043, 0.0660, 0.0619}),
-    toRealVector({0.2296, 0.1513, 0.0854}),
-    toRealVector({0.0012, 0.1828, 0.3753}),
-    toRealVector({0.1860, 0.1281, 0.0505}),
-    toRealVector({0.2616, 0.3927, 0.2776}),
-    toRealVector({0.2490, 0.1273, 0.0380}),
-    toRealVector({0.1109, 0.2408, 0.3628})
+    toRealVector({0.0002, 0.1271, 0.1382}),
+    toRealVector({0.2084, 0.4317, 0.5431}),
+    toRealVector({0.2247, 0.2416, 0.4994}),
+    toRealVector({0.0039, 0.0946, 0.7406}),
+    toRealVector({0.0112, 0.0335, 0.3667}),
+    toRealVector({0.0040, 0.1432, 0.9784}),
+    toRealVector({0.2552, 0.1986, 0.1239}),
+    toRealVector({1.0e-04*0.0010, 1.0e-04* 0.0009, 1.0e-04*0.3054}),
+    toRealVector({0.2471, 0.1015, 0.0426}),
+    toRealVector({0.2641, 0.4243, 0.5753})
   };
 
   checkWeights(*model, weights_expected);
   checkMeans(*model, means_expected);
   checkCovariances(*model, diag_cov_expected);
+
+  BOOST_CHECK_GE(model->countLikehoodWithWeight(training_vec[0]), previous_lk);
+
 }
-*/
+
 
 BOOST_AUTO_TEST_SUITE_END()//iterations_of_em_algo
 

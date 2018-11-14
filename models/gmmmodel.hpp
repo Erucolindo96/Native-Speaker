@@ -10,14 +10,14 @@
 class IndexOutOfBounds : std::out_of_range
 {
 public:
-  explicit IndexOutOfBounds(std::string msg) : out_of_range(msg)
+  explicit IndexOutOfBounds(std::string &&msg) : out_of_range(msg)
   {}
 };
 
 class InvalidFeatureVectorSize: std::invalid_argument
 {
 public :
-  explicit InvalidFeatureVectorSize(std::string msg):invalid_argument(msg)
+  explicit InvalidFeatureVectorSize(std::string &&msg):invalid_argument(msg)
   {}
 };
 

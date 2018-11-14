@@ -59,7 +59,8 @@ protected:
                                             const alize::RealVector<double> &mean)const;
   alize::DoubleSquareMatrix countFullCovariance(uint32_t distrib_idx,
                                                 const std::vector<alize::Feature> &feature_vec,
-                                                const alize::RealVector<double> &mean)const;
+                                                const alize::RealVector<double> &new_mean)const;
+  double avoidZeroDivide(double dividor)const;
 
 public:
   ExpectationMaximalizationAlgo()=default;
