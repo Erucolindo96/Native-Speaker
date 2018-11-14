@@ -36,6 +36,7 @@ public:
 public:
   GmmModel() = delete;
   explicit GmmModel(uint32_t distrib_cnt, uint32_t feature_size);
+  explicit GmmModel(uint32_t distrib_cnt, uint32_t feature_size, const std::string &name);
   GmmModel(const GmmModel &other) = delete;
   GmmModel& operator=(const GmmModel &other) = delete;
 
@@ -43,7 +44,11 @@ public:
   GmmModel& operator =(GmmModel &&other) = delete;
 
   void addTrainingFeature(const alize::Feature &feature);
-  std::vector<alize::Feature> getTrainingFeatures();
+  void addTrainingFeature(const std::vector<alize::Feature> &vec);
+  std::vector<alize::Feature> getTrainingFeatures()const;
+
+  void setName(const std::string &name);
+  std::string getName()const;
 
   double countLikehoodWithWeight(const alize::Feature &arg)const;
   double countLikehoodWithWeight(const alize::Feature &arg, uint32_t distrib_idx)const;

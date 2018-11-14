@@ -26,6 +26,10 @@ GmmModel::GmmModel(uint32_t distrib_cnt,uint32_t feature_size):
   conf.setParam("minLLK", std::to_string(MIN_LLK).c_str());
   s_ = std::make_unique<alize::MixtureServer>(conf);
 }
+GmmModel::GmmModel(uint32_t distrib_cnt, uint32_t feature_size, const std::string &name): GmmModel(distrib_cnt, feature_size)
+{
+  setName(name);
+}
 
 GmmModel::GmmModel(GmmModel &&other):GmmModel(other.DISTRIB_CNT, other.FEATURE_SIZE)
 {}
@@ -36,10 +40,25 @@ void GmmModel::addTrainingFeature(const alize::Feature &feature)
 
 }
 
-std::vector<alize::Feature> GmmModel::getTrainingFeatures()
+void GmmModel::addTrainingFeature(const std::vector<alize::Feature> &vec)
+{
+  features_ = vec;
+}
+
+std::vector<alize::Feature> GmmModel::getTrainingFeatures()const
 {
   return features_;
 
+}
+
+void GmmModel::setName(const std::string &name)
+{
+  s_->setServerName(name.c_str());
+}
+
+std::string GmmModel::getName()const
+{
+  return std::string(s_->getServerName().c_str());
 }
 
 

@@ -55,6 +55,54 @@ BOOST_AUTO_TEST_CASE( getCorrectFeaturesIfTheyWasSet )
 
 }
 
+BOOST_AUTO_TEST_CASE( getCorrectFeatureVectorIfItWasSet )
+{
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  const uint32_t F_CNT = 5;
+  vector<Feature> features(F_CNT, Feature(FEATURE_SIZE));
+
+  for(uint32_t i=0; i < F_CNT; ++i)
+  {
+    for(uint32_t j=0; j < FEATURE_SIZE; ++j)
+    {
+      features[i][j] = 0.5;
+    }
+  }
+  BOOST_CHECK_NO_THROW(model.addTrainingFeature(features));
+
+  auto features_in_model = model.getTrainingFeatures();
+  BOOST_REQUIRE_EQUAL(features_in_model.size(), features.size());
+  for(uint32_t i=0; i< features.size(); ++i )
+  {
+    BOOST_CHECK(features[i] == features_in_model[i]);
+  }
+
+}
+
+BOOST_AUTO_TEST_CASE(constructModelWithName)
+{
+  const std::string name = "testowy";
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE, name);
+  BOOST_CHECK_EQUAL(model.getName(), name);
+}
+
+BOOST_AUTO_TEST_CASE(setModelName)
+{
+  const std::string name = "testowy_model";
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  BOOST_CHECK_NO_THROW(model.setName(name));
+  BOOST_CHECK_EQUAL(model.getName(), name);
+}
+
+BOOST_AUTO_TEST_CASE(getDefaultModelNameIfTheyWasNotSet)
+{
+  const string def_name = "";
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  BOOST_CHECK_EQUAL(model.getName(), def_name);
+}
+
+
+
 BOOST_AUTO_TEST_CASE(getCorrectVectorSizeIfThatWasSetInConfig)
 {
   DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);

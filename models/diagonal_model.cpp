@@ -7,7 +7,14 @@ void DiagonalModel::initDefaultMixture(uint32_t distrib_cnt)
 }
 
 
-DiagonalModel::DiagonalModel(uint32_t distrib_cnt, uint32_t feature_size): GmmModel(distrib_cnt, feature_size)
+DiagonalModel::DiagonalModel(uint32_t distrib_cnt, uint32_t feature_size)
+  : GmmModel(distrib_cnt, feature_size)
+{
+  GmmModel::type_ = alize::DistribType_GD;
+  initDefaultMixture(distrib_cnt);
+}
+DiagonalModel::DiagonalModel(uint32_t distrib_cnt, uint32_t feature_size, const std::string &name)
+  :GmmModel(distrib_cnt, feature_size, name)
 {
   GmmModel::type_ = alize::DistribType_GD;
   initDefaultMixture(distrib_cnt);

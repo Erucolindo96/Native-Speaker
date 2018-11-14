@@ -12,6 +12,7 @@ protected:
 public:
   DiagonalModel() = delete;
   explicit DiagonalModel(uint32_t distrib_cnt, uint32_t feature_size);
+  explicit DiagonalModel(uint32_t distrib_cnt, uint32_t feature_size, const std::string &name);
   DiagonalModel(const DiagonalModel &other) = delete;
   DiagonalModel(DiagonalModel &&other);
   const DiagonalModel& operator =(const DiagonalModel &other) = delete;
