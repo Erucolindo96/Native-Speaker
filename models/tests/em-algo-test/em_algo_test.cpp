@@ -28,8 +28,8 @@ static unique_ptr<DiagonalModel> model;
 
 void initModel()
 {
-  RealVector<double> w = toRealVector({0.1179,0.000,0.3269,0.0190,0.3382,
-                                       0.0005,0.1896,0.0080,0.000,0.000});
+  RealVector<double> w = toRealVector({0.1179,9.1176e-07,0.3269,0.0190,0.3382,
+                                       0.0005,0.1896,0.0080,1.1646e-08,1.9747e-07});
 
   vector<RealVector<double>> means =
   {
@@ -91,6 +91,9 @@ void checkMeans(DiagonalModel &model,const vector<RealVector<double>> &correct_m
     for(uint32_t j = 0; j < FEATURE_SIZE; ++j)
     {
       BOOST_CHECK_SMALL(model.getDistribMean(i)[j] - correct_means[i][j],EPSILON);
+      BOOST_CHECK_MESSAGE(abs(model.getDistribMean(i)[j] - correct_means[i][j]) < EPSILON,
+                    "srednia nr :" + to_string(i) + ", pozycja nr:"+
+                          to_string(j) + "\n");
     }
   }
 }
@@ -105,16 +108,25 @@ void checkCovariances(DiagonalModel &model, const vector<RealVector<double>> &co
     for(uint32_t j = 0; j < FEATURE_SIZE; ++j)
     {
       BOOST_CHECK_SMALL(model.getDistribCovariance(i)[j] - correct_diag_cov[i][j],EPSILON);
+      BOOST_CHECK_MESSAGE(abs(model.getDistribCovariance(i)[j] - correct_diag_cov[i][j]) < EPSILON,
+                          "kowariancja nr :" + to_string(i) + ", pozycja nr:"+
+                                to_string(j) + "\n");
     }
   }
 }
 
 void checkWeights(DiagonalModel &model,const RealVector<double> &correct_weights)
 {
+  double sum_weights = 0;
   for(uint32_t i = 0; i < DISTRIB_CNT; ++i)
   {
     BOOST_CHECK_SMALL(model.getDistribWeight(i) - correct_weights[i], EPSILON);
+    BOOST_CHECK_MESSAGE(abs(model.getDistribWeight(i) - correct_weights[i]) < EPSILON,
+                  "waga nr :" + to_string(i));
+    sum_weights += model.getDistribWeight(i);
   }
+  const double  SUM_EXPECTED = 1.0;
+  BOOST_CHECK_SMALL(sum_weights - SUM_EXPECTED, EPSILON);
 }
 
 BOOST_AUTO_TEST_SUITE( initialization )
@@ -145,17 +157,18 @@ BOOST_AUTO_TEST_SUITE( iterations_of_em_algo )
 BOOST_AUTO_TEST_CASE( prepareCorrectFirstIterationOfLearningIfModelInitialatedAsAbove )
 {
 
+  double previous_lk = model->countLikehoodWithWeight(training_vec[0]);
   BOOST_REQUIRE_NO_THROW(algo->learnModel(*model, training_vec, 1));
 
 
-  RealVector<double> weights_expected = toRealVector({0.1933,0.000,0.5528,0.0482,0.0113,
-                                                  0.0005, 0.1939, 0.00001, 0.000, 0.000});
+  RealVector<double> weights_expected = toRealVector({0.1933,1.4974e-08 ,0.5528,0.0482,0.0113,
+                                                  0.0005, 0.1939, 0.00001, 3.0684e-09, 2.7300e-08});
   vector<RealVector<double>> means_expected =
   {
     toRealVector({0.0835, -0.1022, -1.1378}),
     toRealVector({0.0829, -0.0595, -1.0238}),
     toRealVector({-0.3243, 0.5079, 0.2748}),
-    toRealVector({0.0156, 0.2340, 0.2748}),
+    toRealVector({0.0156, 0.2340, 0.1553}),
     toRealVector({-0.0973, 0.0192, 1.1079}),
     toRealVector({0.0277, -0.0910, -0.1318}),
     toRealVector({0.0141, 0.3529, -0.2514}),
@@ -179,8 +192,9 @@ BOOST_AUTO_TEST_CASE( prepareCorrectFirstIterationOfLearningIfModelInitialatedAs
 
   checkWeights(*model, weights_expected);
   checkMeans(*model, means_expected);
-  /*checkCovariances(*model, diag_cov_expected);
-  */
+  //checkCovariances(*model, diag_cov_expected);
+
+  BOOST_CHECK_GE(model->countLikehoodWithWeight(training_vec[0]), previous_lk);
 }
 
 /*

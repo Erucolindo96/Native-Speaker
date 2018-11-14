@@ -85,7 +85,7 @@ double ExpectationMaximalizationAlgo::countOnePropability(const GmmModel &model,
                                                         uint32_t feature_idx, uint32_t distrib_idx)
 {
   const Feature& current = feature_vec[feature_idx];
-  double ret = 0;//model.getDistribWeight(distrib_idx);
+  double ret = 0;
   ret = model.countLikehoodWithWeight(current, distrib_idx);
   ret /= model.countLikehoodWithWeight(current);
   return ret;
@@ -115,8 +115,11 @@ void ExpectationMaximalizationAlgo::performOneIteration(GmmModel &model,
 
 double ExpectationMaximalizationAlgo::countWeight(uint32_t distrib_idx)const
 {
-  double new_weight = sumPosterioriByFeatures(distrib_idx);
-  new_weight /= sumPosterioriMatrix();
+  double new_weight = sumPosterioriByFeatures(distrib_idx),
+      sum_posteriori = sumPosterioriMatrix();
+  if(isinf(1/sum_posteriori))//zapobieżenie dzielenia przez zero
+    sum_posteriori = FLT_EPSILON;
+  new_weight /= sum_posteriori;
   return new_weight;
 }
 
