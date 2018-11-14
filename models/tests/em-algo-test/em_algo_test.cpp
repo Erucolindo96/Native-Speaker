@@ -241,6 +241,17 @@ BOOST_AUTO_TEST_CASE( prepareCorrectSecondIterationOfLearningIfModelInitialatedA
 
 }
 
+BOOST_AUTO_TEST_CASE(gainLikehoodIfDataInInitModelAreRandom)
+{
+  const uint32_t DISTRIB_CNT_LOCAL = 50, ITERATIONS = 100;
+  Feature &test_f = training_vec[1];
+  DiagonalModel local_model(DISTRIB_CNT_LOCAL, FEATURE_SIZE );
+  double prev_lk = local_model.countLikehoodWithWeight(test_f);
+  algo->learnModel(local_model, training_vec, ITERATIONS);
+  BOOST_CHECK_GE(local_model.countLikehoodWithWeight(test_f), prev_lk);
+
+
+}
 
 BOOST_AUTO_TEST_SUITE_END()//iterations_of_em_algo
 

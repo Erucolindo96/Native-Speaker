@@ -176,6 +176,7 @@ RealVector<double> ExpectationMaximalizationAlgo::countDiagonalCovariance(uint32
     temp*= act_posteriori;
     ret += utils::diag(temp);
   }
+  avoidZeroInCovariance(ret);
   double sum_posteriori = avoidZeroDivide(sumPosterioriByFeatures(distrib_idx));
   ret *= 1/sum_posteriori;
   return ret;
@@ -192,6 +193,17 @@ double ExpectationMaximalizationAlgo::avoidZeroDivide(double dividor)const
   if(isinf(1/dividor))//zapobieżenie dzielenia przez zero
     dividor = DBL_EPSILON;
   return dividor;
+}
+
+void ExpectationMaximalizationAlgo::avoidZeroInCovariance(alize::RealVector<double> &cov)const
+{
+  for(uint32_t i = 0; i< cov.size(); ++i)
+  {
+    if(cov[i] == 0.0)
+    {
+      cov[i] = DBL_EPSILON;
+    }
+  }
 }
 
 

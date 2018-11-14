@@ -5,8 +5,10 @@ CONFIG += testcase
 
 TARGET = em-algo-test
 
-SOURCES = em_algo_test.cpp
-INCLUDEPATH += ../../..
+SOURCES = em_algo_test.cpp \
+
+INCLUDEPATH += ../../.. \
+            ../../../../../alize-core/include
 LIBS += -L../../../common -lcommon
 
 SOURCES += ../../diagonal_model.cpp \
@@ -15,8 +17,9 @@ SOURCES += ../../diagonal_model.cpp \
 #    ../mainwindow.cpp
 
 HEADERS  +=  ../../diagonal_model.hpp \
-    ../../gmmmodel.hpp \
-    ../../learning_algo.hpp \
 
 DISTFILES += \
-    config
+    config \
+    ../../../../../alize-core/src/Makefile \
+    ../../../../../alize-core/src/Makefile.am \
+    ../../../../../alize-core/src/Makefile.in

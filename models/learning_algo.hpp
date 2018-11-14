@@ -61,7 +61,7 @@ protected:
                                                 const std::vector<alize::Feature> &feature_vec,
                                                 const alize::RealVector<double> &new_mean)const;
   double avoidZeroDivide(double dividor)const;
-
+  void avoidZeroInCovariance(alize::RealVector<double> &cov)const;
 public:
   ExpectationMaximalizationAlgo()=default;
   ExpectationMaximalizationAlgo(const ExpectationMaximalizationAlgo &other)=default;

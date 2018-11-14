@@ -196,6 +196,19 @@ BOOST_AUTO_TEST_CASE(getCorrectCovarianceIfIndexOfDistributionIsCorrect)
 
 }
 
+BOOST_AUTO_TEST_CASE(getRandomInitDataIfModelIsntSetManually)
+{
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  BOOST_REQUIRE_EQUAL(model.getDistribCount(), DISTRIB_CNT);
+  BOOST_REQUIRE_EQUAL(model.getFeatureVectorSize(), FEATURE_SIZE);
+  for(uint32_t i = 0; i< DISTRIB_CNT; ++i)
+  {
+    BOOST_CHECK_NO_THROW(model.getDistribWeight(i));
+    BOOST_CHECK_NO_THROW(model.getDistribMean(i));
+    BOOST_CHECK_NO_THROW(model.getDistribCovariance(i));
+  }
+}
+
 BOOST_AUTO_TEST_SUITE_END()
 
 
