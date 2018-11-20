@@ -4,6 +4,7 @@
 #include<string>
 #include<memory>
 #include<vector>
+#include"exceptions/simple_exceptions.hpp"
 
 
 
@@ -14,45 +15,27 @@
  */
 class FeatureReader
 {
+
+protected:
+  std::string dir_;
+  alize::Config createConfig(const std::string & file_ext)const;
+
 public:
-  FeatureReader();
-  FeatureReader(const std::string &feature_dir = "");
-  FeatureReader(const FeatureReader &other);
-  FeatureReader& operator=(const FeatureReader &other);
-  FeatureReader(FeatureReader &&other);
-  FeatureReader& operator=(FeatureReader &&other);
+  FeatureReader() = default;
+  explicit FeatureReader(const std::string &feature_dir);
+  FeatureReader(const FeatureReader &other) = default;
+  FeatureReader& operator=(const FeatureReader &other) = default;
+  FeatureReader(FeatureReader &&other) = default;
+  FeatureReader& operator=(FeatureReader &&other) = default;
 
   std::string getFeatureDir()const;
   void setFeatureDir(const std::string &dir);
 
-//  uint32_t getFeatureSize()const;
-//  void setFeatureCount()const;
-
   virtual std::vector<alize::Feature> readFile(const std::string &file_name,
-                                               const std::string &extention)const = 0;
+                                               const std::string &extention)const;
   virtual double getSampleRate(const std::string &file_name,
-                               const std::string &extention)const = 0;
+                               const std::string &extention)const;
 
 
 };
-
-class FeatureReaderLinux: public FeatureReader
-{
-public:
-  FeatureReaderLinux();
-  FeatureReaderLinux(const std::string &feature_dir);
-  FeatureReaderLinux(const FeatureReaderLinux &other);
-  FeatureReaderLinux& operator=(const FeatureReaderLinux &other);
-  FeatureReaderLinux(FeatureReaderLinux &&other);
-  FeatureReaderLinux& operator=(FeatureReaderLinux &&other);
-
-
-  std::vector<alize::Feature> readFile(const std::string &file_name,
-                                       const std::string &extention)const override;
-  double getSampleRate(const std::string &file_name,
-                       const std::string &extention)const override;
-
-
-};
-
 #endif // FEATUREREADER_HPP

@@ -11,8 +11,8 @@
 #include<iostream>
 #include"utils/utils.hpp"
 #include<memory>
-
 #include"exceptions/simple_exceptions.hpp"
+#include<fstream>
 
 using namespace boost;
 using namespace std;
@@ -23,76 +23,99 @@ static const uint32_t DISTRIB_CNT = 100, FEATURE_SIZE = 12;
 static const double EPSILON = 0.0001;
 
 
+bool exist(const std::string &filename)
+{
+  ifstream f(filename);
+  return f.good();
+}
 
-BOOST_AUTO_TEST_SUITE( FeatureReaderLinuxTests )
+
+BOOST_AUTO_TEST_SUITE( FeatureReaderTests )
 
 BOOST_AUTO_TEST_CASE( getCorrectFeatureReadDirectoryIfThatWasSetInSetter )
 {
-  FeatureReaderLinux reader;
+  FeatureReader reader;
   BOOST_REQUIRE_NO_THROW(reader.setFeatureDir("folder"));
   BOOST_CHECK_EQUAL(reader.getFeatureDir(), "folder");
 }
 
 BOOST_AUTO_TEST_CASE(contructCorrectCopyOfreaderIfFeatureDirWasSet)
 {
-  FeatureReaderLinux reader;
+  FeatureReader reader;
   reader.setFeatureDir("/sciezka/folderu");
-  FeatureReaderLinux copy = reader;
+  FeatureReader copy = reader;
   BOOST_CHECK_EQUAL(copy.getFeatureDir(), reader.getFeatureDir());
 }
 
 BOOST_AUTO_TEST_CASE(correctAssignOfreaderIfFeatureDirWasSet)
 {
-  FeatureReaderLinux reader;
+  FeatureReader reader;
   reader.setFeatureDir("/sciezka/folderu");
-  FeatureReaderLinux copy;
+  FeatureReader copy;
   BOOST_REQUIRE_NO_THROW(copy = reader);
   BOOST_CHECK_EQUAL(copy.getFeatureDir(), reader.getFeatureDir());
 }
 
 BOOST_AUTO_TEST_CASE(correctMoveContructionOfreaderIfFeatureDirWasSet)
 {
-  FeatureReaderLinux reader;
+  FeatureReader reader;
   reader.setFeatureDir("/sciezka/folderu");
-  FeatureReaderLinux copy(std::move(reader));
+  FeatureReader copy(std::move(reader));
   BOOST_CHECK_EQUAL(copy.getFeatureDir(), "/sciezka/folderu");
 }
 
 
 BOOST_AUTO_TEST_CASE(correctMoveAssignmentOfreaderIfFeatureDirWasSet)
 {
-  FeatureReaderLinux reader;
+  FeatureReader reader;
   reader.setFeatureDir("/sciezka/folderu");
-  FeatureReaderLinux copy;
+  FeatureReader copy;
   BOOST_REQUIRE_NO_THROW(copy = std::move(reader));
   BOOST_CHECK_EQUAL(copy.getFeatureDir(), "/sciezka/folderu");
 }
 
 BOOST_AUTO_TEST_CASE(throwFileNotFoundExceptionWhileReadingFeatureVectIfFeatureDirArentExist)
 {
-  FeatureReaderLinux reader;
+  FeatureReader reader;
   reader.setFeatureDir("nope_folder");
 
-  BOOST_CHECK_THROW(reader.readFile("nope_file", "nope_ext"), FileNotFound);
+  BOOST_CHECK_THROW(reader.readFile("testing_feature", ".mfcc"), FileNotFound);
 
 }
 
 BOOST_AUTO_TEST_CASE(throwFileNotFoundExceptionWhileReadingSampleRateIfFeatureDirArentExist)
 {
-  FeatureReaderLinux reader;
+  FeatureReader reader;
   reader.setFeatureDir("nope_folder");
 
-  BOOST_CHECK_THROW(reader.getSampleRate("nope_file", "nope_ext"), FileNotFound);
+  BOOST_CHECK_THROW(reader.getSampleRate("testing_feature", ".mfcc"), FileNotFound);
+
+}
+
+BOOST_AUTO_TEST_CASE(throwFileNotFoundExceptionWhileReadingFeatureVectIfFeatureFileArentExist)
+{
+  FeatureReader reader;
+  reader.setFeatureDir("./");
+
+  BOOST_CHECK_THROW(reader.readFile("nope_file", ".mfcc"), FileNotFound);
+
+}
+
+BOOST_AUTO_TEST_CASE(throwFileNotFoundExceptionWhileReadingSampleRateIfFeatureFileArentExist)
+{
+  FeatureReader reader;
+  reader.setFeatureDir("./");
+
+  BOOST_CHECK_THROW(reader.getSampleRate("nope_file", ".mfcc"), FileNotFound);
 
 }
 
 BOOST_AUTO_TEST_CASE(readCorrectFeatureVectFromFileIfDirExistWithSavedFeature)
 {
   const string FILE = "testing_feature", EXT = ".mfcc";
-  bool not_exist = system(("cat "+FILE +EXT).c_str());
-  BOOST_REQUIRE(!not_exist);
+  BOOST_REQUIRE(exist(FILE + EXT));
 
-  FeatureReaderLinux reader;
+  FeatureReader reader;
   reader.setFeatureDir("./");
 
   vector<Feature> feature_vec;
@@ -102,7 +125,7 @@ BOOST_AUTO_TEST_CASE(readCorrectFeatureVectFromFileIfDirExistWithSavedFeature)
                            -0.652852, -0.155907, -0.557129, -0.187439,
                            -0.197170, -0.104965, -0.327201, 0.230283});
 
-  BOOST_REQUIRE_EQUAL(feature_vec.size(), expected_feature_zero.size());
+  BOOST_REQUIRE_EQUAL(feature_vec[0].getVectSize(), expected_feature_zero.size());
   for(uint32_t i = 0 ;i< FEATURE_SIZE; ++i)
   {
     BOOST_CHECK_SMALL(feature_vec[0][i] - expected_feature_zero[i], EPSILON);
@@ -112,10 +135,10 @@ BOOST_AUTO_TEST_CASE(readCorrectFeatureVectFromFileIfDirExistWithSavedFeature)
 BOOST_AUTO_TEST_CASE(readCorrectFeatureSampleRateFromFileIfDirExistWithSavedFeature)
 {
   const string FILE = "testing_feature", EXT = ".mfcc";
-  bool not_exist = system(("cat "+FILE +EXT).c_str());
-  BOOST_REQUIRE(!not_exist);
 
-  FeatureReaderLinux reader;
+  BOOST_REQUIRE(exist(FILE + EXT));
+
+  FeatureReader reader;
   reader.setFeatureDir("./");
   const double SAMPLE_RATE_EXPECTED = 100;
   double sample_rate = 0;
