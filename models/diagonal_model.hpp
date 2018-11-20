@@ -21,7 +21,7 @@ public:
   void setDistribCovariance(uint32_t distrib, const alize::RealVector<double> &diagonal_covariance) override;
   void setDistribCovariance(uint32_t distrib, const alize::DoubleMatrix &covariance) override;
 
-  alize::RealVector<double> getDistribCovariance(uint32_t distrib)const;
+  alize::RealVector<double> getDistribCovariance(uint32_t distrib)const override;
 
 
 

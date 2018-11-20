@@ -3,13 +3,8 @@
 #include<alize/alize.h>
 #include<vector>
 #include<stdexcept>
+#include"exceptions/simple_exceptions.hpp"
 
-class NotSquareMatrix: public std::invalid_argument
-{
-public:
-  NotSquareMatrix(std::string &&msg) : std::invalid_argument(msg)
-  {}
-};
 
 namespace utils
 {
@@ -19,6 +14,8 @@ namespace utils
   alize::Feature toFeature(const std::vector<double> &vec);
 
   alize::RealVector<double> diag(const alize::Matrix<double> &m);
+
+
 }//namespace utils
 
 

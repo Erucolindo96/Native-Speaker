@@ -1,5 +1,5 @@
-﻿#include "mainwindow.hpp"
-#include <QApplication>
+﻿//#include "mainwindow.hpp"
+//#include <QApplication>
 #include<alize/alize.h>
 using namespace std;
 using namespace alize;
@@ -10,32 +10,43 @@ int main(int argc, char *argv[])
     //QApplication a(argc, argv);
     //MainWindow w;
     //w.show();
-    alize::Config cfn;
-//    cfn.load("config");
-//    std::cout << cfn.existsParam("vectSize")<<std::endl;
-//    std::cout << cfn.getParam("vectSize")<<std::endl;
+    alize::Config cfn, cfn_s;
+    cfn.setParam("mixtureFilesPath", "../");
+    cfn.setParam("saveMixtureFileFormat", "XML");
+    cfn.setParam("saveMixtureFileExtension", ".mixture");
 
-    cfn.setParam("vectSize", "10");
-    std::cout << cfn.existsParam("vectSize")<<std::endl;
-    std::cout << cfn.getParam("vectSize")<<std::endl;
+    cfn.setParam("loadMixtureFileFormat", "XML");
+    cfn.setParam("loadMixtureFileExtension", ".mixture");
 
-    cfn.setParam("Dupa", "true");
-    std::cout << cfn.existsParam("Dupa")<<std::endl;
-    std::cout << cfn.getParam("Dupa")<<std::endl;
+    cfn.setParam("saveMixtureServerFileFormat", "XML");
+    cfn.setParam("saveMixtureServerFileExtension", ".mixture_server");
+    cfn.setParam("loadMixtureFileBigEndian", "true");
 
-    cfn.setParam("vectSize", "10");
+    cfn.setParam("vectSize", "12");
     cfn.setParam("mixtureDistribCount", "512");
     cfn.setParam("maxLLK", "100");
     cfn.setParam("minLLK", "-100");
     cfn.setParam("featureServerMemAlloc", "1000000");
 
-    MixtureServer s(cfn);
-    s.createMixture(512, DistribType_GD);
-    cout<< s.getMixture(0).getDistribCount()<<endl;
-    s.getMixture(0).weight(511) = 1.0;
-    cout<<s.getMixture(0).weight(511)<<endl ;
-    s.getMixture(0).weight(511) = -1;
-    cout<<s.getMixture(0).weight(511)<<endl ;
+    cfn.setParam("loadFeatureFileExtension", ".mfcc");
+    cfn.setParam("featureFilesPath", "./");
+    try{
+    FeatureFileReaderSPro4 reader("test", cfn);
+    Feature f(cfn);
+    reader.readFeature(f);
+    for(uint32_t i=0; i< 12; ++i)
+    {
+      cout<<f[i]<<endl;
+    }
+    cout<<"sample rate:"<<reader.getSampleRate()<<endl;
+    cout<<"feature cnt:"<<reader.getFeatureCount()<<endl;
+    }
+    catch(alize::InvalidDataException e)
+    {
+      cout<<e.toString()<<endl;
+    }
+
+    cout<<"elo"<<endl;
     return 0;
     //return a.exec();
 }

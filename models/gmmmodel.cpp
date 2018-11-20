@@ -61,6 +61,12 @@ std::string GmmModel::getName()const
   return std::string(s_->getServerName().c_str());
 }
 
+const std::unique_ptr<alize::MixtureServer>& GmmModel::getMixtureServerRef()const
+{
+  return s_;
+}
+
+
 
 double GmmModel::countLikehoodWithWeight(const alize::Feature &feature)const
 {

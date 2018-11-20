@@ -7,15 +7,10 @@
 #include"utils/utils.hpp"
 #include <stdexcept>
 #include<cfloat>
+#include"exceptions/simple_exceptions.hpp"
 using namespace std;
 
 class GmmModel;
-class LearningModelWithoutFeaturesException: public invalid_argument
-{
-public:
-  explicit LearningModelWithoutFeaturesException(const std::string &msg): invalid_argument(msg)
-  {}
-};
 
 class LearningAlgo {
 

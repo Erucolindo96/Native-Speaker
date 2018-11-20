@@ -6,20 +6,7 @@
 #include <stdexcept>
 #include <vector>
 #include "models/learning_algo.hpp"
-
-class IndexOutOfBounds : std::out_of_range
-{
-public:
-  explicit IndexOutOfBounds(std::string &&msg) : out_of_range(msg)
-  {}
-};
-
-class InvalidFeatureVectorSize: std::invalid_argument
-{
-public :
-  explicit InvalidFeatureVectorSize(std::string &&msg):invalid_argument(msg)
-  {}
-};
+#include"exceptions/simple_exceptions.hpp"
 
 class GmmModel
 {
@@ -50,6 +37,8 @@ public:
   void setName(const std::string &name);
   std::string getName()const;
 
+  const std::unique_ptr<alize::MixtureServer>& getMixtureServerRef()const;
+
   double countLikehoodWithWeight(const alize::Feature &arg)const;
   double countLikehoodWithWeight(const alize::Feature &arg, uint32_t distrib_idx)const;
 
@@ -62,6 +51,9 @@ public:
 
   virtual void setDistribCovariance(uint32_t distrib, const alize::RealVector<double> &diagonal_covariance) = 0;
   virtual void setDistribCovariance(uint32_t distrib, const alize::DoubleMatrix &covariance) = 0;
+
+  virtual alize::RealVector<double> getDistribCovariance(uint32_t distrib)const = 0;
+
 
   uint32_t getFeatureVectorSize()const;
 

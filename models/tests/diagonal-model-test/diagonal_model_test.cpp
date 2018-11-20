@@ -10,6 +10,7 @@
 #include <typeinfo>
 #include <random>
 #include<iostream>
+#include"exceptions/simple_exceptions.hpp"
 
 using namespace boost;
 using namespace std;
