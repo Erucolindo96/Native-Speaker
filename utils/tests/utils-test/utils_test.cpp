@@ -1,15 +1,7 @@
-﻿#ifndef DIAGONAL_TEST
-#define DIAGONAL_TEST
+﻿
 
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE utils_test
-#include<boost/test/unit_test.hpp>
-#include<alize/alize.h>
-#include <typeinfo>
-#include <random>
-#include<iostream>
-#include "utils/utils.hpp"
-#include"exceptions/simple_exceptions.hpp"
+
+#include"utils/tests/utils-test/utils_test.hpp"
 using namespace boost;
 using namespace std;
 using namespace alize;
@@ -98,4 +90,4 @@ BOOST_AUTO_TEST_SUITE_END()
 
 
 
-#endif//DIAGONAL_TEST
+

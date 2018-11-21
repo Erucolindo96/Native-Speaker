@@ -1,18 +1,4 @@
-﻿#ifndef DIAGONAL_TEST
-#define DIAGONAL_TEST
-
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE feature_readers_tests
-#include<boost/test/unit_test.hpp>
-#include"features/FeatureReader.hpp"
-#include"models/diagonal_model.hpp"
-#include <typeinfo>
-#include <random>
-#include<iostream>
-#include"utils/utils.hpp"
-#include<memory>
-#include"exceptions/simple_exceptions.hpp"
-#include<fstream>
+﻿#include"features/tests/feature-readers-tests/feature_readers_test.hpp"
 
 using namespace boost;
 using namespace std;
@@ -150,15 +136,3 @@ BOOST_AUTO_TEST_CASE(readCorrectFeatureSampleRateFromFileIfDirExistWithSavedFeat
 
 BOOST_AUTO_TEST_SUITE_END()
 
-
-
-
-
-
-
-
-
-
-
-
-#endif

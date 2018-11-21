@@ -1,18 +1,11 @@
-﻿#ifndef DIAGONAL_TEST
-#define DIAGONAL_TEST
+﻿
+//#include<boost/test/test_tools.hpp>
+//#include<boost/test/unit_test.hpp>
+//#include<alize.h>
 
-#define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE diagonal_model_test
-#include<boost/test/unit_test.hpp>
-#include<alize/alize.h>
-#include"models/diagonal_model.hpp"
-#include"models/learning_algo.hpp"
-#include <typeinfo>
-#include <random>
-#include<iostream>
-#include"exceptions/simple_exceptions.hpp"
-
+#include"diagonal_model_test.hpp"
 using namespace boost;
+using namespace boost::unit_test;
 using namespace std;
 using namespace alize;
 
@@ -24,10 +17,21 @@ const double EPS = 0.00001;
 static vector<Feature> training_vec(FEATURE_CNT, Feature(FEATURE_SIZE));
 
 
-BOOST_AUTO_TEST_SUITE( SettersAndGettersTest )
 
+/*
+boost::unit_test::test_suite* createDiagonalModelTest()
+{
+  boost::unit_test::test_suite* test = BOOST_TEST_SUITE("Diagonal Model Test");
+//  test->add(BOOST_TEST_CASE(&getCorrectFeaturesIfTheyWasSet));
+  test->add(BOOST_TEST_CASE(&getCorrectFeatureVectorIfItWasSet));
+  test->add(BOOST_TEST_CASE(&constructModelWithName));
 
-BOOST_AUTO_TEST_CASE( getCorrectFeaturesIfTheyWasSet )
+  return test;
+}
+*/
+BOOST_AUTO_TEST_SUITE(DiagonalModelTest)
+
+BOOST_AUTO_TEST_CASE( getCorrectFeaturesIfTheyWasSet)
 {
     DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
     const uint32_t F_CNT = 5;
@@ -56,7 +60,8 @@ BOOST_AUTO_TEST_CASE( getCorrectFeaturesIfTheyWasSet )
 
 }
 
-BOOST_AUTO_TEST_CASE( getCorrectFeatureVectorIfItWasSet )
+
+BOOST_AUTO_TEST_CASE( getCorrectFeatureVectorIfItWasSet)
 {
   DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   const uint32_t F_CNT = 5;
@@ -258,11 +263,11 @@ BOOST_AUTO_TEST_CASE(getRandomInitDataIfModelIsntSetManually)
   }
 }
 
-BOOST_AUTO_TEST_SUITE_END()
+//BOOST_AUTO_TEST_SUITE_END()
 
 
 
-BOOST_AUTO_TEST_SUITE( CountingLikehood )
+//BOOST_AUTO_TEST_SUITE( CountingLikehood )
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInCountLikehood)
 {
@@ -364,5 +369,3 @@ BOOST_AUTO_TEST_SUITE_END()
 
 
 
-
-#endif

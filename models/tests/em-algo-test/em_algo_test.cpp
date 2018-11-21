@@ -1,8 +1,8 @@
-﻿#ifndef DIAGONAL_TEST
-#define DIAGONAL_TEST
-
+﻿//#ifndef DIAGONAL_TEST
+//#define DIAGONAL_TEST
+/*
 #define BOOST_TEST_DYN_LINK
-#define BOOST_TEST_MODULE em_algo_test
+//#define BOOST_TEST_MODULE em_algo_test
 #include<boost/test/unit_test.hpp>
 #include "models/learning_algo.hpp"
 #include "models/diagonal_model.hpp"
@@ -11,6 +11,8 @@
 #include<iostream>
 #include"utils/utils.hpp"
 #include"exceptions/simple_exceptions.hpp"
+*/
+#include"models/tests/em-algo-test/em_algo_test.hpp"
 
 using namespace boost;
 using namespace std;
@@ -259,4 +261,4 @@ BOOST_AUTO_TEST_SUITE_END()//iterations_of_em_algo
 
 
 
-#endif
+//#endif

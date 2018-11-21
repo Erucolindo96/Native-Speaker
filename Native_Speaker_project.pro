@@ -7,16 +7,7 @@
 
 TEMPLATE = subdirs
 SUBDIRS = common main \
-      models/tests/diagonal-model-test \
-      models/tests/em-algo-test \
-      utils/tests/utils-test \
-      dao/tests/dao-test \
-      features/tests/feature-readers-tests \
+      tests/unit-tests.pro
 
 
-
-models/tests/em-algo-test.depends = common
-utils/tests/utils-test.depends = common
-models/tests/diagonal-model-test.depends = common
-main.depends = common
-dao/tests/dao-test.depends = common
+tests/unit-tests.pro.depends = common

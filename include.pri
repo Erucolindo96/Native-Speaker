@@ -11,7 +11,6 @@ QMAKE_CXXFLAGS += -std=c++14
 
 HEADERS += \
     $$PWD/utils/utils.hpp \
-    $$PWD/models/diagonal_model.hpp \
     $$PWD/models/gmmmodel.hpp \
     $$PWD/models/learning_algo.hpp \
     $$PWD/dao/ModelDao.hpp \
@@ -100,7 +99,9 @@ HEADERS += \
     $$PWD/external-libs/include/XmlParser.h \
     $$PWD/dao/FileModelDao.hpp \
     $$PWD/features/FeatureReader.hpp \
-    $$PWD/exceptions/simple_exceptions.hpp
+    $$PWD/exceptions/simple_exceptions.hpp \
+    $$PWD/models/diagonal_model.hpp \
+    $$PWD/models/verificator.hpp
 
 SOURCES += \
     $$PWD/utils/utils.cpp \
@@ -108,7 +109,8 @@ SOURCES += \
     $$PWD/models/gmmmodel.cpp \
     $$PWD/models/learning_algo.cpp \
     $$PWD/dao/FileModelDao.cpp \
-    $$PWD/features/FeatureReader.cpp
+    $$PWD/features/FeatureReader.cpp \
+    $$PWD/models/verificator.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a
