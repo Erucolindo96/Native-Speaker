@@ -27,13 +27,9 @@ bool Verificator::verifyModel(const GmmModel &verified,
     throw VerifyModelWithoutFeatures(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
                                      + std::string(" - try to verify model with empty Feature Vector"));
   }
-  const uint32_t FEATURE_CNT = record_features.size();
-  double sum_lk_model = 0, sum_lk_ubm = 0;
-  for(uint32_t i = 0; i < FEATURE_CNT; ++i)
-  {
-    sum_lk_model += verified.countLikehoodWithWeight(record_features[i]);
-    sum_lk_ubm +=ubm_model.countLikehoodWithWeight(record_features[i]);
-  }
+  double sum_lk_model = verified.countLikehoodWithWeight(record_features),
+      sum_lk_ubm = ubm_model.countLikehoodWithWeight(record_features);
+
   double llk_model = log(sum_lk_model), llk_ubm = log(sum_lk_ubm);
   if(llk_model - llk_ubm >= threshold_)
   {

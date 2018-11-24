@@ -107,8 +107,8 @@ double GmmModel::countLikehoodWithWeight(const alize::Feature &arg, uint32_t dis
   }
 
 }
-/*
-double countLikehoodWithWeight(const std::vector<alize::Feature> &arg)const
+
+double GmmModel::countLikehoodWithWeight(const std::vector<alize::Feature> &arg)const
 {
   double sum = 0;
   for(uint32_t i = 0; i< arg.size(); ++i)
@@ -117,7 +117,7 @@ double countLikehoodWithWeight(const std::vector<alize::Feature> &arg)const
   }
   return sum;
 }
-*/
+
 uint32_t GmmModel::getDistribCount()const
 {
   return s_->getMixture(MIXTURE_IDX).getDistribCount();

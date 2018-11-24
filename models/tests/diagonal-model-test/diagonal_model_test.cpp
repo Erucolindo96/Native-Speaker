@@ -286,8 +286,11 @@ BOOST_AUTO_TEST_CASE(throwInvalidFeatureSizeIfFeatureSizeIsNotEqualWithModelVect
     model.setDistribMean(i, mean);
     model.setDistribCovariance(i, cov);
   }
+  std::vector<Feature> f_vec( FEATURE_CNT, f);
+
   BOOST_CHECK_THROW(model.countLikehoodWithWeight(f, DISTRIB_CNT - 1), InvalidFeatureSize);
   BOOST_CHECK_THROW(model.countLikehoodWithWeight(f), InvalidFeatureSize);
+  BOOST_CHECK_THROW(model.countLikehoodWithWeight(f_vec), InvalidFeatureSize);
 
 }
 
@@ -357,6 +360,7 @@ BOOST_AUTO_TEST_CASE(countCorrectLikehoodAllDistribIfParametersAreCorrect)
   DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   RealVector<double> mean(FEATURE_SIZE, FEATURE_SIZE), cov(FEATURE_SIZE, FEATURE_SIZE);
   Feature f(FEATURE_SIZE);
+
   for(uint32_t i=0; i< FEATURE_SIZE; ++i)
   {
     mean[i] = 0;
@@ -384,6 +388,9 @@ BOOST_AUTO_TEST_CASE(countCorrectLikehoodAllDistribIfParametersAreCorrect)
   double summary_likehood = likehood_one_distrib * WEIGHT * DISTRIB_CNT;
   BOOST_CHECK_CLOSE(model.countLikehoodWithWeight(f), summary_likehood , EPS);
 
+  std::vector<Feature> f_vec(FEATURE_CNT, f);
+  double lk_for_vector = summary_likehood * FEATURE_CNT;
+  BOOST_CHECK_CLOSE(model.countLikehoodWithWeight(f_vec), lk_for_vector, EPS);
 }
 
 
