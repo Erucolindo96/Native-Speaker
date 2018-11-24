@@ -6,15 +6,4 @@
 #include"utils/tests/utils-test/utils_test.hpp"
 #include"features/tests/feature-readers-tests/feature_readers_test.hpp"
 //#include"dao/tests/dao-test/dao_test.hpp"
-
-
-//test_suite* init_unit_test_suite( int /*argc*/, char* /*argv*/[] )
-//{
-//  if( framework::master_test_suite().argc > 1 )
-//    return 0;
-
-  //framework::master_test_suite().
-  //  add( createDiagonalModelTest() );
-
-//  return 0;
-//}
+#include"models/tests/verificator-test/verificator_test.hpp"

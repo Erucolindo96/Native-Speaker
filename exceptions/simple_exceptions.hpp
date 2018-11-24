@@ -9,19 +9,29 @@ public:
   {}
 };
 
-class InvalidFeatureVectorSize: std::invalid_argument
+class InvalidFeatureSize: std::invalid_argument
 {
 public :
-  explicit InvalidFeatureVectorSize(std::string &&msg):invalid_argument(msg)
+  explicit InvalidFeatureSize(std::string &&msg):invalid_argument(msg)
   {}
 };
 
-class LearningModelWithoutFeaturesException: public invalid_argument
+class LearningModelWithoutFeatures: public invalid_argument
 {
 public:
-  explicit LearningModelWithoutFeaturesException(const std::string &msg): invalid_argument(msg)
+  explicit LearningModelWithoutFeatures(const std::string &msg): invalid_argument(msg)
   {}
 };
+
+class VerifyModelWithoutFeatures: public invalid_argument
+{
+public:
+  explicit VerifyModelWithoutFeatures(const std::string &msg): invalid_argument(msg)
+  {}
+};
+
+
+
 
 class NotSquareMatrix: public std::invalid_argument
 {

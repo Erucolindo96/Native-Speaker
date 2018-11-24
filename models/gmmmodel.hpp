@@ -39,8 +39,9 @@ public:
 
   const std::unique_ptr<alize::MixtureServer>& getMixtureServerRef()const;
 
-  double countLikehoodWithWeight(const alize::Feature &arg)const;
-  double countLikehoodWithWeight(const alize::Feature &arg, uint32_t distrib_idx)const;
+  virtual double countLikehoodWithWeight(const alize::Feature &arg)const;
+  virtual double countLikehoodWithWeight(const alize::Feature &arg, uint32_t distrib_idx)const;
+//  virtual double countLikehoodWithWeight(const std::vector<alize::Feature> &arg)const;
 
   uint32_t getDistribCount()const;
   double getDistribWeight(uint32_t distrib_idx)const;

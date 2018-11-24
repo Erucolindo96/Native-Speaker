@@ -217,7 +217,7 @@ void ExpectationMaximalizationAlgo::learnModel(GmmModel &model,
 {
   if(feature_vec.empty())
   {
-    throw LearningModelWithoutFeaturesException(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+    throw LearningModelWithoutFeatures(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
                                                 + std::string(" - try to learn model empty feature vector"));
   }
 

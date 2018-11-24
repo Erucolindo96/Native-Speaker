@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfSizeOfSettedMeanIsIncorrect)
 
   DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   RealVector<double> vec(FEATURE_SIZE - 2,FEATURE_SIZE - 2);
-  BOOST_CHECK_THROW(model.setDistribMean(1, vec), InvalidFeatureVectorSize);
+  BOOST_CHECK_THROW(model.setDistribMean(1, vec), InvalidFeatureSize);
 
 }
 
@@ -227,7 +227,7 @@ BOOST_AUTO_TEST_CASE(throwExceptionIfSizeOfSettedCovarianceIsIncorrect)
   DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
 
   RealVector<double> vec(FEATURE_SIZE - 2, FEATURE_SIZE - 2);
-  BOOST_CHECK_THROW(model.setDistribCovariance(1, vec), InvalidFeatureVectorSize);
+  BOOST_CHECK_THROW(model.setDistribCovariance(1, vec), InvalidFeatureSize);
 
 }
 
@@ -268,6 +268,28 @@ BOOST_AUTO_TEST_CASE(getRandomInitDataIfModelIsntSetManually)
 
 
 //BOOST_AUTO_TEST_SUITE( CountingLikehood )
+BOOST_AUTO_TEST_CASE(throwInvalidFeatureSizeIfFeatureSizeIsNotEqualWithModelVectorSizeInCountLikehood)
+{
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  RealVector<double> mean(FEATURE_SIZE,FEATURE_SIZE), cov(FEATURE_SIZE, FEATURE_SIZE);
+  Feature f(FEATURE_SIZE + 2);
+  for(uint32_t i=0; i< FEATURE_SIZE; ++i)
+  {
+    mean[i] = 0.0;
+    cov[i] = 1.0;
+    f[i] = 0;
+  }
+  for(uint32_t i=0;i < DISTRIB_CNT; ++i)
+  {
+    model.setDistribWeight(i, 1/DISTRIB_CNT);
+    model.setDistribMean(i, mean);
+    model.setDistribCovariance(i, cov);
+  }
+  BOOST_CHECK_THROW(model.countLikehoodWithWeight(f, DISTRIB_CNT - 1), InvalidFeatureSize);
+  BOOST_CHECK_THROW(model.countLikehoodWithWeight(f), InvalidFeatureSize);
+
+}
 
 BOOST_AUTO_TEST_CASE(throwExceptionIfIndexOfDistribIsOutOfRangeInCountLikehood)
 {

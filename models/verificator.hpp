@@ -9,8 +9,8 @@ class Verificator
 protected:
   double threshold_;
 public:
-  Verificator() = default;
-  explicit Verificator(double threshold);
+//  Verificator() = default;
+  explicit Verificator(double threshold = 0.0);
   Verificator(const Verificator &other) = default;
   Verificator& operator=(const Verificator &other) = default;
   Verificator(Verificator &&other) = default;
@@ -20,7 +20,8 @@ public:
   void setThreshold(double new_threshold);
 
   bool verifyModel(const GmmModel &verified,
-                   std::vector<alize::Feature> record_features);
+                   std::vector<alize::Feature> record_features,
+                   const GmmModel &ubm_model);
 
 };
 

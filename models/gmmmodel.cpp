@@ -91,6 +91,12 @@ double GmmModel::countLikehoodWithWeight(const alize::Feature &arg, uint32_t dis
 {
   try
   {
+    if(arg.getVectSize() != FEATURE_SIZE)
+    {
+      throw InvalidFeatureSize(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                               + std::string(" - try to count likehood feature with model,"
+                                             " where feature's size's are not equal"));
+    }
     return s_->getMixture(MIXTURE_IDX).getDistrib(distrib_idx).computeLK(arg) *
       getDistribWeight(distrib_idx);
 
@@ -99,7 +105,19 @@ double GmmModel::countLikehoodWithWeight(const alize::Feature &arg, uint32_t dis
   {
     throw IndexOutOfBounds(e.toString().c_str());
   }
+
 }
+/*
+double countLikehoodWithWeight(const std::vector<alize::Feature> &arg)const
+{
+  double sum = 0;
+  for(uint32_t i = 0; i< arg.size(); ++i)
+  {
+    sum += countLikehoodWithWeight(arg[i]);
+  }
+  return sum;
+}
+*/
 uint32_t GmmModel::getDistribCount()const
 {
   return s_->getMixture(MIXTURE_IDX).getDistribCount();
@@ -133,7 +151,7 @@ void GmmModel::setDistribWeight(uint32_t distrib, double new_weight)
 void GmmModel::setDistribMean(uint32_t distrib, const alize::RealVector<double> &new_mean)
 {
   if(new_mean.size() != getFeatureVectorSize())
-    throw InvalidFeatureVectorSize("File:" + std::string(__FILE__) + " Line :" + std::to_string(__LINE__) +
+    throw InvalidFeatureSize("File:" + std::string(__FILE__) + " Line :" + std::to_string(__LINE__) +
                                    ": size of new_mean vector is not equal \
                                     to set in configuration of model");
   try

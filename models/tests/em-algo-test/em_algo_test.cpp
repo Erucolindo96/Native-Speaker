@@ -146,10 +146,10 @@ BOOST_AUTO_TEST_SUITE_END()//initialization
 
 BOOST_AUTO_TEST_SUITE( invalid_use )
 
-BOOST_AUTO_TEST_CASE( throwLearningModelWithoutFeaturesExceptionIfTrainingVecInEmpty )
+BOOST_AUTO_TEST_CASE( throwLearningModelWithoutFeaturesIfTrainingVecInEmpty )
 {
   std::vector<Feature> empty_vec;
-  BOOST_CHECK_THROW(algo->learnModel(*model, empty_vec, 10), LearningModelWithoutFeaturesException);
+  BOOST_CHECK_THROW(algo->learnModel(*model, empty_vec, 10), LearningModelWithoutFeatures);
 }
 
 BOOST_AUTO_TEST_SUITE_END()//invalid_use

@@ -25,7 +25,7 @@ DiagonalModel::DiagonalModel(DiagonalModel &&other):GmmModel(std::move(other))
 void DiagonalModel::setDistribCovariance(uint32_t distrib, const alize::RealVector<double> &diagonal_covariance)
 {
   if (diagonal_covariance.size() != getFeatureVectorSize())
-    throw InvalidFeatureVectorSize("File:" + std::string(__FILE__) + " Line :" + std::to_string(__LINE__) +
+    throw InvalidFeatureSize("File:" + std::string(__FILE__) + " Line :" + std::to_string(__LINE__) +
                                    ": size of diagonal_covariance vector is not equal \
                                     to set in configuration of model");
   try
