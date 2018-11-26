@@ -30,7 +30,7 @@ void DiagonalModel::setDistribCovariance(uint32_t distrib, const alize::RealVect
                                     to set in configuration of model");
   try
   {
-    alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( s_->getMixture(MIXTURE_IDX).getDistrib(distrib));
+    alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( getMixtureRef().getDistrib(distrib));
     distrib_ref.getCovVect() = diagonal_covariance;
     distrib_ref.computeAll();
   }
@@ -48,7 +48,7 @@ alize::RealVector<double> DiagonalModel::getDistribCovariance(uint32_t distrib)c
 {
   try
   {
-    alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( s_->getMixture(MIXTURE_IDX).getDistrib(distrib));
+    alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( getMixtureRef().getDistrib(distrib));
     return distrib_ref.getCovVect();
   }
   catch(alize::IndexOutOfBoundsException e)

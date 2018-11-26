@@ -6,8 +6,9 @@
 
 
 TEMPLATE = subdirs
-SUBDIRS = common main \
+SUBDIRS = common main/main.pro \
       tests/unit-tests.pro
 
 
 tests/unit-tests.pro.depends = common
+main/main.pro.depends = common

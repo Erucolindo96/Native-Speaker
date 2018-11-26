@@ -9,7 +9,7 @@ static const uint32_t DISTRIB_CNT = 100, FEATURE_SIZE = 12;
 static const double EPSILON = 0.0001;
 
 
-bool exist(const std::string &filename)
+static bool exist(const std::string &filename)
 {
   ifstream f(filename);
   return f.good();

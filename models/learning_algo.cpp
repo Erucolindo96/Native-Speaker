@@ -67,12 +67,14 @@ void ExpectationMaximalizationAlgo::clearAfterIteration()
 void ExpectationMaximalizationAlgo::countPosterioriPropabilities(const GmmModel &model,
                                                                  const vector<Feature> &feature_vec)
 {
-  double val = 0;
+  double val = 0, curr_f_lk = 0;
+
   for(uint32_t i_f = 0;i_f < feature_vec.size(); ++i_f)
   {
+    curr_f_lk = model.countLikehoodWithWeight(feature_vec[i_f]);
     for(uint32_t i_d = 0; i_d < model.getDistribCount(); ++i_d )
     {
-      val = countOnePropability(model, feature_vec, i_f, i_d);
+      val = countOnePropability(model, feature_vec, i_f, i_d, curr_f_lk);
       setPosterioriPropability(i_f, i_d, val);
     }
   }
@@ -82,19 +84,22 @@ void ExpectationMaximalizationAlgo::countPosterioriPropabilities(const GmmModel 
 
 double ExpectationMaximalizationAlgo::countOnePropability(const GmmModel &model,
                                                         const std::vector<alize::Feature> &feature_vec,
-                                                        uint32_t feature_idx, uint32_t distrib_idx)
+                                                        uint32_t feature_idx, uint32_t distrib_idx,
+                                                          double current_f_lk)
 {
   const Feature& current = feature_vec[feature_idx];
   double ret = 0;
   ret = model.countLikehoodWithWeight(current, distrib_idx);
-  ret /= model.countLikehoodWithWeight(current);
+  ret /= current_f_lk;
   return ret;
 }
 
 void ExpectationMaximalizationAlgo::performOneIteration(GmmModel &model,
                                                         const std::vector<alize::Feature> &feature_vec)
 {
+  //std::cout<<"perform one iteration"<<std::endl;
   countPosterioriPropabilities(model, feature_vec);//expectation step
+  //std::cout<<"posteriori propablities counted"<<std::endl;
   const uint32_t DISTRIB_CNT = getDistribCount();
   double weight = 0;
   RealVector<double> mean(getFeatureCount());

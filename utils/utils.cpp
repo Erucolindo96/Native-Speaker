@@ -3,6 +3,7 @@
 
 namespace utils
 {
+
   alize::RealVector<double> toRealVector(const alize::Feature &f)
   {
     alize::RealVector<double> vec(f.getVectSize());
@@ -47,5 +48,7 @@ namespace utils
     }
     return ret;
   }
+
+
 
 }//namespace utils

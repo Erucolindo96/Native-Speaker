@@ -5,8 +5,15 @@ using namespace std;
 using namespace alize;
 using namespace utils;
 
-static const uint32_t DISTRIB_CNT = 100, FEATURE_SIZE = 10;
-static const double EPSILON = 0.0001;
+
+static bool exist(const std::string &filename)
+{
+  ifstream f(filename);
+  return f.good();
+}
+
+static const uint32_t DISTRIB_CNT = 10, FEATURE_SIZE = 3;
+static const double EPSILON = 0.0002;
 static const RealVector<double> w = toRealVector({0.1179,9.1176e-07,0.3269,0.0190,0.3382,
                                             0.0005,0.1896,0.0080,1.1646e-08,1.9747e-07});
 static const vector<RealVector<double>> means =
@@ -99,69 +106,81 @@ void checkWeights(GmmModel &model,const RealVector<double> &correct_weights)
 
 BOOST_AUTO_TEST_SUITE( FileModelDaoTests )
 
-BOOST_AUTO_TEST_CASE( getCorrectModelFileTypeIfThatWasSetInContructor )
-{
-  FileModelDao dao(RAW);
-  BOOST_CHECK_EQUAL(dao.getFileType(), RAW);
-}
 
-BOOST_AUTO_TEST_CASE( getCorrectModelFileTypeIfThatWasSetInSetter )
-{
-  FileModelDao dao;
-  BOOST_REQUIRE_NO_THROW(dao.setFileType(RAW));
-  BOOST_CHECK_EQUAL(dao.getFileType(), RAW);
-}
 
 BOOST_AUTO_TEST_CASE( getCorrectMixtureSaveDirectoryIfThatWasSetInSetter )
 {
   FileModelDao dao;
-  BOOST_REQUIRE_NO_THROW(dao.setMixtureDir("folder"));
-  BOOST_CHECK_EQUAL(dao.getMixtureDir(), "folder");
+  BOOST_REQUIRE_NO_THROW(dao.setModelsDir("folder"));
+  BOOST_CHECK_EQUAL(dao.getModelsDir(), "folder");
 }
 
-BOOST_AUTO_TEST_CASE(contructCorrectCopyOfDaoIfMixtureDirAndFileTypeWasSet)
+
+BOOST_AUTO_TEST_CASE( getCorrectVectSizeIfThatWasSetInSetter )
 {
-  FileModelDao dao(XML);
-  dao.setMixtureDir("/sciezka/folderu");
+  FileModelDao dao;
+  const uint32_t SIZE = 12;
+  BOOST_REQUIRE_NO_THROW(dao.setVectSize(SIZE));
+  BOOST_CHECK_EQUAL(dao.getVectSize(), SIZE);
+}
+
+
+BOOST_AUTO_TEST_CASE(contructCorrectCopyOfDaoIfModelsDirDistribTypeAndVectSizeWasSet)
+{
+  FileModelDao dao;
+  const uint32_t SIZE = 12;
+  dao.setModelsDir("/sciezka/folderu");
+  dao.setVectSize(SIZE);
+
   FileModelDao copy = dao;
-  BOOST_CHECK_EQUAL(copy.getFileType(), dao.getFileType());
-  BOOST_CHECK_EQUAL(copy.getMixtureDir(), dao.getMixtureDir());
+  BOOST_CHECK_EQUAL(copy.getModelsDir(), dao.getModelsDir());
+  BOOST_CHECK_EQUAL(dao.getVectSize(), SIZE);
 }
 
-BOOST_AUTO_TEST_CASE(correctAssignOfDaoIfMixtureDirAndFileTypeWasSet)
+BOOST_AUTO_TEST_CASE(correctAssignOfDaoIfModelsDirAndVectSizeWasSet)
 {
-  FileModelDao dao(RAW);
-  dao.setMixtureDir("/sciezka/folderu");
+  FileModelDao dao;
+  const uint32_t SIZE = 12;
+  dao.setModelsDir("/sciezka/folderu");
+  dao.setVectSize(SIZE);
   FileModelDao copy;
-  BOOST_REQUIRE_NO_THROW(copy = dao);
-  BOOST_CHECK_EQUAL(copy.getFileType(), dao.getFileType());
-  BOOST_CHECK_EQUAL(copy.getMixtureDir(), dao.getMixtureDir());
+  copy = dao;
+  BOOST_CHECK_EQUAL(copy.getModelsDir(), dao.getModelsDir());
+  BOOST_CHECK_EQUAL(dao.getVectSize(), SIZE);
 }
 
-BOOST_AUTO_TEST_CASE(correctMoveContructionOfDaoIfMixtureDirAndFileTypeWasSet)
+BOOST_AUTO_TEST_CASE(correctMoveContructionOfDaoIfModelsDirAndModelsDirWasSet)
 {
-  FileModelDao dao(RAW);
-  dao.setMixtureDir("/sciezka/folderu");
+  FileModelDao dao;
+  const uint32_t SIZE = 12;
+  dao.setModelsDir("/sciezka/folderu");
+  dao.setVectSize(SIZE);
+
   FileModelDao copy(std::move(dao));
-  BOOST_CHECK_EQUAL(copy.getFileType(), RAW);
-  BOOST_CHECK_EQUAL(copy.getMixtureDir(), "/sciezka/folderu");
+  BOOST_CHECK_EQUAL(copy.getModelsDir(), "/sciezka/folderu");
+  BOOST_CHECK_EQUAL(dao.getVectSize(), SIZE);
+
 }
 
 
-BOOST_AUTO_TEST_CASE(correctMoveAssignmentOfDaoIfMixtureDirAndFileTypeWasSet)
+BOOST_AUTO_TEST_CASE(correctMoveAssignmentOfDaoIfModelsDirAndModelsDirWasSet)
 {
-  FileModelDao dao(RAW);
-  dao.setMixtureDir("/sciezka/folderu");
+  FileModelDao dao;
+  const uint32_t SIZE = 12;
+  dao.setModelsDir("/sciezka/folderu");
+  dao.setVectSize(SIZE);
+
   FileModelDao copy;
   BOOST_REQUIRE_NO_THROW(copy = std::move(dao));
-  BOOST_CHECK_EQUAL(copy.getFileType(), RAW);
-  BOOST_CHECK_EQUAL(copy.getMixtureDir(), "/sciezka/folderu");
+  BOOST_CHECK_EQUAL(copy.getModelsDir(), "/sciezka/folderu");
+  BOOST_CHECK_EQUAL(dao.getVectSize(), SIZE);
+
 }
 
 BOOST_AUTO_TEST_CASE(throwFileNotFoundExceptionwhileReadingIfModelDirArentExist)
 {
-  FileModelDao dao(XML);
-  dao.setMixtureDir("test_dao");
+  FileModelDao dao;
+  dao.setModelsDir("test_dao");
 
   std::unique_ptr<GmmModel> model_ptr;
   BOOST_CHECK_THROW(model_ptr = dao.readModel("model_testowy"), FileNotFound);
@@ -170,8 +189,8 @@ BOOST_AUTO_TEST_CASE(throwFileNotFoundExceptionwhileReadingIfModelDirArentExist)
 
 BOOST_AUTO_TEST_CASE(throwModelNameNotDefinedWhileReadIfModelNameIsEmpty)
 {
-  FileModelDao dao(XML);
-  dao.setMixtureDir("test_dao");
+  FileModelDao dao;
+  dao.setModelsDir("test_dao");
 
   std::unique_ptr<GmmModel> model_ptr;
   BOOST_CHECK_THROW(model_ptr = dao.readModel(""), ModelNameNotDefined);
@@ -180,70 +199,71 @@ BOOST_AUTO_TEST_CASE(throwModelNameNotDefinedWhileReadIfModelNameIsEmpty)
 
 BOOST_AUTO_TEST_CASE(throwModelNameNotDefinedWhileWriteIfModelHaveEmptyName)
 {
-  FileModelDao dao(XML);
-  dao.setMixtureDir("test_dao");
+  FileModelDao dao;
+  dao.setModelsDir("test_dao");
 
   DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   BOOST_CHECK_THROW(dao.writeModel(model), ModelNameNotDefined );
 }
 
-/*
-BOOST_AUTO_TEST_CASE(throwDirNotDefinedWhileReadIfDaoHaventSettedDir)
-{
-  FileModelDao dao(XML);
 
-  std::unique_ptr<GmmModel> model_ptr;
-  BOOST_CHECK_THROW(model_ptr = dao.readModel("model1"), DirNotDefined);
-}
-
-BOOST_AUTO_TEST_CASE(throwDirNotDefinedWhileWriteIfDaoHaventSettedDir)
+BOOST_AUTO_TEST_CASE(throwInvalidFeatureSizeWhileWriteIfModelHaveAnotherVectSizeThanDao)
 {
-  FileModelDao dao(XML);
+  FileModelDao dao;
+  dao.setModelsDir("test_dao");
+  dao.setVectSize(FEATURE_SIZE + 10);
 
   DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
-  BOOST_CHECK_THROW(dao.writeModel(model), DirNotDefined);
+  model.setName("model1");
+  BOOST_CHECK_THROW(dao.writeModel(model), InvalidFeatureSize );
 }
-*/
 
-
-
-
-
-
-BOOST_AUTO_TEST_CASE(saveModelToFileIfModelDirAndFileTypeWasSet)
+BOOST_AUTO_TEST_CASE(saveDiagonalModelToFileIfModelDirAndVectSizeWasSet)
 {
-  FileModelDao dao(XML);
-  dao.setMixtureDir("test_dao");
-  bool not_created = system("[-e test_dao] || mkdir test_dao");
-  BOOST_REQUIRE(!not_created);
+  FileModelDao dao;
+  dao.setModelsDir("test_dao/");
+  dao.setVectSize(FEATURE_SIZE);
+  system("[ -e test_dao ] || mkdir test_dao");
 
   DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   initModel(model);
   model.setName("model_testowy");
 
   dao.writeModel(model);
-  bool not_exist = system("cat model_testowy");
-  BOOST_CHECK(!not_exist);
+  bool m_exist = exist("test_dao/model_testowy.xml");
+  BOOST_CHECK(m_exist);
 }
 
 
-BOOST_AUTO_TEST_CASE(readCorrectModelFromFileIfModelDirExistWithSavedModel)
+BOOST_AUTO_TEST_CASE(throwInvalidFeatureSizeWhileReadIfModelHaveAnotherVectSizeThanDao)
 {
-  bool not_exist = system("cat model_testowy");
+  FileModelDao dao;
+  dao.setModelsDir("test_dao/");
+  dao.setVectSize(FEATURE_SIZE + 10);
+
+  unique_ptr<GmmModel> ptr;
+  BOOST_CHECK_THROW(ptr = dao.readModel("model_testowy"), InvalidFeatureSize );
+}
+
+
+BOOST_AUTO_TEST_CASE(readCorrectDiagonalModelFromFileIfModelDirExistWithSavedModelAndVectSizeAndDistribTypeWereSet)
+{
+  bool not_exist = exist("model_testowy");
   BOOST_REQUIRE(!not_exist);
 
-  FileModelDao dao(XML);
-  dao.setMixtureDir("test_dao");
+  FileModelDao dao;
+  dao.setModelsDir("test_dao/");
+  dao.setVectSize(FEATURE_SIZE);
 
   std::unique_ptr<GmmModel> model_ptr;
   BOOST_REQUIRE_NO_THROW(model_ptr = dao.readModel("model_testowy"));
+  string name = model_ptr->getName();
   BOOST_CHECK_EQUAL(model_ptr->getName(), "model_testowy");
   checkWeights(*model_ptr, w);
   checkMeans(*model_ptr, means);
   checkCovariances(*model_ptr, diag_cov);
-  system("[-e test_dao] && rm -d -r test_dao");
+  system("[ -e test_dao ] && rm -d -r test_dao");
 
 }
 
 BOOST_AUTO_TEST_SUITE_END()
-

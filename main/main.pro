@@ -6,7 +6,7 @@ CONFIG += windows
 
 
 TARGET = main
-SOURCES = ../main.cpp
+SOURCES += main.cpp
 #INCLUDEPATH += ../common ..
 #LIBS += -L../common -lcommon
 

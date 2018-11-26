@@ -4,44 +4,49 @@
 #include<alize.h>
 #include<stdexcept>
 #include"exceptions/simple_exceptions.hpp"
-enum MixtureFileType{
-  XML,
-  RAW
-};
+#include"models/diagonal_model.hpp"
+#include<map>
 
-/*
-class DirNotDefined: public std::logic_error
-{
-public:
-  DirNotDefined(const std::string &msg): std::logic_error(msg)
-  {}
-};
-*/
 
+/**
+ * @brief The FileModelDao Klasa zapisująca model do pliku w formacie .xml
+ * Pobiera typ modelu, który ma utworzyć przy odczycie z pliku. Na razie działa tylko dla DiagonalModel.
+ * Docelowo powinno odczytywać typ modelu na podstawie rozszerzenia pliku. Na razie tego nie robi.
+ * Pobiera również długość wektora(potrzebna przy inicjalizacji modelu)
+ */
 
 class FileModelDao : public ModelDao
 {
 protected:
-  alize::Config conf_;
-  std::unique_ptr<alize::MixtureServerFileReaderAbstract> reader_;
-  std::unique_ptr<alize::MixtureServerFileWriter> writer_;
-  MixtureFileType type_;
+  std::string models_dir_;
+  uint32_t vect_size_;
+//  alize::DistribType t_;
+
+  alize::Config createConfig(const std::string &file_name)const;
+  std::unique_ptr<GmmModel> createModel(const alize::MixtureServer &s)const;
+  const char* ext()const;
+
 
 public:
-  explicit FileModelDao(MixtureFileType t = XML);
-  FileModelDao(const FileModelDao &other);
-  FileModelDao& operator =(const FileModelDao &other);
-  FileModelDao(FileModelDao &&other);
-  FileModelDao& operator =(FileModelDao &&other);
 
-  MixtureFileType getFileType()const;
-  void setFileType(MixtureFileType t);
+  explicit FileModelDao() = default;
+  FileModelDao(const FileModelDao &other) = default;
+  FileModelDao& operator =(const FileModelDao &other) = default;
+  FileModelDao(FileModelDao &&other) = default;
+  FileModelDao& operator =(FileModelDao &&other) = default;
+/*
+  alize::DistribType getDistribType()const;
+  void setDistribType(alize::DistribType t);
+*/
+  uint32_t getVectSize()const;
+  void setVectSize(uint32_t v_size);
 
-  std::string getMixtureDir()const;
-  void setMixtureDir(const std::string new_dir);
+  std::string getModelsDir()const;
+  void setModelsDir(const std::string new_dir);
 
   void writeModel(const GmmModel &m)const override;
-  std::unique_ptr<GmmModel> readModel(const std::string &model_name) override;
+  std::unique_ptr<GmmModel> readModel(const std::string &model_name)override;
+
 
 
 };

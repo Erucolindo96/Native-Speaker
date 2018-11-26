@@ -12,7 +12,8 @@ HEADERS += \
     ../utils/tests/utils-test/utils_test.hpp \
     ../features/tests/feature-readers-tests/feature_readers_test.hpp \
 #    ../dao/tests/dao-test/dao_test.hpp
-    ../models/tests/verificator-test/verificator_test.hpp
+    ../models/tests/verificator-test/verificator_test.hpp \
+    ../dao/tests/dao-test/dao_test.hpp
 
 SOURCES += \
     main_test.cpp \
@@ -21,4 +22,5 @@ SOURCES += \
     ../utils/tests/utils-test/utils_test.cpp \
     ../features/tests/feature-readers-tests/feature_readers_test.cpp \
 #    ../dao/tests/dao-test/dao_test.cpp
-    ../models/tests/verificator-test/verificator_test.cpp
+    ../models/tests/verificator-test/verificator_test.cpp \
+    ../dao/tests/dao-test/dao_test.cpp

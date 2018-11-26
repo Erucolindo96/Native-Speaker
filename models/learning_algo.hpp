@@ -42,7 +42,8 @@ protected:
                                   const std::vector<alize::Feature> &feature_vec);
   double countOnePropability(const GmmModel &model,
                            const std::vector<alize::Feature> &feature_vec,
-                           uint32_t feature_idx, uint32_t distrib_idx);
+                           uint32_t feature_idx, uint32_t distrib_idx,
+                           double current_f_lk);
 
   void performOneIteration(GmmModel &model, const std::vector<alize::Feature> &feature_vec );
 

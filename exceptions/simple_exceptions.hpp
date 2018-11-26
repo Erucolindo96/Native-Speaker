@@ -5,15 +5,29 @@
 class IndexOutOfBounds : std::out_of_range
 {
 public:
-  explicit IndexOutOfBounds(std::string &&msg) : out_of_range(msg)
+  explicit IndexOutOfBounds(const std::string &msg) : out_of_range(msg)
   {}
 };
 
 class InvalidFeatureSize: std::invalid_argument
 {
 public :
-  explicit InvalidFeatureSize(std::string &&msg):invalid_argument(msg)
+  explicit InvalidFeatureSize(const std::string &msg):invalid_argument(msg)
   {}
+};
+class InvalidModelType: std::invalid_argument
+{
+public:
+  explicit InvalidModelType(const std::string &msg): invalid_argument(msg)
+  {}
+};
+
+class InvalidDistribCount: std::invalid_argument
+{
+public:
+  explicit InvalidDistribCount(const std::string &msg): invalid_argument(msg)
+  {}
+
 };
 
 class LearningModelWithoutFeatures: public invalid_argument
@@ -44,6 +58,13 @@ class FileNotFound: public std::logic_error
 {
 public:
   FileNotFound(const std::string &msg): std::logic_error(msg)
+  {}
+};
+
+class NotAModelFile: public std::logic_error
+{
+public:
+  NotAModelFile(const std::string &msg): std::logic_error(msg)
   {}
 };
 

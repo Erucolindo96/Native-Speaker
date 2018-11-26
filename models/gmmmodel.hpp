@@ -10,9 +10,10 @@
 
 class GmmModel
 {
-public:
+protected:
 
-  const uint32_t  MIXTURE_IDX = 0, DISTRIB_CNT, FEATURE_SIZE;
+
+  const uint32_t DISTRIB_CNT, FEATURE_SIZE;
   const double MAX_LLK = 100.0, MIN_LLK = -100.0;
   std::unique_ptr<alize::MixtureServer> s_;
   alize::DistribType type_;
@@ -20,6 +21,7 @@ public:
 
   virtual void initDefaultMixture(uint32_t distrib_cnt);
 
+  alize::Mixture& getMixtureRef()const;
 public:
   GmmModel() = delete;
   explicit GmmModel(uint32_t distrib_cnt, uint32_t feature_size);
@@ -36,6 +38,8 @@ public:
 
   void setName(const std::string &name);
   std::string getName()const;
+
+  alize::DistribType getType()const;
 
   const std::unique_ptr<alize::MixtureServer>& getMixtureServerRef()const;
 
@@ -60,7 +64,29 @@ public:
 
   virtual ~GmmModel() = default;
   static std::vector<alize::Feature> extractAllFeatures(alize::FeatureServer &s);
+  /**
+   * @brief getDistribTypeOfServer Interpretuje wskazany jako parametr MixtureServer jako serwer wchodzący w skład klasy
+   * i odczytuje, jakiego typu jest utworzona w nim mieszanina - czy GD, czy GF.
+   * @param s Badany MIxtureServer
+   * @return Typ utworzonej w MixtureServerze mieszaniny Gaussowskiej
+   */
+  static alize::DistribType getDistribTypeOfServer(const alize::MixtureServer &s);
+  /**
+   * @brief getDistribCountOfServer Interpretuje wskazany jako parametr MixtureServer jako serwer wchodzący w skład klasy
+   * i odczytuje, jak wiele dystrybucji zawiera mieszanina znajdująca sie w serwerze.
+   * @param s Badany MixtureServer
+   * @return Ilośc dystrybucji utworzonej w MixtureServerze mieszaniny Gaussowskiej
+   */
+  static uint32_t getDistribCountOfServer(const alize::MixtureServer &s);
 
+  /**
+   * @brief copyDataFromMixtureServer Interpretuje wskazany jako parametr MixtureServer jako serwer wchodzący w skład klasy
+   * i kopiuje znajdującą się w nim mieszaninę gaussowską.
+   * @param s MixtureServer z którego pobieramy miksturę
+   * @param model Model, do którego zapisujemy miksturę
+   * @throw InvalidModelType Jesli typ misktury w serwerze nie zgadza się z typem modelu
+   */
+  static void copyDataFromMixtureServer(const alize::MixtureServer &s, GmmModel &model);
 };
 
 #endif // GMMMODEL_HPP

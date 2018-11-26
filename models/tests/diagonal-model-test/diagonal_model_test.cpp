@@ -17,18 +17,6 @@ const double EPS = 0.00001;
 static vector<Feature> training_vec(FEATURE_CNT, Feature(FEATURE_SIZE));
 
 
-
-/*
-boost::unit_test::test_suite* createDiagonalModelTest()
-{
-  boost::unit_test::test_suite* test = BOOST_TEST_SUITE("Diagonal Model Test");
-//  test->add(BOOST_TEST_CASE(&getCorrectFeaturesIfTheyWasSet));
-  test->add(BOOST_TEST_CASE(&getCorrectFeatureVectorIfItWasSet));
-  test->add(BOOST_TEST_CASE(&constructModelWithName));
-
-  return test;
-}
-*/
 BOOST_AUTO_TEST_SUITE(DiagonalModelTest)
 
 BOOST_AUTO_TEST_CASE( getCorrectFeaturesIfTheyWasSet)
@@ -392,6 +380,90 @@ BOOST_AUTO_TEST_CASE(countCorrectLikehoodAllDistribIfParametersAreCorrect)
   double lk_for_vector = summary_likehood * FEATURE_CNT;
   BOOST_CHECK_CLOSE(model.countLikehoodWithWeight(f_vec), lk_for_vector, EPS);
 }
+
+BOOST_AUTO_TEST_CASE(getDistribType_GDFromMIxtureServerIfServerWasCreatedInDiagonalModel)
+{
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  const unique_ptr<MixtureServer>& server_ptr = model.getMixtureServerRef();
+  BOOST_CHECK_EQUAL(GmmModel::getDistribTypeOfServer(*server_ptr), alize::DistribType_GD);
+}
+
+BOOST_AUTO_TEST_CASE(getCorrectDistribCountFromMixtureServerIfServerWasCreatedInDiagonalModel)
+{
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  const unique_ptr<MixtureServer>& server_ptr = model.getMixtureServerRef();
+  BOOST_CHECK_EQUAL(GmmModel::getDistribCountOfServer(*server_ptr), DISTRIB_CNT);
+}
+
+BOOST_AUTO_TEST_CASE(throwInvalidModelTypeIfTryToCopyMixtureServerWithOtherMixtureTypeThanInModel)
+{
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  alize::Config conf;
+  conf.setParam("vectSize", to_string(FEATURE_SIZE).c_str());
+  MixtureServer s(conf);
+  s.createMixtureGF(DISTRIB_CNT);
+  BOOST_CHECK_THROW(GmmModel::copyDataFromMixtureServer(s, model), InvalidModelType);
+
+}
+
+BOOST_AUTO_TEST_CASE(throwInvalidDistribCountIfTryToCopyMixtureServerWithOtherMixtureDistribCntThanInModel)
+{
+
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  alize::Config conf;
+  conf.setParam("vectSize", to_string(FEATURE_SIZE).c_str());
+  MixtureServer s(conf);
+  s.createMixtureGD(DISTRIB_CNT + 10);
+  BOOST_CHECK_THROW(GmmModel::copyDataFromMixtureServer(s, model),InvalidDistribCount);
+
+}
+
+BOOST_AUTO_TEST_CASE(throwInvalidFeatureSizeIfTryToCopyMixtureServerWithOtherFeatureSizeThanInModel)
+{
+  try{
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  alize::Config conf;
+  conf.setParam("vectSize", to_string(FEATURE_SIZE + 10).c_str());
+  MixtureServer s(conf);
+  s.createMixtureGD(DISTRIB_CNT);
+  BOOST_CHECK_THROW(GmmModel::copyDataFromMixtureServer(s, model), InvalidFeatureSize);
+  }
+  catch(alize::Exception e)
+  {
+    cout<<e.toString().c_str()<<endl;
+  }
+}
+
+BOOST_AUTO_TEST_CASE(correctCopyDataFromMixtureServerIfMixtureServerWasCreatedInDiagonalModel)
+{
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  RealVector<double> mean(FEATURE_SIZE, FEATURE_SIZE), cov(FEATURE_SIZE, FEATURE_SIZE);
+
+  for(uint32_t i=0; i< FEATURE_SIZE; ++i)
+  {
+    mean[i] = 1;
+    cov[i] = 2.0;
+  }
+  for(uint32_t i=0;i < DISTRIB_CNT; ++i)
+  {
+    model.setDistribWeight(i, 1.0/DISTRIB_CNT);
+    model.setDistribMean(i, mean);
+    model.setDistribCovariance(i, cov);
+  }
+
+  const unique_ptr<MixtureServer>& server_ptr = model.getMixtureServerRef();
+  DiagonalModel copy(DISTRIB_CNT, FEATURE_SIZE);
+  BOOST_REQUIRE_NO_THROW(GmmModel::copyDataFromMixtureServer(*server_ptr, copy));
+  BOOST_REQUIRE_EQUAL(copy.getDistribCount(), model.getDistribCount());
+  for(uint32_t i = 0; i<DISTRIB_CNT; ++i)
+  {
+    BOOST_CHECK_EQUAL(copy.getDistribMean(i)[0], mean[0]);
+    BOOST_CHECK_EQUAL(copy.getDistribCovariance(i)[0], cov[0]);
+  }
+}
+
+
+
 
 
 BOOST_AUTO_TEST_SUITE_END()

@@ -9,7 +9,7 @@ alize::Config FeatureReader::createConfig(const std::string & file_ext)const
 {
   alize::Config ret;
   const uint32_t ANY_NUM = 12;//parametr nie ma znaczenia, chodzi o to, aby
-  //jakikolwiek był
+  //jakikolwiek był. Czemu tak jest - nie wiem, chyba ALIZE ma tak zaimplementowane
   ret.setParam("featureFilesPath", dir_.c_str());
   ret.setParam("loadFeatureFileExtension", file_ext.c_str());
   ret.setParam("vectSize", std::to_string(ANY_NUM).c_str());

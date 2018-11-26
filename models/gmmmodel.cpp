@@ -12,6 +12,12 @@ void GmmModel::initDefaultMixture(uint32_t distrib_cnt)
 
 }
 
+alize::Mixture& GmmModel::getMixtureRef()const
+{
+  const uint32_t M_IDX = 0;
+  return s_->getMixture(M_IDX);
+}
+
 
 /*
  * Public
@@ -61,6 +67,10 @@ std::string GmmModel::getName()const
   return std::string(s_->getServerName().c_str());
 }
 
+alize::DistribType GmmModel::getType()const
+{
+  return type_;
+}
 const std::unique_ptr<alize::MixtureServer>& GmmModel::getMixtureServerRef()const
 {
   return s_;
@@ -97,7 +107,7 @@ double GmmModel::countLikehoodWithWeight(const alize::Feature &arg, uint32_t dis
                                + std::string(" - try to count likehood feature with model,"
                                              " where feature's size's are not equal"));
     }
-    return s_->getMixture(MIXTURE_IDX).getDistrib(distrib_idx).computeLK(arg) *
+    return getMixtureRef().getDistrib(distrib_idx).computeLK(arg) *
       getDistribWeight(distrib_idx);
 
   }
@@ -120,14 +130,14 @@ double GmmModel::countLikehoodWithWeight(const std::vector<alize::Feature> &arg)
 
 uint32_t GmmModel::getDistribCount()const
 {
-  return s_->getMixture(MIXTURE_IDX).getDistribCount();
+  return getMixtureRef().getDistribCount();
 }
 
 double GmmModel::getDistribWeight(uint32_t distrib_idx)const
 {
   try
   {
-    return s_->getMixture(MIXTURE_IDX).weight(distrib_idx);
+    return getMixtureRef().weight(distrib_idx);
 
   }
   catch(alize::IndexOutOfBoundsException e)
@@ -139,7 +149,7 @@ void GmmModel::setDistribWeight(uint32_t distrib, double new_weight)
 {
   try
   {
-    s_->getMixture(MIXTURE_IDX).weight(distrib) = new_weight;
+    getMixtureRef().weight(distrib) = new_weight;
   }
   catch(alize::IndexOutOfBoundsException e)
   {
@@ -156,7 +166,7 @@ void GmmModel::setDistribMean(uint32_t distrib, const alize::RealVector<double> 
                                     to set in configuration of model");
   try
   {
-    alize::Distrib& distrib_ref = s_->getMixture(MIXTURE_IDX).getDistrib(distrib);
+    alize::Distrib& distrib_ref = getMixtureRef().getDistrib(distrib);
     distrib_ref.setMeanVect(new_mean);
     distrib_ref.computeAll();
   }
@@ -169,7 +179,7 @@ alize::RealVector<double> GmmModel::getDistribMean(uint32_t distrib)const
 {
   try
   {
-    return s_->getMixture(MIXTURE_IDX).getDistrib(distrib).getMeanVect();
+    return getMixtureRef().getDistrib(distrib).getMeanVect();
 
   }
   catch(alize::IndexOutOfBoundsException e)
@@ -196,4 +206,41 @@ std::vector<alize::Feature> GmmModel::extractAllFeatures(alize::FeatureServer &s
   }
   s.seekFeature(FIRST);
   return ret;
+}
+
+alize::DistribType GmmModel::getDistribTypeOfServer(const alize::MixtureServer &s)
+{
+  const uint32_t M_IDX = 0;
+  return s.getMixture(M_IDX).getType();
+}
+
+uint32_t GmmModel::getDistribCountOfServer(const alize::MixtureServer &s)
+{
+  const uint32_t M_IDX = 0;
+  return s.getMixture(M_IDX).getDistribCount();
+}
+
+
+
+void GmmModel::copyDataFromMixtureServer(const alize::MixtureServer &s, GmmModel &model)
+{
+  const uint32_t M_IDX = 0;
+  if(GmmModel::getDistribTypeOfServer(s) != model.getType())
+  {
+    throw InvalidModelType(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                           + std::string(" - try to copy mixture, which type arent equal with type in model"));
+  }
+  if(GmmModel::getDistribCountOfServer(s) != model.getDistribCount())
+  {
+    throw InvalidDistribCount(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                              + std::string(" - try to copy mixture, which distrib count arent equal with count in model"));
+  }
+  if(s.getVectSize() != model.getFeatureVectorSize())
+  {
+    throw InvalidFeatureSize(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                             + std::string(" - try to copy mixture, which feature size arent equal with size in model"));
+  }
+
+  model.s_->reset();
+  model.s_->duplicateMixture(s.getMixture(M_IDX));
 }
