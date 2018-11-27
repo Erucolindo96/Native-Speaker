@@ -20,7 +20,7 @@ public:
   void setThreshold(double new_threshold);
 
   bool verifyModel(const GmmModel &verified,
-                   std::vector<alize::Feature> record_features,
+                   const std::vector<alize::Feature> &record_features,
                    const GmmModel &ubm_model);
 
 };

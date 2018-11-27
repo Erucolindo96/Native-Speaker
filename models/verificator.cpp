@@ -14,7 +14,7 @@ void Verificator::setThreshold(double new_threshold)
 }
 
 bool Verificator::verifyModel(const GmmModel &verified,
-                 std::vector<alize::Feature> record_features,
+                 const std::vector<alize::Feature> &record_features,
                  const GmmModel &ubm_model)
 {
   if(verified.getFeatureVectorSize() != ubm_model.getFeatureVectorSize())
@@ -31,7 +31,7 @@ bool Verificator::verifyModel(const GmmModel &verified,
       sum_lk_ubm = ubm_model.countLikehoodWithWeight(record_features);
 
   double llk_model = log(sum_lk_model), llk_ubm = log(sum_lk_ubm);
-  if(llk_model - llk_ubm >= threshold_)
+  if((llk_model - llk_ubm) >= threshold_)
   {
     return true;
   }

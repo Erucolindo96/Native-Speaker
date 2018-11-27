@@ -5,6 +5,15 @@ using namespace std;
  * Protected
  */
 
+alize::Config GmmModel::createConfig()const
+{
+  alize::Config conf;
+  conf.setParam("vectSize", std::to_string(FEATURE_SIZE).c_str());
+  conf.setParam("mixtureDistribCount", std::to_string(DISTRIB_CNT).c_str());
+  conf.setParam("maxLLK", std::to_string(MAX_LLK).c_str());
+  conf.setParam("minLLK", std::to_string(MIN_LLK).c_str());
+  return conf;
+}
 
 void GmmModel::initDefaultMixture(uint32_t distrib_cnt)
 {
@@ -25,11 +34,7 @@ alize::Mixture& GmmModel::getMixtureRef()const
 GmmModel::GmmModel(uint32_t distrib_cnt,uint32_t feature_size):
   DISTRIB_CNT(distrib_cnt),FEATURE_SIZE(feature_size), features_()
 {
-  alize::Config conf;
-  conf.setParam("vectSize", std::to_string(feature_size).c_str());
-  conf.setParam("mixtureDistribCount", std::to_string(distrib_cnt).c_str());
-  conf.setParam("maxLLK", std::to_string(MAX_LLK).c_str());
-  conf.setParam("minLLK", std::to_string(MIN_LLK).c_str());
+  alize::Config conf = createConfig();
   s_ = std::make_unique<alize::MixtureServer>(conf);
 }
 GmmModel::GmmModel(uint32_t distrib_cnt, uint32_t feature_size, const std::string &name): GmmModel(distrib_cnt, feature_size)
@@ -240,7 +245,11 @@ void GmmModel::copyDataFromMixtureServer(const alize::MixtureServer &s, GmmModel
     throw InvalidFeatureSize(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
                              + std::string(" - try to copy mixture, which feature size arent equal with size in model"));
   }
-
-  model.s_->reset();
-  model.s_->duplicateMixture(s.getMixture(M_IDX));
+  const uint32_t D_CNT = model.getDistribCount();
+  alize::Config conf = model.createConfig();
+  model.s_.release();
+  model.s_ = make_unique<alize::MixtureServer>(conf);
+  model.initDefaultMixture(D_CNT);
+  model.getMixtureRef() = s.getMixture(M_IDX);
+  model.getMixtureRef().computeAll();
 }

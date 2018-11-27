@@ -257,11 +257,19 @@ BOOST_AUTO_TEST_CASE(readCorrectDiagonalModelFromFileIfModelDirExistWithSavedMod
 
   std::unique_ptr<GmmModel> model_ptr;
   BOOST_REQUIRE_NO_THROW(model_ptr = dao.readModel("model_testowy"));
-  string name = model_ptr->getName();
   BOOST_CHECK_EQUAL(model_ptr->getName(), "model_testowy");
   checkWeights(*model_ptr, w);
   checkMeans(*model_ptr, means);
   checkCovariances(*model_ptr, diag_cov);
+  DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
+  initModel(model);
+
+  Feature f(FEATURE_SIZE);
+  for(uint32_t i=0; i< FEATURE_SIZE; ++i)
+  {
+    f[i] = 0.1;//cokolwiek
+  }
+  BOOST_CHECK_CLOSE(model_ptr->countLikehoodWithWeight(f), model.countLikehoodWithWeight(f), EPSILON );
   system("[ -e test_dao ] && rm -d -r test_dao");
 
 }

@@ -1,105 +1,142 @@
 ﻿//#include "mainwindow.hpp"
 //#include <QApplication>
 #include<alize/alize.h>
-using namespace std;
-using namespace alize;
+
 #include"models/diagonal_model.hpp"
 #include"models/verificator.hpp"
 #include"features/FeatureReader.hpp"
 #include"models/learning_algo.hpp"
 #include"utils/utils.hpp"
+#include"dao/FileModelDao.hpp"
+using namespace std;
+using namespace alize;
+using namespace utils;
 
-void learnMyModel(GmmModel &me)
+void verification(uint32_t argc, char *argv[])
 {
-  uint32_t LEARN_ITER = 20;
-  std::vector<Feature> jeden, pokoj, kubek, komputer,kolega;
-  FeatureReader reader("probki/krzysiek/");
-  jeden = reader.readFile("jeden", ".mfcc");
-  pokoj = reader.readFile("pokoj", ".mfcc");
-  kubek = reader.readFile("kubek", ".mfcc");
-  komputer = reader.readFile("komputer", ".mfcc");
-  kolega = reader.readFile("kolega", ".mfcc");
-  std::vector<Feature> summ(jeden);
-  summ.insert(summ.end(), pokoj.begin(), pokoj.end());
-  summ.insert(summ.end(), kubek.begin(), kubek.end());
-  summ.insert(summ.end(), komputer.begin(), komputer.end());
-  summ.insert(summ.end(), kolega.begin(), kolega.end());
+  string model_dir = argv[2], model_name = argv[3], ubm_name = argv[4];
+  double threshold = stod(argv[5]);
+  string f_dir = argv[6], f_file = argv[7], ext = ".mfcc";
 
-  cout<<"elems in jeden: "<<jeden.size()<<endl;
-  cout<<"elems in pokoj: "<<pokoj.size()<<endl;
-  cout<<"elems in nauczanie: "<<kubek.size()<<endl;
-  cout<<"elems in komputer: "<<komputer.size()<<endl;
-  cout<<"elems in kolega: "<<kolega.size()<<endl;
-  cout<<"elems in summ: "<<summ.size()<<endl;
+  FeatureReader f_reader;
+  f_reader.setFeatureDir(f_dir);
+  auto f_vec = f_reader.readFile(f_file, ext);
 
-  ExpectationMaximalizationAlgo algo;
-  algo.learnModel(me, summ, LEARN_ITER);
+  FileModelDao dao;
+  dao.setModelsDir(model_dir);
+  dao.setVectSize(f_vec[0].getVectSize());
 
-  cout<<"LLk dla słowa Jeden: "<<log(me.countLikehoodWithWeight(jeden))<<endl;
-  cout<<"LLk dla słowa pokój: "<<log(me.countLikehoodWithWeight(pokoj))<<endl;
-  cout<<"LLk dla słowa kubek: "<<log(me.countLikehoodWithWeight(kubek))<<endl;
-  cout<<"LLk dla słowa komputer: "<<log(me.countLikehoodWithWeight(komputer))<<endl;
-  cout<<"LLk dla słowa kolega: "<<log(me.countLikehoodWithWeight(kolega))<<endl;
+  auto ubm = dao.readModel(ubm_name);
+  cout<<"UBM "<<ubm->getName()<<" readed"<<endl<<endl;
 
+  auto model = dao.readModel(model_name);
+  cout<<"Model "<<model->getName()<<" readed"<<endl<<endl;
 
+  Verificator v(threshold);
+  cout<<"Feature Vec size: "<<f_vec.size()<<endl<<endl;
+
+  cout<<"Log Likehood for ubm:"<<log(ubm->countLikehoodWithWeight(f_vec))<<endl;
+  cout<<"Log Likehood for model:"<<log(model->countLikehoodWithWeight(f_vec))<<endl;
+
+  bool is_speaker_voice = v.verifyModel(*model, f_vec, *ubm);
+  cout<<"Verificator return: "<<is_speaker_voice<<endl;
+  if(is_speaker_voice)
+  {
+    cout<<"This is speaker voice"<<endl;
+  }
+  else
+  {
+    cout<<"No, this is not a speaker voice"<<endl;
+  }
 }
 
-void learnUbmModel(GmmModel &ubm, GmmModel &me)
+void createModel(uint32_t  argc,char *argv[],  const string &model_dir)
 {
-  uint32_t LEARN_ITER = 20;
-  std::vector<Feature> ulica, wawa, nauczanie, drzewo,ksiazka, kutas;
-  FeatureReader reader("probki/pawel/");
-  ulica = reader.readFile("ulica", ".mfcc");
-  wawa = reader.readFile("wawa", ".mfcc");
-  nauczanie = reader.readFile("nauczanie", ".mfcc");
-  drzewo = reader.readFile("drzewo", ".mfcc");
-  ksiazka = reader.readFile("ksiazka", ".mfcc");
-  kutas = reader.readFile("kutas",".mfcc");
+  const uint32_t D_CNT = 512;
+  string dir_with_mfcc = argv[2], model_name = argv[3];
+  vector<Feature> training_features;
+  FeatureReader reader(dir_with_mfcc);
+  vector<Feature> features_vec;
+  for(uint32_t i = 4; i < argc; ++i)
+  {
+    cout<<"Load file: "<<argv[i]<<endl;
+    features_vec = reader.readFile(argv[i], ".mfcc");
+    training_features.insert(training_features.end(), features_vec.begin(), features_vec.end());
+    cout<<"Training features in "<<argv[i]<<" : "<<features_vec.size()<<endl<<endl;
+  }
+  cout<<"All training features: "<<training_features.size()<<endl<<endl;
 
-  std::vector<Feature> summ(ulica);
-  summ.insert(summ.end(), wawa.begin(), wawa.end());
-  summ.insert(summ.end(), nauczanie.begin(), nauczanie.end());
-  summ.insert(summ.end(), drzewo.begin(), drzewo.end());
-  summ.insert(summ.end(), ksiazka.begin(), ksiazka.end());
-  summ.insert(summ.end(), kutas.begin(), kutas.end());
-
-  cout<<"elems in ulica: "<<ulica.size()<<endl;
-  cout<<"elems in wawa: "<<wawa.size()<<endl;
-  cout<<"elems in nauczanie: "<<nauczanie.size()<<endl;
-  cout<<"elems in drzewo: "<<drzewo.size()<<endl;
-  cout<<"elems in ksiazka: "<<ksiazka.size()<<endl;
-  cout<<"elems in kutas: "<<kutas.size()<<endl;
-  cout<<"elems in summ: "<<summ.size()<<endl;
+  DiagonalModel model(D_CNT ,training_features[0].getVectSize());
+  model.setName(model_name);
 
   ExpectationMaximalizationAlgo algo;
-  algo.learnModel(ubm, summ, LEARN_ITER);
+  const uint32_t ITERATIONS = 5;
+  algo.learnModel(model,training_features, ITERATIONS );
+  cout<<"Model "<<model.getName() <<" have learned"<<endl;
 
-  cout<<"LLk dla słowa ulica: "<<log(ubm.countLikehoodWithWeight(ulica))<<endl;
-  cout<<"LLk dla słowa pokój: "<<log(ubm.countLikehoodWithWeight(wawa))<<endl;
-  cout<<"LLk dla słowa nauczanie: "<<log(ubm.countLikehoodWithWeight(nauczanie))<<endl;
-  cout<<"LLk dla słowa drzewo: "<<log(ubm.countLikehoodWithWeight(drzewo))<<endl;
-  cout<<"LLk dla słowa ksiazka: "<<log(ubm.countLikehoodWithWeight(ksiazka))<<endl;
-  cout<<"LLk dla słowa kutas: "<<log(ubm.countLikehoodWithWeight(kutas))<<endl;
+  FileModelDao dao;
+  dao.setModelsDir(model_dir);
+  dao.setVectSize(training_features[0].getVectSize());
+  dao.writeModel(model);
+  cout<<"Model "<<model.getName()<<" saved to file"<<endl<<endl;
 
-  cout<<"LLk dla słowa ulica: "<<log(me.countLikehoodWithWeight(ulica))<<endl;
-  cout<<"LLk dla słowa pokój: "<<log(me.countLikehoodWithWeight(wawa))<<endl;
-  cout<<"LLk dla słowa nauczanie: "<<log(me.countLikehoodWithWeight(nauczanie))<<endl;
-  cout<<"LLk dla słowa drzewo: "<<log(me.countLikehoodWithWeight(drzewo))<<endl;
-  cout<<"LLk dla słowa ksiazka: "<<log(me.countLikehoodWithWeight(ksiazka))<<endl;
-  cout<<"LLk dla słowa kutas: "<<log(me.countLikehoodWithWeight(kutas))<<endl;
-
+  cout<<"Likehood for last of training feature vec: "<<model.countLikehoodWithWeight(features_vec)<<endl;
 }
 
+/**
+ *
+ * Mozliwe formaty koment:
+ *
+ * 1. Uczenie modeli - main -l [folder próbek] [nazwa modelu] [pliki z probkami]
+ * 2. Weryfikacja - main -r [folder modeli] [model] [model ubm] [próg] [folder próbek] [próbka do rozpoznania]
+ *
+ * Nazwy plików podajemy bez rozszerzeń.
+ * Rozszerzenia plików z próbkami - .mfcc
+ * Rozszerzenia plików  z modelami - .xml
+ *
+*/
 int main(int argc, char *argv[])
 {
+  try
+  {
+    const std::string model_dir = "models/";
+    if(argc < 4)
+      return 0;
+    if(string(argv[1]) == string("-l"))
+      createModel(argc, argv, model_dir);
+    if(string(argv[1]) == string("-r"))
+      verification(argc, argv);
+    return 0;
+  }
+  catch(alize::Exception &e)
+  {
+    cout<<e.toString().c_str()<<endl;
+  }
+  catch(std::exception &e)
+  {
+    cout<<e.what()<<endl;
+  }
 
 /*
-  uint32_t DISTRIB_CNT = 512, FEATURE_SIZE = 12;
-
-  DiagonalModel speaker_model(DISTRIB_CNT, FEATURE_SIZE), ubm_model(DISTRIB_CNT, FEATURE_SIZE);
-  learnMyModel(speaker_model);
-  learnUbmModel(ubm_model, speaker_model);
+  try{
+  if(argc < 7)
+    return 0;
+  verification(argc, argv);
+  }
+  catch(alize::Exception &e)
+  {
+    cout<<e.toString().c_str()<<endl;
+  }
+  catch(alize::Object &e)
+  {
+    cout<<"alize object"<<endl;
+  }
+  catch(std::exception &e)
+  {
+    cout<<e.what()<<endl;
+  }
 */
+/*
   alize::Config conf, conf_server;
   conf.setParam("saveMixtureFileFormat", "XML");
   conf.setParam("saveMixtureFileExtension", ".xml");
@@ -122,5 +159,5 @@ int main(int argc, char *argv[])
     cout<<e.toString().c_str()<<endl;
   }
 
-
+*/
 }

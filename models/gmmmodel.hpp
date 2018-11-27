@@ -19,6 +19,7 @@ protected:
   alize::DistribType type_;
   std::vector<alize::Feature> features_;
 
+  alize::Config createConfig()const;
   virtual void initDefaultMixture(uint32_t distrib_cnt);
 
   alize::Mixture& getMixtureRef()const;

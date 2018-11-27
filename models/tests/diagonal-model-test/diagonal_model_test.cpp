@@ -438,11 +438,12 @@ BOOST_AUTO_TEST_CASE(correctCopyDataFromMixtureServerIfMixtureServerWasCreatedIn
 {
   DiagonalModel model(DISTRIB_CNT, FEATURE_SIZE);
   RealVector<double> mean(FEATURE_SIZE, FEATURE_SIZE), cov(FEATURE_SIZE, FEATURE_SIZE);
-
+  Feature random_f(FEATURE_SIZE);
   for(uint32_t i=0; i< FEATURE_SIZE; ++i)
   {
     mean[i] = 1;
     cov[i] = 2.0;
+    random_f[i] = 0.5; //cokolwiek
   }
   for(uint32_t i=0;i < DISTRIB_CNT; ++i)
   {
@@ -453,13 +454,16 @@ BOOST_AUTO_TEST_CASE(correctCopyDataFromMixtureServerIfMixtureServerWasCreatedIn
 
   const unique_ptr<MixtureServer>& server_ptr = model.getMixtureServerRef();
   DiagonalModel copy(DISTRIB_CNT, FEATURE_SIZE);
-  BOOST_REQUIRE_NO_THROW(GmmModel::copyDataFromMixtureServer(*server_ptr, copy));
+  BOOST_CHECK_NO_THROW(GmmModel::copyDataFromMixtureServer(*server_ptr, copy));
+
   BOOST_REQUIRE_EQUAL(copy.getDistribCount(), model.getDistribCount());
   for(uint32_t i = 0; i<DISTRIB_CNT; ++i)
   {
     BOOST_CHECK_EQUAL(copy.getDistribMean(i)[0], mean[0]);
     BOOST_CHECK_EQUAL(copy.getDistribCovariance(i)[0], cov[0]);
   }
+  BOOST_CHECK_CLOSE(copy.countLikehoodWithWeight(random_f),
+                          model.countLikehoodWithWeight(random_f), EPS);
 }
 
 
