@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>29</x>
+      <y>9</y>
+      <width>231</width>
+      <height>541</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="2" column="0">
+      <widget class="QToolBox" name="toolBox">
+       <property name="currentIndex">
+        <number>0</number>
+       </property>
+       <widget class="QWidget" name="page">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>229</width>
+          <height>391</height>
+         </rect>
+        </property>
+        <attribute name="label">
+         <string>Page 1</string>
+        </attribute>
+       </widget>
+       <widget class="QWidget" name="page_2">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>0</y>
+          <width>229</width>
+          <height>391</height>
+         </rect>
+        </property>
+        <attribute name="label">
+         <string>Page 2</string>
+        </attribute>
+        <zorder>commandLinkButton_2</zorder>
+       </widget>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QCommandLinkButton" name="commandLinkButton">
+       <property name="text">
+        <string>Next models</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QCommandLinkButton" name="commandLinkButton_2">
+       <property name="text">
+        <string>Previous models</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuPlik">
+    <property name="title">
+     <string>Plik</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuModele">
+    <property name="title">
+     <string>Modele</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuRozpoznawanie">
+    <property name="title">
+     <string>Rozpoznawanie</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuBaza_pr_bek">
+    <property name="title">
+     <string>Baza próbek</string>
+    </property>
+   </widget>
+   <addaction name="menuPlik"/>
+   <addaction name="menuModele"/>
+   <addaction name="menuRozpoznawanie"/>
+   <addaction name="menuBaza_pr_bek"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
