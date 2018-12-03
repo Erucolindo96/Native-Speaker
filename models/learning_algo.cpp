@@ -64,7 +64,7 @@ void ExpectationMaximalizationAlgo::clearAfterIteration()
 
 }
 
-void ExpectationMaximalizationAlgo::countPosterioriPropabilities(const GmmModel &model,
+void ExpectationMaximalizationAlgo::expectationStep(const GmmModel &model,
                                                                  const vector<Feature> &feature_vec)
 {
   double val = 0, curr_f_lk = 0;
@@ -77,6 +77,23 @@ void ExpectationMaximalizationAlgo::countPosterioriPropabilities(const GmmModel 
       val = countOnePropability(model, feature_vec, i_f, i_d, curr_f_lk);
       setPosterioriPropability(i_f, i_d, val);
     }
+  }
+}
+
+void ExpectationMaximalizationAlgo::maximizationStep(GmmModel &model, const std::vector<alize::Feature> &feature_vec)
+{
+
+  const uint32_t DISTRIB_CNT = getDistribCount();
+  RealVector<double> prev_mean(getFeatureCount());
+  for(uint32_t act_d = 0; act_d < DISTRIB_CNT; ++act_d)
+  {
+
+    prev_mean = model.getDistribMean(act_d);
+    model.setDistribWeight(act_d, countWeight(act_d));
+    model.setDistribMean(act_d,countMean(act_d, feature_vec));
+    model.setDistribCovariance(act_d, countDiagonalCovariance(act_d, feature_vec,
+                                                              prev_mean));
+
   }
 }
 
@@ -97,23 +114,8 @@ double ExpectationMaximalizationAlgo::countOnePropability(const GmmModel &model,
 void ExpectationMaximalizationAlgo::performOneIteration(GmmModel &model,
                                                         const std::vector<alize::Feature> &feature_vec)
 {
-  //std::cout<<"perform one iteration"<<std::endl;
-  countPosterioriPropabilities(model, feature_vec);//expectation step
-  //std::cout<<"posteriori propablities counted"<<std::endl;
-  const uint32_t DISTRIB_CNT = getDistribCount();
-  double weight = 0;
-  RealVector<double> mean(getFeatureCount());
-  RealVector<double> covariance(getFeatureCount());
-  for(uint32_t act_d = 0; act_d < DISTRIB_CNT; ++act_d)//maximization step
-  {
-    weight = countWeight(act_d);
-    mean = countMean(act_d, feature_vec);
-    covariance = countDiagonalCovariance(act_d, feature_vec,
-                                         model.getDistribMean(act_d));
-    model.setDistribWeight(act_d, weight);
-    model.setDistribMean(act_d,mean);
-    model.setDistribCovariance(act_d, covariance);
-  }
+  expectationStep(model, feature_vec);
+  maximizationStep(model, feature_vec);
   clearAfterIteration();
 }
 

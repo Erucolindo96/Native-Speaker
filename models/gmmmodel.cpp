@@ -12,6 +12,7 @@ alize::Config GmmModel::createConfig()const
   conf.setParam("mixtureDistribCount", std::to_string(DISTRIB_CNT).c_str());
   conf.setParam("maxLLK", std::to_string(MAX_LLK).c_str());
   conf.setParam("minLLK", std::to_string(MIN_LLK).c_str());
+//  conf.setParam("minCov", "1e-10");
   return conf;
 }
 

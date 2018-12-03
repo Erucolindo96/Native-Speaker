@@ -38,8 +38,10 @@ protected:
 
   void initializePropabilities(uint32_t feature_cnt, uint32_t distrib_cnt);
   void clearAfterIteration();
-  void countPosterioriPropabilities(const GmmModel &model,
+  void expectationStep(const GmmModel &model,
                                   const std::vector<alize::Feature> &feature_vec);
+  void maximizationStep(GmmModel &model, const std::vector<alize::Feature> &feature_vec);
+
   double countOnePropability(const GmmModel &model,
                            const std::vector<alize::Feature> &feature_vec,
                            uint32_t feature_idx, uint32_t distrib_idx,
@@ -58,6 +60,7 @@ protected:
                                                 const alize::RealVector<double> &new_mean)const;
   double avoidZeroDivide(double dividor)const;
   void avoidZeroInCovariance(alize::RealVector<double> &cov)const;
+
 public:
   ExpectationMaximalizationAlgo()=default;
   ExpectationMaximalizationAlgo(const ExpectationMaximalizationAlgo &other)=default;
