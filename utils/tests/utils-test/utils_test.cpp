@@ -82,6 +82,33 @@ BOOST_AUTO_TEST_CASE(getDiagonalOfMatrixIfMatrixIsSquare)
   BOOST_CHECK_CLOSE(diagonal[3], 182.287, eps);
 }
 
+BOOST_AUTO_TEST_CASE(returnTrueIfFileExist)
+{
+  const std::string real_path = "samples/mp3/inwokacja.mp3";
+  BOOST_CHECK(utils::fileExist(real_path));
+}
+
+BOOST_AUTO_TEST_CASE(returnTrueIfDirExist)
+{
+  const std::string real_dir = "samples/mp3";
+  BOOST_CHECK(utils::dirExist(real_dir));
+}
+
+BOOST_AUTO_TEST_CASE(returnFalseIfFileNotExist)
+{
+  const std::string fake_path = "samples/mp3/not_a_file.mp3";
+  BOOST_CHECK(!utils::fileExist(fake_path));
+}
+
+BOOST_AUTO_TEST_CASE(returnFalseIfDirNotExist)
+{
+  const std::string fake_dir = "not_a_dir/";
+  BOOST_CHECK(!utils::dirExist(fake_dir));
+}
+
+
+
+
 
 
 BOOST_AUTO_TEST_SUITE_END()

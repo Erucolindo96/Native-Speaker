@@ -98,11 +98,11 @@ BOOST_AUTO_TEST_CASE(throwFileNotFoundExceptionWhileReadingSampleRateIfFeatureFi
 
 BOOST_AUTO_TEST_CASE(readCorrectFeatureVectFromFileIfDirExistWithSavedFeature)
 {
-  const string FILE = "testing_feature", EXT = ".mfcc";
-  BOOST_REQUIRE(exist(FILE + EXT));
+  const string FILE = "testing_feature", EXT = ".mfcc", DIR = "./samples/mfcc/";
+  BOOST_REQUIRE(exist(DIR + FILE + EXT));
 
   FeatureReader reader;
-  reader.setFeatureDir("./");
+  reader.setFeatureDir(DIR);
 
   vector<Feature> feature_vec;
   BOOST_REQUIRE_NO_THROW(feature_vec = reader.readFile(FILE, EXT));
@@ -120,12 +120,12 @@ BOOST_AUTO_TEST_CASE(readCorrectFeatureVectFromFileIfDirExistWithSavedFeature)
 
 BOOST_AUTO_TEST_CASE(readCorrectFeatureSampleRateFromFileIfDirExistWithSavedFeature)
 {
-  const string FILE = "testing_feature", EXT = ".mfcc";
+  const string FILE = "testing_feature", EXT = ".mfcc", DIR = "./samples/mfcc/";
 
-  BOOST_REQUIRE(exist(FILE + EXT));
+  BOOST_REQUIRE(exist(DIR+FILE + EXT));
 
   FeatureReader reader;
-  reader.setFeatureDir("./");
+  reader.setFeatureDir(DIR);
   const double SAMPLE_RATE_EXPECTED = 100;
   double sample_rate = 0;
   BOOST_REQUIRE_NO_THROW(sample_rate = reader.getSampleRate(FILE, EXT));

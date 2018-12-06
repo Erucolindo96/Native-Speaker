@@ -61,6 +61,20 @@ public:
   {}
 };
 
+class DirNotFound: public std::logic_error
+{
+public:
+  DirNotFound(const std::string &msg): std::logic_error(msg)
+  {}
+};
+
+class CannotConvertToSPro4: public std::logic_error
+{
+public:
+  CannotConvertToSPro4(const std::string &msg): std::logic_error(msg)
+  {}
+};
+
 class NotAModelFile: public std::logic_error
 {
 public:

@@ -50,5 +50,18 @@ namespace utils
   }
 
 
+  bool fileExist(const std::string &path)
+  {
+    ifstream f(path);
+    bool ret = f.good();
+    f.close();
+    return ret;
+  }
+  bool dirExist(const std::string &path)
+  {
+    return utils::fileExist(path);
+  }
+
+
 
 }//namespace utils

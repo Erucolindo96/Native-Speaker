@@ -7,3 +7,4 @@
 #include"features/tests/feature-readers-tests/feature_readers_test.hpp"
 #include"dao/tests/dao-test/dao_test.hpp"
 #include"models/tests/verificator-test/verificator_test.hpp"
+#include"features/tests/mfcc_converter_tests/mfcc_converter_linux_test.hpp"

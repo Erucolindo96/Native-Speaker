@@ -103,7 +103,7 @@ void checkWeights(GmmModel &model,const RealVector<double> &correct_weights)
 }
 
 
-
+/*
 BOOST_AUTO_TEST_SUITE( FileModelDaoTests )
 
 
@@ -275,3 +275,4 @@ BOOST_AUTO_TEST_CASE(readCorrectDiagonalModelFromFileIfModelDirExistWithSavedMod
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+*/

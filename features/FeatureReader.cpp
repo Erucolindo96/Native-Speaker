@@ -27,7 +27,7 @@ FeatureReader::FeatureReader(const std::string &feature_dir)
 
 std::string FeatureReader::getFeatureDir()const
 {
-  return dir_;
+  return dir_ ;
 }
 
 

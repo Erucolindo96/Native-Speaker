@@ -1,0 +1,20 @@
+#/usr/bin/env bash
+source_dir=$1
+source_name=$2
+dest_dir=$3
+dest_name=$4
+
+if [ ! -e $source_dir/$source_name ]
+then
+  exit 4
+fi
+
+if [ ! -e $dest_dir ]
+then
+  exit 8
+fi
+
+
+madplay --left --output=raw:- $source_dir/$source_name | sfbcep -f 11025 - $dest_dir/$dest_name
+	
+

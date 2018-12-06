@@ -26,6 +26,9 @@ namespace utils
    */
   std::pair<uint32_t, uint32_t> getVectSizeAndDistribCnt(const std::string &path_to_mixture);
 
+  bool fileExist(const std::string &path);
+  bool dirExist(const std::string &path);
+
 }//namespace utils
 
 
