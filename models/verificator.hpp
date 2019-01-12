@@ -21,7 +21,10 @@ public:
 
   bool verifyModel(const GmmModel &verified,
                    const std::vector<alize::Feature> &record_features,
-                   const GmmModel &ubm_model);
+                   const GmmModel &ubm_model)const;
+
+  double countLogLikehood(const GmmModel &model,
+                          const std::vector<alize::Feature> &record_features)const;
 
 };
 

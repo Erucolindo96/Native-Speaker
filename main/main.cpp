@@ -37,8 +37,8 @@ void verification(uint32_t argc, char *argv[])
   Verificator v(threshold);
   cout<<"Feature Vec size: "<<f_vec.size()<<endl<<endl;
 
-  cout<<"Log Likehood for model:"<<log(model->countLikehoodWithWeight(f_vec))<<endl;
-  cout<<"Log Likehood for ubm:"<<log(ubm->countLikehoodWithWeight(f_vec))<<endl;
+  cout<<"Log Likehood for model:"<<v.countLogLikehood(*model, f_vec)<<endl;
+  cout<<"Log Likehood for ubm:"<<v.countLogLikehood(*ubm, f_vec)<<endl;
 
   bool is_speaker_voice = v.verifyModel(*model, f_vec, *ubm);
   cout<<"Verificator return: "<<is_speaker_voice<<endl;
@@ -136,22 +136,28 @@ int main(int argc, char *argv[])
   try
   {
     const std::string model_dir = "models/";
-
-    if(string(argv[1]) == string("-l"))
+    if(argc > 1)
     {
-      createModel(argc, argv, model_dir);
-      return 0;
+      if(string(argv[1]) == string("-l"))
+      {
+        createModel(argc, argv, model_dir);
+        return 0;
+      }
+      if(string(argv[1]) == string("-ll"))
+      {
+        learnExistModel(argc, argv, model_dir);
+        return 0;
+      }
+      if(string(argv[1]) == string("-r"))
+      {
+        verification(argc, argv);
+        return 0;
+      }
     }
-    if(string(argv[1]) == string("-ll"))
-    {
-      learnExistModel(argc, argv, model_dir);
-      return 0;
-    }
-    if(string(argv[1]) == string("-r"))
-    {
-      verification(argc, argv);
-      return 0;
-    }
+    QApplication app(argc, argv);
+    MainWindow window;
+    window.show();
+    return app.exec();
   }
   catch(alize::Exception &e)
   {
@@ -161,10 +167,7 @@ int main(int argc, char *argv[])
   {
     cout<<e.what()<<endl;
   }
-  QApplication app(argc, argv);
-  MainWindow window;
-  window.show();
-  return app.exec();
+  return 0;
 /*
   try{
   if(argc < 7)
