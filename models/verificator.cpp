@@ -56,5 +56,6 @@ double Verificator::countLogLikehood(const GmmModel &model,
   {
     llk_model += log(model.countLikehoodWithWeight(*f_ptr));
   }
+  llk_model /= record_features.size(); //normalizacja względem ilości wektorów cech
   return llk_model;
 }
