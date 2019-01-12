@@ -4,6 +4,7 @@
 #define BOOST_TEST_DYN_LINK
 #include<boost/test/unit_test.hpp>
 #include"features/FeatureReader.hpp"
+#include"features/FeatureReaderSilenceCutter.hpp"
 #include"models/diagonal_model.hpp"
 #include <typeinfo>
 #include <random>

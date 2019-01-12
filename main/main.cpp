@@ -4,7 +4,7 @@
 
 #include"models/diagonal_model.hpp"
 #include"models/verificator.hpp"
-#include"features/FeatureReader.hpp"
+#include"features/FeatureReaderSilenceCutter.hpp"
 #include"models/learning_algo.hpp"
 #include"utils/utils.hpp"
 #include"dao/FileModelDao.hpp"
@@ -20,7 +20,7 @@ void verification(uint32_t argc, char *argv[])
   double threshold = stod(argv[5]);
   string f_dir = argv[6], f_file = argv[7], ext = ".mfcc";
 
-  FeatureReader f_reader;
+  FeatureReaderSilenceCutter f_reader;
   f_reader.setFeatureDir(f_dir);
   auto f_vec = f_reader.readFile(f_file, ext);
 
@@ -56,7 +56,7 @@ void learnExistModel(uint32_t  argc,char *argv[],  const string &model_dir)
 {
   string dir_with_mfcc = argv[2], model_name = argv[3];
   vector<Feature> training_features;
-  FeatureReader reader(dir_with_mfcc);
+  FeatureReaderSilenceCutter reader(dir_with_mfcc);
   vector<Feature> features_vec;
   for(uint32_t i = 4; i < argc; ++i)
   {
@@ -91,7 +91,7 @@ void createModel(uint32_t  argc,char *argv[],  const string &model_dir)
   const uint32_t D_CNT = 512;
   string dir_with_mfcc = argv[2], model_name = argv[3];
   vector<Feature> training_features;
-  FeatureReader reader(dir_with_mfcc);
+  FeatureReaderSilenceCutter reader(dir_with_mfcc);
   vector<Feature> features_vec;
   for(uint32_t i = 4; i < argc; ++i)
   {

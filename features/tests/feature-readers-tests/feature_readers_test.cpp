@@ -136,3 +136,26 @@ BOOST_AUTO_TEST_CASE(readCorrectFeatureSampleRateFromFileIfDirExistWithSavedFeat
 
 BOOST_AUTO_TEST_SUITE_END()
 
+BOOST_AUTO_TEST_SUITE( FeatureReaderSilenceCutterTests )
+
+
+BOOST_AUTO_TEST_CASE(CutSilenceFromVectsIfDirExistWithSavedFeature)
+{
+  const string FILE = "testing_feature", EXT = ".mfcc", DIR = "./samples/mfcc/";
+  BOOST_REQUIRE(exist(DIR + FILE + EXT));
+
+  FeatureReaderSilenceCutter reader;
+  reader.setFeatureDir(DIR);
+
+  vector<Feature> feature_vec;
+  BOOST_REQUIRE_NO_THROW(feature_vec = reader.readFile(FILE, EXT));
+  const uint32_t LOG_ENERGY_INDEX = 0;
+  for(uint32_t i = 0 ;i< feature_vec.size(); ++i)
+  {
+    BOOST_CHECK(feature_vec[i][LOG_ENERGY_INDEX] >= reader.MIN_ENERGY);
+  }
+}
+
+BOOST_AUTO_TEST_SUITE_END()
+
+
