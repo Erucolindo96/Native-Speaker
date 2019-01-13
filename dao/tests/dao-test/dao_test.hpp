@@ -11,6 +11,6 @@
 #include"utils/utils.hpp"
 #include<memory>
 #include"exceptions/simple_exceptions.hpp"
-
+#include<QtCore/QDir>
 #endif // DAO_TEST_HPP
 

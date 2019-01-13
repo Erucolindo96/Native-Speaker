@@ -14,7 +14,7 @@ public:
 
   virtual void writeModel(const GmmModel &m)const = 0;
   virtual std::unique_ptr<GmmModel> readModel(const std::string &model_name) = 0;
-
+  virtual std::vector<std::unique_ptr<GmmModel> > readAllModels() = 0;
 
 };
 

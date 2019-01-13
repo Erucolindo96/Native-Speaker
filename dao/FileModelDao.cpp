@@ -99,3 +99,21 @@ std::unique_ptr<GmmModel> FileModelDao::readModel(const std::string &model_name)
     throw FileNotFound(e.toString().c_str());
   }
 }
+
+std::vector<std::unique_ptr<GmmModel> > FileModelDao::readAllModels()
+{
+  QDir models_dir(QString(models_dir_.c_str()));
+  if(!models_dir.exists())
+    throw DirNotFound(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                      + std::string(" - try to read models from unreachable directory"));
+
+  auto models_filename_list = models_dir.entryInfoList(QStringList("*.xml"), QDir::Files, QDir::Name);
+  std::vector<std::unique_ptr<GmmModel>> ret;
+  for(auto filename = models_filename_list.begin();
+      filename != models_filename_list.end(); ++filename)
+  {
+    ret.push_back(std::move(readModel(filename->baseName().toStdString())));
+  }
+
+  return ret;
+}

@@ -103,7 +103,7 @@ void checkWeights(GmmModel &model,const RealVector<double> &correct_weights)
 }
 
 
-/*
+
 BOOST_AUTO_TEST_SUITE( FileModelDaoTests )
 
 
@@ -274,5 +274,48 @@ BOOST_AUTO_TEST_CASE(readCorrectDiagonalModelFromFileIfModelDirExistWithSavedMod
 
 }
 
+
+BOOST_AUTO_TEST_CASE(throwInvalidFeatureSizeWhileReadAllModelsIfModelHaveAnotherVectSizeThanDao)
+{
+  FileModelDao dao;
+  const uint32_t CORRECT_F_SIZE = 12;
+  dao.setModelsDir("models/");
+  dao.setVectSize(CORRECT_F_SIZE - 5);
+
+  std::vector<unique_ptr<GmmModel>> vec;
+  BOOST_CHECK_THROW(vec = dao.readAllModels(), InvalidFeatureSize );
+}
+
+BOOST_AUTO_TEST_CASE(throwDirNotFoundExceptionWhileReadingAllModelsIfModelDirArentExist)
+{
+  FileModelDao dao;
+  dao.setModelsDir("fake_path");
+
+  std::vector<unique_ptr<GmmModel>> vec;
+  BOOST_CHECK_THROW(vec = dao.readAllModels(), DirNotFound);
+
+}
+
+BOOST_AUTO_TEST_CASE(readCorrectlyAllDiagonalModelsFromDirectoryIfModelDirExistWithSavedModelAndVectSizeAndDistribTypeWereSet)
+{
+  QDir models_dir("models");
+  BOOST_REQUIRE(models_dir.exists());
+  const uint32_t FEATURE_SIZE_ACT = 12, MODELS_CNT = 4;
+  FileModelDao dao;
+  dao.setModelsDir("models/");
+  dao.setVectSize(FEATURE_SIZE_ACT);
+
+  std::vector<std::unique_ptr<GmmModel>> models;
+
+  BOOST_REQUIRE_NO_THROW(models = dao.readAllModels());
+  BOOST_REQUIRE_EQUAL(models.size(), MODELS_CNT);
+
+  BOOST_CHECK_EQUAL(models[0]->getName(), "ferus");
+  BOOST_CHECK_EQUAL(models[1]->getName(), "janFigat");
+  BOOST_CHECK_EQUAL(models[2]->getName(), "kasprzak");
+  BOOST_CHECK_EQUAL(models[3]->getName(), "maksymFigat");
+
+
+}
+
 BOOST_AUTO_TEST_SUITE_END()
-*/

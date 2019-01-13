@@ -6,6 +6,7 @@
 #include"exceptions/simple_exceptions.hpp"
 #include"models/diagonal_model.hpp"
 #include<map>
+#include<QtCore/QDir>
 
 
 /**
@@ -47,6 +48,7 @@ public:
   void writeModel(const GmmModel &m)const override;
   std::unique_ptr<GmmModel> readModel(const std::string &model_name)override;
 
+  std::vector<std::unique_ptr<GmmModel> > readAllModels()override;
 
 
 };
