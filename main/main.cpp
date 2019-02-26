@@ -9,54 +9,62 @@
 #include"utils/utils.hpp"
 #include"dao/FileModelDao.hpp"
 #include"main/windows/MainWindow.hpp"
+#include<QtCore/QDir>
 
 using namespace std;
 using namespace alize;
 using namespace utils;
 
-void verification(uint32_t argc, char *argv[])
+/**
+ * @brief verification Funkcja przeprowadzająca weryfikację modelu na podstawie przekazanych do main() parametrów
+ * @param argc argc otrzymywany przez funkcję main()
+ * @param argv argv otrzymywany przez funkcję main()
+ * @return Zwraca zmienną logiczną, mówiąca, czy weryfikacja była pozytywna
+ */
+int verification(uint32_t argc, char *argv[])
 {
-  string model_dir = argv[2], model_name = argv[3], ubm_name = argv[4];
+  string model_dir = argv[2], model_name =argv[3], ubm_name = argv[4];
   double threshold = stod(argv[5]);
-  string f_dir = argv[6], f_file = argv[7], ext = ".mfcc";
+  string f_path = argv[6], ext = "";
 
-  FeatureReaderSilenceCutter f_reader;
-  f_reader.setFeatureDir(f_dir);
-  auto f_vec = f_reader.readFile(f_file, ext);
+  FeatureReader f_reader;
+  f_reader.setFeatureDir("");
+  auto f_vec = f_reader.readFile(f_path, ext);
 
   FileModelDao dao;
   dao.setModelsDir(model_dir);
   dao.setVectSize(f_vec[0].getVectSize());
 
   auto ubm = dao.readModel(ubm_name);
-  cout<<"UBM "<<ubm->getName()<<" readed"<<endl<<endl;
+//  cout<<"UBM "<<ubm->getName()<<" readed"<<endl<<endl;
 
   auto model = dao.readModel(model_name);
-  cout<<"Model "<<model->getName()<<" readed"<<endl<<endl;
+//  cout<<"Model "<<model->getName()<<" readed"<<endl<<endl;
 
   Verificator v(threshold);
-  cout<<"Feature Vec size: "<<f_vec.size()<<endl<<endl;
+//  cout<<"Feature Vec size: "<<f_vec.size()<<endl<<endl;
 
-  cout<<"Log Likehood for model:"<<v.countLogLikehood(*model, f_vec)<<endl;
-  cout<<"Log Likehood for ubm:"<<v.countLogLikehood(*ubm, f_vec)<<endl;
+  cout<<"Log Likehood for model "<<model->getName() <<":"<<v.countLogLikehood(*model, f_vec)<<endl;
+  cout<<"Log Likehood for ubm "<<ubm->getName() <<":"<<v.countLogLikehood(*ubm, f_vec)<<endl;
 
   bool is_speaker_voice = v.verifyModel(*model, f_vec, *ubm);
   cout<<"Verificator return: "<<is_speaker_voice<<endl;
   if(is_speaker_voice)
   {
-    cout<<"This is speaker voice"<<endl;
+//    cout<<"This is speaker voice"<<endl;
   }
   else
   {
-    cout<<"No, this is not a speaker voice"<<endl;
+//    cout<<"No, this is not a speaker voice"<<endl;
   }
+  return is_speaker_voice;
 }
 
 void learnExistModel(uint32_t  argc,char *argv[],  const string &model_dir)
 {
   string dir_with_mfcc = argv[2], model_name = argv[3];
   vector<Feature> training_features;
-  FeatureReaderSilenceCutter reader(dir_with_mfcc);
+  FeatureReader reader(dir_with_mfcc);
   vector<Feature> features_vec;
   for(uint32_t i = 4; i < argc; ++i)
   {
@@ -91,7 +99,7 @@ void createModel(uint32_t  argc,char *argv[],  const string &model_dir)
   const uint32_t D_CNT = 512;
   string dir_with_mfcc = argv[2], model_name = argv[3];
   vector<Feature> training_features;
-  FeatureReaderSilenceCutter reader(dir_with_mfcc);
+  FeatureReader reader(dir_with_mfcc);
   vector<Feature> features_vec;
   for(uint32_t i = 4; i < argc; ++i)
   {
@@ -121,10 +129,10 @@ void createModel(uint32_t  argc,char *argv[],  const string &model_dir)
 
 /**
  *
- * Mozliwe formaty koment:
+ * Mozliwe formaty komend:
  *
  * 1. Uczenie modeli - main -l [folder próbek] [nazwa modelu] [pliki z probkami]
- * 2. Weryfikacja - main -r [folder modeli] [model] [model ubm] [próg] [folder próbek] [próbka do rozpoznania]
+ * 2. Weryfikacja - main -r [folder modeli] [nazwa modelu] [nazwa ubm'a] [próg] [sciezka próbki do rozpoznania]
  * 3. Douczenie - main -ll  [folder próbek] [nazwa modelu] [pliki z probkami]
  * Nazwy plików podajemy bez rozszerzeń.
  * Rozszerzenia plików z próbkami - .mfcc
@@ -150,14 +158,16 @@ int main(int argc, char *argv[])
       }
       if(string(argv[1]) == string("-r"))
       {
-        verification(argc, argv);
-        return 0;
+        return verification(argc, argv);
+
       }
     }
     QApplication app(argc, argv);
     MainWindow window;
     window.show();
     return app.exec();
+
+
   }
   catch(alize::Exception &e)
   {

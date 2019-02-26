@@ -5,7 +5,8 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 LIBS += -L$$PWD/external-libs/lib -lalize -lboost_unit_test_framework
 
 INCLUDEPATH += $$PWD \
-               $$PWD/external-libs/include
+               $$PWD/external-libs/include \
+               /home/erucolindo/Programy/Qt/5.5/gcc/include \
 
 QMAKE_CXXFLAGS += -std=c++14
 
@@ -101,7 +102,12 @@ HEADERS += \
     $$PWD/features/FeatureReader.hpp \
     $$PWD/exceptions/simple_exceptions.hpp \
     $$PWD/models/diagonal_model.hpp \
-    $$PWD/models/verificator.hpp
+    $$PWD/models/verificator.hpp \
+    $$PWD/features/MfccConverter.hpp \
+    $$PWD/configuration/ConfigManager.hpp \
+    $$PWD/features/FeatureReaderSilenceCutter.hpp \
+    $$PWD/models/ModelManager.hpp \
+    $$PWD/utils/Runnable.hpp
 
 SOURCES += \
     $$PWD/utils/utils.cpp \
@@ -110,7 +116,12 @@ SOURCES += \
     $$PWD/models/learning_algo.cpp \
     $$PWD/dao/FileModelDao.cpp \
     $$PWD/features/FeatureReader.cpp \
-    $$PWD/models/verificator.cpp
+    $$PWD/models/verificator.cpp \
+    $$PWD/features/MfccConverter.cpp \
+    $$PWD/configuration/ConfigManager.cpp \
+    $$PWD/features/FeatureReaderSilenceCutter.cpp \
+    $$PWD/models/ModelManager.cpp \
+    $$PWD/utils/Runnable.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a

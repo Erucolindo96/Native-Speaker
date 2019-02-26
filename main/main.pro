@@ -7,7 +7,8 @@ CONFIG += windows
 
 TARGET = main
 SOURCES += main.cpp \
-    windows/MainWindow.cpp
+    windows/MainWindow.cpp \
+    windows/CreateModelWindow.cpp
 #INCLUDEPATH += ../common ..
 #LIBS += -L../common -lcommon
 
@@ -19,8 +20,10 @@ SOURCES += main.cpp \
 #    ../wybormodelu.ui
 
 FORMS += \
-    windows/MainWindow.ui
+    windows/MainWindow.ui \
+    windows/CreateModelWindow.ui
 
 HEADERS += \
-    windows/MainWindow.hpp
+    windows/MainWindow.hpp \
+    windows/CreateModelWindow.hpp
 

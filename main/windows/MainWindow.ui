@@ -32,7 +32,7 @@
        <item>
         <widget class="QToolBox" name="toolBox">
          <property name="currentIndex">
-          <number>1</number>
+          <number>0</number>
          </property>
          <widget class="QWidget" name="page_3">
           <property name="geometry">
@@ -48,41 +48,105 @@
           </attribute>
          </widget>
          <widget class="QWidget" name="page_12">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>342</width>
+            <height>132</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Page</string>
           </attribute>
          </widget>
          <widget class="QWidget" name="page_11">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>342</width>
+            <height>132</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Page</string>
           </attribute>
          </widget>
          <widget class="QWidget" name="page_10">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>342</width>
+            <height>132</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Page</string>
           </attribute>
          </widget>
          <widget class="QWidget" name="page_9">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>342</width>
+            <height>132</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Page</string>
           </attribute>
          </widget>
          <widget class="QWidget" name="page_8">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>342</width>
+            <height>132</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Page</string>
           </attribute>
          </widget>
          <widget class="QWidget" name="page_7">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>342</width>
+            <height>132</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Page</string>
           </attribute>
          </widget>
          <widget class="QWidget" name="page_6">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>342</width>
+            <height>132</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Page</string>
           </attribute>
          </widget>
          <widget class="QWidget" name="page_5">
+          <property name="geometry">
+           <rect>
+            <x>0</x>
+            <y>0</y>
+            <width>342</width>
+            <height>132</height>
+           </rect>
+          </property>
           <attribute name="label">
            <string>Page</string>
           </attribute>
@@ -134,27 +198,50 @@
      <height>27</height>
     </rect>
    </property>
+   <property name="defaultUp">
+    <bool>false</bool>
+   </property>
+   <property name="nativeMenuBar">
+    <bool>true</bool>
+   </property>
    <widget class="QMenu" name="menuPlik">
     <property name="title">
-     <string>Plik</string>
+     <string>File</string>
     </property>
-    <addaction name="actionWczytaj_plik_konfiguracyjny"/>
-    <addaction name="actionZapisz_plik_konfiguracyjny"/>
     <addaction name="separator"/>
+    <addaction name="actionRead_Configuration_File"/>
+    <addaction name="actionSave_Configuration_File"/>
    </widget>
    <widget class="QMenu" name="menuModele">
     <property name="title">
-     <string>Modele</string>
+     <string>Models</string>
     </property>
+    <addaction name="action_CreateModel"/>
+    <addaction name="action_ModelLearning"/>
    </widget>
    <widget class="QMenu" name="menuRozpoznawanie">
     <property name="title">
-     <string>Rozpoznawanie</string>
+     <string>Recognition</string>
     </property>
+    <widget class="QMenu" name="menuWeryfikacja">
+     <property name="title">
+      <string>Verification</string>
+     </property>
+     <addaction name="action_RecordFromFileVerification"/>
+     <addaction name="action_RecordFromMicrophoneVerification"/>
+    </widget>
+    <widget class="QMenu" name="menuIdentyfikacja">
+     <property name="title">
+      <string>Identyfication</string>
+     </property>
+     <addaction name="action_RecordFromFileIdentification"/>
+    </widget>
+    <addaction name="menuWeryfikacja"/>
+    <addaction name="menuIdentyfikacja"/>
    </widget>
    <widget class="QMenu" name="menuBaza_pr_bek">
     <property name="title">
-     <string>Baza próbek</string>
+     <string>Sample Base</string>
     </property>
    </widget>
    <addaction name="menuPlik"/>
@@ -163,14 +250,39 @@
    <addaction name="menuBaza_pr_bek"/>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
-  <action name="actionWczytaj_plik_konfiguracyjny">
+  <action name="action_CreateModel">
    <property name="text">
-    <string>Wczytaj plik konfiguracyjny</string>
+    <string>Model Creation</string>
    </property>
   </action>
-  <action name="actionZapisz_plik_konfiguracyjny">
+  <action name="action_ModelLearning">
    <property name="text">
-    <string>Zapisz plik konfiguracyjny</string>
+    <string>Model Learning</string>
+   </property>
+  </action>
+  <action name="action_RecordFromFileVerification">
+   <property name="text">
+    <string>Record from file</string>
+   </property>
+  </action>
+  <action name="action_RecordFromMicrophoneVerification">
+   <property name="text">
+    <string>Record from microphone</string>
+   </property>
+  </action>
+  <action name="action_RecordFromFileIdentification">
+   <property name="text">
+    <string>Record from file</string>
+   </property>
+  </action>
+  <action name="actionRead_Configuration_File">
+   <property name="text">
+    <string>Read Configuration File</string>
+   </property>
+  </action>
+  <action name="actionSave_Configuration_File">
+   <property name="text">
+    <string>Save Configuration File</string>
    </property>
   </action>
  </widget>
