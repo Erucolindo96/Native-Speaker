@@ -10,7 +10,7 @@ public:
   PARAM_VECT_SIZE = "vectSize", PARAM_FEATURE_FOLDER = "featureFolder";
   ConfigManager()=default;
   ConfigManager(const ConfigManager &other)=default;
-  ConfigManager& operator=(const ConfigManager &other)=default;
+  ConfigManager& operator=(const ConfigManager &other);
   ConfigManager(ConfigManager &&other);
   ConfigManager& operator=(ConfigManager &&other);
 

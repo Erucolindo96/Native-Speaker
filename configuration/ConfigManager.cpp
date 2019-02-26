@@ -1,14 +1,21 @@
 ﻿#include "ConfigManager.hpp"
 
-ConfigManager::ConfigManager(ConfigManager &&other):alize::Config(other)
-{}
 
-ConfigManager& ConfigManager::operator=(ConfigManager &&other)
+ConfigManager& ConfigManager::operator=(const ConfigManager &other)
 {
   if(this == &other)
     return *this;
   alize::Config::operator =(other);
   return *this;
+
+}
+
+ConfigManager::ConfigManager(ConfigManager &&other):alize::Config(other)
+{}
+
+ConfigManager& ConfigManager::operator=(ConfigManager &&other)
+{
+  return operator =(other);
 }
 
 uint32_t ConfigManager::getVectSize()const
