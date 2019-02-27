@@ -8,3 +8,4 @@
 #include"dao/tests/dao-test/dao_test.hpp"
 #include"models/tests/verificator-test/verificator_test.hpp"
 #include"features/tests/mfcc_converter_tests/mfcc_converter_linux_test.hpp"
+#include"configuration/tests/config-manager-test/config_manager_test.hpp"

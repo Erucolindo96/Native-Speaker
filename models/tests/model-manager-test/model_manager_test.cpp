@@ -19,12 +19,11 @@ BOOST_AUTO_TEST_CASE(readCorrectlyAllDiagonalModelsFromDirectoryIfModelDirExistW
   const uint32_t FEATURE_SIZE = 12, MODELS_CNT = 4;
   ConfigManager config;
   config.setVectSize(FEATURE_SIZE);
-  config.setModelFolder(models_dir.dirName().toStdString());
+  config.setModelFolder(models_dir.dirName().toStdString() + "/");
 
   ModelManager manager;
 
   BOOST_REQUIRE_NO_THROW(manager.loadModels(config));
-
   BOOST_REQUIRE_EQUAL(manager.getModelsCnt(), MODELS_CNT);
   BOOST_CHECK_EQUAL(manager[0]->getName(), "ferus");
   BOOST_CHECK_EQUAL(manager[1]->getName(), "janFigat");
@@ -43,7 +42,7 @@ BOOST_AUTO_TEST_CASE( addCorrectlyNewModelToBaseIfModelDirExistInConfig )
       MODELS_CNT = 4;
   ConfigManager config;
   config.setVectSize(FEATURE_SIZE);
-  config.setModelFolder(models_dir.dirName().toStdString());
+  config.setModelFolder(models_dir.dirName().toStdString() + "/");
   std::unique_ptr<GmmModel> new_model_ptr = make_unique<DiagonalModel>
                                             (DISTRIB_CNT, FEATURE_SIZE, "zenon");
   auto files = models_dir.entryInfoList(QStringList("*.xml"), QDir::Files, QDir::Name);
