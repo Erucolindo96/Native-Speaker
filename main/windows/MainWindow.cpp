@@ -53,7 +53,12 @@ void MainWindow::on_actionSave_Configuration_File_triggered()
 
 void MainWindow::on_action_CreateModel_triggered()
 {
-  std::unique_ptr<CreateModelWindow> window = make_unique<CreateModelWindow>();
+  if(!checkConfiguration())
+  {
+    return;
+  }
+  std::unique_ptr<CreateModelWindow> window = make_unique<CreateModelWindow>(this);
+  window->setConfig(conf_);
   connect(window.get(), SIGNAL(accepted()), this, SLOT(saveModelFromCreateModelWindow()));
   window->exec();
 }
@@ -67,5 +72,52 @@ void MainWindow::saveModelFromCreateModelWindow()
     throw std::runtime_error("Sender doesnt known - it must be always CreateModelWindow!");
   }
   models_.addModel(conf_, ptr->getCreatedGmmModel());
-  models_.loadModels(conf_); //TODO - może niepotrzebne, zalezy czy modele sie odwiezaja
+  //models_.loadModels(conf_); //TODO - może niepotrzebne, zalezy czy modele sie odwiezaja
+  cout<<"Model:" <<models_[0]->getName()<<"saved!"<<endl;
+}
+bool MainWindow::checkConfiguration()const
+{
+  /*
+  if(!conf_.haveModelFolder())
+  {
+    QMessageBox::warning(this, "Configuration Error",
+                         "Please insert model dir to configuration",
+                         QMessageBox::Ok);
+    return false;
+  }
+  if(!conf_.haveUbmFolder())
+  {
+    QMessageBox::warning(this, "Configuration Error",
+                         "Please insert Ubm dir to configuration",
+                         QMessageBox::Ok);
+    return false;
+  }
+  if(!conf_.haveVectSize())
+  {
+    QMessageBox::warning(this, "Configuration Error",
+                         "Please insert feature vector size to configuration",
+                        QMessageBox::Ok);
+    return false;
+  }
+  if(!conf_.haveFeatureFolder())
+  {
+    QMessageBox::warning(this, "Configuration Error",
+                         "Please insert dir of aggreging features and records to configuration",
+                          QMessageBox::Ok);
+    return false;
+  }
+*/
+  if(!conf_.haveAllParams())
+  {
+    const std::string msg = std::string("Please insert required parametrs to configuration: ") +
+                      conf_.PARAM_MODEL_DIR.c_str() + ", " +
+                      conf_.PARAM_FEATURE_FOLDER.c_str()+ ", " +
+                      conf_.PARAM_UBM_DIR.c_str()   + ", " +
+                      conf_.PARAM_VECT_SIZE.c_str();
+    QMessageBox::warning(const_cast<MainWindow*>(this),
+                         "Configuration Error",
+                         msg.c_str() ,QMessageBox::Ok);
+    return false;
+  }
+  return true;
 }

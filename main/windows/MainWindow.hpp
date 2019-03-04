@@ -4,6 +4,7 @@
 #include "ui_MainWindow.h"
 #include <alize.h>
 #include<QFileDialog>
+#include<QMessageBox>
 #include"main/windows/CreateModelWindow.hpp"
 #include"features/FeatureReader.hpp"
 #include"features/MfccConverter.hpp"
@@ -17,6 +18,7 @@
 #include<vector>
 #include<thread>
 #include<mutex>
+
 class MainWindow : public QMainWindow
 {
   Q_OBJECT
@@ -48,6 +50,13 @@ protected:
   ModelManager models_;
   std::unique_ptr<LearningAlgo> models_learning_algo_;
 
+  /**
+   * @brief checkConfiguration Sprawdza, czy w programie znajduje się
+   * pełna konfiguracja(wszystkie podstawowe parametry), i w razie braku parametrów
+   * prosi o uzupełnienie brakującego
+   * @return Czy wszystkie niezbędne dla aplikacji parametry są obecne w konfiguracji
+   */
+  bool checkConfiguration()const;
   //std::mutex m_;
 
 };
