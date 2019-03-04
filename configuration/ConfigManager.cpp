@@ -65,3 +65,32 @@ void ConfigManager::save(const alize::FileName &f) const
 {
   alize::Config::save(f);
 }
+
+bool ConfigManager::isEmpty()const
+{
+  //cout<<"Param Count: "<<getParamCount()<<endl;
+  return getParamCount()==0?true:false;
+}
+
+bool ConfigManager::haveUbmFolder()const
+{
+  return existsParam(PARAM_UBM_DIR);
+}
+bool ConfigManager::haveModelFolder()const
+{
+  return existsParam(PARAM_MODEL_DIR);
+}
+bool ConfigManager::haveFeatureFolder()const
+{
+  return existsParam(PARAM_FEATURE_FOLDER);
+}
+bool ConfigManager::haveVectSize()const
+{
+  return existsParam(PARAM_VECT_SIZE);
+}
+bool ConfigManager::haveAllParams()const
+{
+  return haveUbmFolder() && haveModelFolder() && haveFeatureFolder()
+      && haveVectSize();
+}
+

@@ -29,6 +29,15 @@ public:
   void load(const alize::FileName &f);
   void save(const alize::FileName &f) const;
 
+  bool isEmpty()const;
+  bool haveUbmFolder()const;
+  bool haveModelFolder()const;
+  bool haveFeatureFolder()const;
+  bool haveVectSize()const;
+  bool haveAllParams()const;
+
+
+
   virtual ~ConfigManager()=default;
 };
 
