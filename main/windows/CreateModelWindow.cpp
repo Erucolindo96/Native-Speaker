@@ -31,17 +31,18 @@ ConfigManager CreateModelWindow::getConfig()const
 
 void CreateModelWindow::on_create_button_released()
 {
-  //TODO - zrobic walidacje
   const std::map<string, alize::DistribType> DISTRIB_TYPE_MAP
   {
     {ui.comboBox_distrib_type->itemText(0).toStdString(), alize::DistribType_GD},
     {ui.comboBox_distrib_type->itemText(1).toStdString(), alize::DistribType_GF}
   };
+
   auto model_name = ui.textEdit_model_name->document()->firstBlock().text();
   auto distrib_cnt_str = ui.textEdit_distrib_cnt->document()->firstBlock().text();
   auto description = ui.textEdit_description->document()->firstBlock().text();
   alize::DistribType type = DISTRIB_TYPE_MAP.at
                             (ui.comboBox_distrib_type->currentText().toStdString());
+
   if(!reactOnInvalidModelName(model_name) ||
      !reactOnInvalidDescription(description) ||
      !reactOnInvalidDistribCnt(distrib_cnt_str))
