@@ -111,8 +111,8 @@ BOOST_AUTO_TEST_SUITE( FileModelDaoTests )
 BOOST_AUTO_TEST_CASE( getCorrectMixtureSaveDirectoryIfThatWasSetInSetter )
 {
   FileModelDao dao;
-  BOOST_REQUIRE_NO_THROW(dao.setModelsDir("folder"));
-  BOOST_CHECK_EQUAL(dao.getModelsDir(), "folder");
+  BOOST_REQUIRE_NO_THROW(dao.setModelsDir("/home/folder"));
+  BOOST_CHECK_EQUAL(dao.getModelsDir(), "/home/folder");
 }
 
 
@@ -221,7 +221,7 @@ BOOST_AUTO_TEST_CASE(throwInvalidFeatureSizeWhileWriteIfModelHaveAnotherVectSize
 BOOST_AUTO_TEST_CASE(saveDiagonalModelToFileIfModelDirAndVectSizeWasSet)
 {
   FileModelDao dao;
-  dao.setModelsDir("test_dao/");
+  dao.setModelsDir("test_dao");
   dao.setVectSize(FEATURE_SIZE);
   system("[ -e test_dao ] || mkdir test_dao");
 
@@ -238,7 +238,7 @@ BOOST_AUTO_TEST_CASE(saveDiagonalModelToFileIfModelDirAndVectSizeWasSet)
 BOOST_AUTO_TEST_CASE(throwInvalidFeatureSizeWhileReadIfModelHaveAnotherVectSizeThanDao)
 {
   FileModelDao dao;
-  dao.setModelsDir("test_dao/");
+  dao.setModelsDir("test_dao");
   dao.setVectSize(FEATURE_SIZE + 10);
 
   unique_ptr<GmmModel> ptr;
@@ -252,7 +252,7 @@ BOOST_AUTO_TEST_CASE(readCorrectDiagonalModelFromFileIfModelDirExistWithSavedMod
   BOOST_REQUIRE(!not_exist);
 
   FileModelDao dao;
-  dao.setModelsDir("test_dao/");
+  dao.setModelsDir("test_dao");
   dao.setVectSize(FEATURE_SIZE);
 
   std::unique_ptr<GmmModel> model_ptr;
@@ -279,7 +279,7 @@ BOOST_AUTO_TEST_CASE(throwInvalidFeatureSizeWhileReadAllModelsIfModelHaveAnother
 {
   FileModelDao dao;
   const uint32_t CORRECT_F_SIZE = 12;
-  dao.setModelsDir("models/");
+  dao.setModelsDir("models");
   dao.setVectSize(CORRECT_F_SIZE - 5);
 
   std::vector<unique_ptr<GmmModel>> vec;
@@ -298,7 +298,7 @@ BOOST_AUTO_TEST_CASE(throwDirNotFoundExceptionWhileReadingAllModelsIfModelDirAre
 
 BOOST_AUTO_TEST_CASE(readCorrectlyAllDiagonalModelsFromDirectoryIfModelDirExistWithSavedModelAndVectSizeAndDistribTypeWereSet)
 {
-  QDir models_dir("models");
+  QDir models_dir("models/");
   BOOST_REQUIRE(models_dir.exists());
   const uint32_t FEATURE_SIZE_ACT = 12, MODELS_CNT = 4;
   FileModelDao dao;

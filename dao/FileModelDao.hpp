@@ -19,7 +19,7 @@
 class FileModelDao : public ModelDao
 {
 protected:
-  std::string models_dir_;
+  QDir models_dir_;
   uint32_t vect_size_;
 //  alize::DistribType t_;
 

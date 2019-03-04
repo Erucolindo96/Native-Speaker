@@ -11,7 +11,7 @@ alize::Config FileModelDao::createConfig(const std::string &file_name)const
   conf.setParam("saveMixtureServerFileExtension", ext());
   conf.setParam("loadMixtureFileFormat", "XML");
   conf.setParam("loadMixtureFileExtension", ext());
-  conf.setParam("mixtureFilesPath", models_dir_.c_str());
+  conf.setParam("mixtureFilesPath", getModelsDir().c_str());
   conf.setParam("vectSize", std::to_string(vect_size_).c_str());
   return conf;
 }
@@ -54,11 +54,11 @@ void FileModelDao::setVectSize(uint32_t v_size)
 
 std::string FileModelDao::getModelsDir()const
 {
-  return models_dir_;
+  return models_dir_.absolutePath().toStdString() + "/";
 }
 void FileModelDao::setModelsDir(const std::string new_dir)
 {
-  models_dir_ = new_dir;
+  models_dir_ = QString(new_dir.c_str());
 }
 
 void FileModelDao::writeModel(const GmmModel &m)const
@@ -102,12 +102,11 @@ std::unique_ptr<GmmModel> FileModelDao::readModel(const std::string &model_name)
 
 std::vector<std::unique_ptr<GmmModel> > FileModelDao::readAllModels()
 {
-  QDir models_dir(QString(models_dir_.c_str()));
-  if(!models_dir.exists())
+  if(!models_dir_.exists())
     throw DirNotFound(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
                       + std::string(" - try to read models from unreachable directory"));
 
-  auto models_filename_list = models_dir.entryInfoList(QStringList("*.xml"), QDir::Files, QDir::Name);
+  auto models_filename_list = models_dir_.entryInfoList(QStringList("*.xml"), QDir::Files, QDir::Name);
   std::vector<std::unique_ptr<GmmModel>> ret;
   for(auto filename = models_filename_list.begin();
       filename != models_filename_list.end(); ++filename)

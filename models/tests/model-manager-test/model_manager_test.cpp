@@ -19,7 +19,7 @@ BOOST_AUTO_TEST_CASE(readCorrectlyAllDiagonalModelsFromDirectoryIfModelDirExistW
   const uint32_t FEATURE_SIZE = 12, MODELS_CNT = 4;
   ConfigManager config;
   config.setVectSize(FEATURE_SIZE);
-  config.setModelFolder(models_dir.dirName().toStdString() + "/");
+  config.setModelFolder(models_dir.dirName().toStdString());
 
   ModelManager manager;
 
