@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE( getCorrectMixtureSaveDirectoryIfThatWasSetInSetter )
 {
   FileModelDao dao;
   BOOST_REQUIRE_NO_THROW(dao.setModelsDir("/home/folder"));
-  BOOST_CHECK_EQUAL(dao.getModelsDir(), "/home/folder");
+  BOOST_CHECK_EQUAL(dao.getModelsDir(), "/home/folder/");
 }
 
 
@@ -157,7 +157,7 @@ BOOST_AUTO_TEST_CASE(correctMoveContructionOfDaoIfModelsDirAndModelsDirWasSet)
   dao.setVectSize(SIZE);
 
   FileModelDao copy(std::move(dao));
-  BOOST_CHECK_EQUAL(copy.getModelsDir(), "/sciezka/folderu");
+  BOOST_CHECK_EQUAL(copy.getModelsDir(), "/sciezka/folderu/");
   BOOST_CHECK_EQUAL(dao.getVectSize(), SIZE);
 
 }
@@ -172,7 +172,7 @@ BOOST_AUTO_TEST_CASE(correctMoveAssignmentOfDaoIfModelsDirAndModelsDirWasSet)
 
   FileModelDao copy;
   BOOST_REQUIRE_NO_THROW(copy = std::move(dao));
-  BOOST_CHECK_EQUAL(copy.getModelsDir(), "/sciezka/folderu");
+  BOOST_CHECK_EQUAL(copy.getModelsDir(), "/sciezka/folderu/");
   BOOST_CHECK_EQUAL(dao.getVectSize(), SIZE);
 
 }
