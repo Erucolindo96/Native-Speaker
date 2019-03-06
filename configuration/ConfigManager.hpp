@@ -1,13 +1,28 @@
 ﻿#ifndef CONFIGMANAGER_HPP
 #define CONFIGMANAGER_HPP
 #include<alize.h>
+#include<map>
+#include<string>
+#include"exceptions/simple_exceptions.hpp"
+#include<QtCore/QString>
+#include<QtCore/QDir>
+enum ConfigParam
+{
+  VECT_SIZE,
+  MODEL_DIR,
+  UBM_DIR,
+  FEATURE_FOLDER,
+  IS_DEBUG
+};
+
 
 class ConfigManager: protected alize::Config
 {
 
 public:
-  const alize::String PARAM_UBM_DIR = "ubmModelDir", PARAM_MODEL_DIR = "modelDir",
-  PARAM_VECT_SIZE = "vectSize", PARAM_FEATURE_FOLDER = "featureFolder";
+  friend class ConfigValidator;
+  static const std::map<ConfigParam, std::string> VALID_PARAMS_;
+
   ConfigManager()=default;
   ConfigManager(const ConfigManager &other)=default;
   ConfigManager& operator=(const ConfigManager &other);
@@ -36,9 +51,13 @@ public:
   bool haveVectSize()const;
   bool haveAllParams()const;
 
-
+  static std::string PARAM_UBM_DIR();
+  static std::string PARAM_FEATURE_FOLDER();
+  static std::string PARAM_MODEL_DIR();
+  static std::string PARAM_VECT_SIZE();
 
   virtual ~ConfigManager()=default;
+
 };
 
 #endif // CONFIGMANAGER_HPP

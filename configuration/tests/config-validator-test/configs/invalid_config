@@ -1,0 +1,5 @@
+debug true
+vectSize 10
+ubmDir /fake
+featureFolder /path/to/nothing
+

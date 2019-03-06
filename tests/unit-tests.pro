@@ -16,7 +16,8 @@ HEADERS += \
     ../dao/tests/dao-test/dao_test.hpp \
     ../features/tests/mfcc_converter_tests/mfcc_converter_linux_test.hpp \
     ../models/tests/model-manager-test/model_manager_test.hpp \
-    ../configuration/tests/config-manager-test/config_manager_test.hpp
+    ../configuration/tests/config-manager-test/config_manager_test.hpp \
+    ../configuration/tests/config-validator-test/config_validator_test.hpp
 
 SOURCES += \
     main_test.cpp \
@@ -29,4 +30,5 @@ SOURCES += \
     ../dao/tests/dao-test/dao_test.cpp \
     ../features/tests/mfcc_converter_tests/mfcc_converter_linux_test.cpp \
     ../models/tests/model-manager-test/model_manager_test.cpp \
-    ../configuration/tests/config-manager-test/config_manager_test.cpp
+    ../configuration/tests/config-manager-test/config_manager_test.cpp \
+    ../configuration/tests/config-validator-test/config_validator_test.cpp

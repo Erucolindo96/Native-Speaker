@@ -107,7 +107,8 @@ HEADERS += \
     $$PWD/configuration/ConfigManager.hpp \
     $$PWD/features/FeatureReaderSilenceCutter.hpp \
     $$PWD/models/ModelManager.hpp \
-    $$PWD/utils/Runnable.hpp
+    $$PWD/utils/Runnable.hpp \
+    $$PWD/configuration/ConfigValidator.hpp
 
 SOURCES += \
     $$PWD/utils/utils.cpp \
@@ -121,7 +122,8 @@ SOURCES += \
     $$PWD/configuration/ConfigManager.cpp \
     $$PWD/features/FeatureReaderSilenceCutter.cpp \
     $$PWD/models/ModelManager.cpp \
-    $$PWD/utils/Runnable.cpp
+    $$PWD/utils/Runnable.cpp \
+    $$PWD/configuration/ConfigValidator.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a

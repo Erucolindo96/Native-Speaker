@@ -88,5 +88,14 @@ public:
   ModelNameNotDefined(const std::string &msg): std::logic_error(msg)
   {}
 };
+
+class ParamNotValid: public std::logic_error
+{
+public:
+  explicit ParamNotValid(const std::string &msg): std::logic_error(msg)
+  {}
+
+};
+
 #endif // SIMPLE_EXCEPTIONS_HPP
 
