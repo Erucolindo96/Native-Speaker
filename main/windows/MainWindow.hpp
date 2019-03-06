@@ -6,6 +6,7 @@
 #include<QFileDialog>
 #include<QMessageBox>
 #include"main/windows/CreateModelWindow.hpp"
+#include"main/windows/SetParameterWindow.hpp"
 #include"features/FeatureReader.hpp"
 #include"features/MfccConverter.hpp"
 #include"dao/FileModelDao.hpp"
@@ -31,23 +32,29 @@ public:
 
 private slots:
   void on_actionWczytaj_plik_konfiguracyjny_triggered();
-
   void on_actionZapisz_plik_konfiguracyjny_triggered();
-
   void on_actionUtw_rz_model_triggered();
 
   void on_actionRead_Configuration_File_triggered();
-
   void on_actionSave_Configuration_File_triggered();
-
   void on_action_CreateModel_triggered();
+  void on_actionAdd_Configuration_Parameter_triggered();
 
+  /**
+   * @brief saveModelFromCreateModelWindow Zapisuje utworzony przez CreateModelWindow model mówcy.
+   *
+   */
   void saveModelFromCreateModelWindow();
+  /**
+   * @brief saveParamFromSetParameterWindow Zapisuje parametr wprowadzony przez uzytkownika w oknie SetParameterWindow
+   */
+  void saveParamFromSetParameterWindow();
+
+
 
 protected:
   Ui::MainWindow ui_;
   ConfigManager conf_;
-//  std::vector<std::unique_ptr<GmmModel>> models_;
   ModelManager models_;
   std::unique_ptr<LearningAlgo> models_learning_algo_;
 
@@ -58,7 +65,6 @@ protected:
    * @return Czy wszystkie niezbędne dla aplikacji parametry są obecne w konfiguracji
    */
   bool checkConfiguration()const;
-  //std::mutex m_;
 
 };
 

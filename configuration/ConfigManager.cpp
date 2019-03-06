@@ -78,6 +78,12 @@ void ConfigManager::save(const alize::FileName &f) const
   alize::Config::save(f);
 }
 
+void ConfigManager::setParam(const alize::String &name, const alize::String &content)
+{
+  alize::Config::setParam(name, content);
+}
+
+
 bool ConfigManager::isEmpty()const
 {
   //cout<<"Param Count: "<<getParamCount()<<endl;

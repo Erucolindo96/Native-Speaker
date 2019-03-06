@@ -80,50 +80,42 @@ void MainWindow::on_action_CreateModel_triggered()
   window->exec();
 }
 
+void MainWindow::on_actionAdd_Configuration_Parameter_triggered()
+{
+  std::unique_ptr<SetParameterWindow> window = make_unique<SetParameterWindow>(this);
+  connect(window.get(), SIGNAL(accepted()), this, SLOT(saveParamFromSetParameterWindow()));
+  window->exec();
+}
+
+
+
+
+
+
+
 void MainWindow::saveModelFromCreateModelWindow()
 {
-  cout<<"Save Model"<<endl;
   CreateModelWindow* ptr = dynamic_cast<CreateModelWindow*>(QObject::sender());
   if(ptr == nullptr)
   {
     throw std::runtime_error("Sender doesnt known - it must be always CreateModelWindow!");
   }
   models_.addModel(conf_, ptr->getCreatedGmmModel());
-  //models_.loadModels(conf_); //TODO - może niepotrzebne, zalezy czy modele sie odwiezaja
-  cout<<"Model:" <<models_[0]->getName()<<"saved!"<<endl;
 }
+
+void MainWindow::saveParamFromSetParameterWindow()
+{
+  SetParameterWindow *ptr = dynamic_cast<SetParameterWindow*>(QObject::sender());
+  if(ptr == nullptr)
+  {
+    throw std::runtime_error("Sender doesnt known - it must be always CreateModelWindow!");
+  }
+  conf_.setParam(ptr->getParamName().c_str(), ptr->getParamValue().c_str());
+}
+
 bool MainWindow::checkConfiguration()const
 {
-  /*
-  if(!conf_.haveModelFolder())
-  {
-    QMessageBox::warning(this, "Configuration Error",
-                         "Please insert model dir to configuration",
-                         QMessageBox::Ok);
-    return false;
-  }
-  if(!conf_.haveUbmFolder())
-  {
-    QMessageBox::warning(this, "Configuration Error",
-                         "Please insert Ubm dir to configuration",
-                         QMessageBox::Ok);
-    return false;
-  }
-  if(!conf_.haveVectSize())
-  {
-    QMessageBox::warning(this, "Configuration Error",
-                         "Please insert feature vector size to configuration",
-                        QMessageBox::Ok);
-    return false;
-  }
-  if(!conf_.haveFeatureFolder())
-  {
-    QMessageBox::warning(this, "Configuration Error",
-                         "Please insert dir of aggreging features and records to configuration",
-                          QMessageBox::Ok);
-    return false;
-  }
-*/
+
   if(!conf_.haveAllParams())
   {
     const std::string msg = std::string("Please insert required parametrs to configuration: ") +
@@ -138,3 +130,5 @@ bool MainWindow::checkConfiguration()const
   }
   return true;
 }
+
+

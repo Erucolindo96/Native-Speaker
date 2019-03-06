@@ -44,6 +44,8 @@ public:
   void load(const alize::FileName &f);
   void save(const alize::FileName &f) const;
 
+  void setParam(const alize::String &name, const alize::String &content);
+
   bool isEmpty()const;
   bool haveUbmFolder()const;
   bool haveModelFolder()const;

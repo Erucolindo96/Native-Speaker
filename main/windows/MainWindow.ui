@@ -211,6 +211,7 @@
     <addaction name="separator"/>
     <addaction name="actionRead_Configuration_File"/>
     <addaction name="actionSave_Configuration_File"/>
+    <addaction name="actionAdd_Configuration_Parameter"/>
    </widget>
    <widget class="QMenu" name="menuModele">
     <property name="title">
@@ -283,6 +284,11 @@
   <action name="actionSave_Configuration_File">
    <property name="text">
     <string>Save Configuration File</string>
+   </property>
+  </action>
+  <action name="actionAdd_Configuration_Parameter">
+   <property name="text">
+    <string>Add Configuration Parameter</string>
    </property>
   </action>
  </widget>
