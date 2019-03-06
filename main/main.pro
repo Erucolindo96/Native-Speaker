@@ -8,7 +8,8 @@ CONFIG += windows
 TARGET = main
 SOURCES += main.cpp \
     windows/MainWindow.cpp \
-    windows/CreateModelWindow.cpp
+    windows/CreateModelWindow.cpp \
+    windows/SetParameterWindow.cpp
 #INCLUDEPATH += ../common ..
 #LIBS += -L../common -lcommon
 
@@ -21,9 +22,11 @@ SOURCES += main.cpp \
 
 FORMS += \
     windows/MainWindow.ui \
-    windows/CreateModelWindow.ui
+    windows/CreateModelWindow.ui \
+    windows/SetParameterWindow.ui
 
 HEADERS += \
     windows/MainWindow.hpp \
-    windows/CreateModelWindow.hpp
+    windows/CreateModelWindow.hpp \
+    windows/SetParameterWindow.hpp
 

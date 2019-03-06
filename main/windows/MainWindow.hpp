@@ -13,6 +13,7 @@
 #include"models/learning_algo.hpp"
 #include"models/verificator.hpp"
 #include"models/ModelManager.hpp"
+#include"configuration/ConfigValidator.hpp"
 
 #include"configuration/ConfigManager.hpp"
 #include<vector>

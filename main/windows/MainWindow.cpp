@@ -35,8 +35,25 @@ void MainWindow::on_actionRead_Configuration_File_triggered()
   QString filename = QFileDialog::getOpenFileName(this, "", DEF_DIR, FILTER_TYPE);
   if(!filename.isEmpty())
   {
+    ConfigValidator v;
     //lock_guard<mutex> l(m_);
-    conf_.load(filename.toStdString().c_str());
+    try
+    {
+      conf_.load(filename.toStdString().c_str());
+      v.validateConfiguration(conf_);
+    }
+    catch(ParamNotValid e)
+    {
+      QMessageBox::warning(const_cast<MainWindow*>(this),
+                           "Configuration Error",
+                           e.what() ,QMessageBox::Ok);
+    }
+    catch(alize::FileNotFoundException e)
+    {
+      QMessageBox::warning(const_cast<MainWindow*>(this),
+                           "Configuration Error",
+                           "File with loaded config not found." ,QMessageBox::Ok);
+    }
   }
 }
 
@@ -110,10 +127,10 @@ bool MainWindow::checkConfiguration()const
   if(!conf_.haveAllParams())
   {
     const std::string msg = std::string("Please insert required parametrs to configuration: ") +
-                      conf_.PARAM_MODEL_DIR.c_str() + ", " +
-                      conf_.PARAM_FEATURE_FOLDER.c_str()+ ", " +
-                      conf_.PARAM_UBM_DIR.c_str()   + ", " +
-                      conf_.PARAM_VECT_SIZE.c_str();
+                      ConfigManager::PARAM_MODEL_DIR().c_str() + ", " +
+                      ConfigManager::PARAM_FEATURE_FOLDER().c_str()+ ", " +
+                      ConfigManager::PARAM_UBM_DIR().c_str()   + ", " +
+                      ConfigManager::PARAM_VECT_SIZE().c_str();
     QMessageBox::warning(const_cast<MainWindow*>(this),
                          "Configuration Error",
                          msg.c_str() ,QMessageBox::Ok);
