@@ -5,6 +5,7 @@
 #include <alize.h>
 #include<QFileDialog>
 #include<QMessageBox>
+#include<QProgressBar>
 #include"main/windows/CreateModelWindow.hpp"
 #include"main/windows/SetParameterWindow.hpp"
 #include"features/FeatureReader.hpp"

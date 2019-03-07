@@ -5,6 +5,15 @@ MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent)
 {
   ui_.setupUi(this);
+  ui_.models_list->addItem(new QTextEdit(this),"QWidget" );
+  /*
+   * 1. GmmModel będzie dziedziczył z QWidget i zawierał potrzebne okienka do wyświetlania info o modelu
+   * (np. ilość dystrybucji, nazwa itp)
+   * 2. Powstanie nowa klasa, dziedzicząca z ModelManagera, która dodatkowo będzie zarządzać wyświetlaniem modeli w QToolBoxie
+   * Będzie je dodawać, obsługiwać zmianę strony itp.
+   *
+   *
+   */
 }
 
 void MainWindow::on_actionWczytaj_plik_konfiguracyjny_triggered()
@@ -82,7 +91,7 @@ void MainWindow::on_action_CreateModel_triggered()
 
 void MainWindow::on_actionAdd_Configuration_Parameter_triggered()
 {
-  std::unique_ptr<SetParameterWindow> window = make_unique<SetParameterWindow>(this);
+  std::unique_ptr<SetParameterWindow> window = make_unique<SetParameterWindow>(conf_, this);
   connect(window.get(), SIGNAL(accepted()), this, SLOT(saveParamFromSetParameterWindow()));
   window->exec();
 }

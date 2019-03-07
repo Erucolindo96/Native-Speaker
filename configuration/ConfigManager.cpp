@@ -83,6 +83,15 @@ void ConfigManager::setParam(const alize::String &name, const alize::String &con
   alize::Config::setParam(name, content);
 }
 
+std::string ConfigManager::getParam(const alize::String &name) const
+{
+  return alize::Config::getParam(name).c_str();
+}
+
+bool ConfigManager::existsParam(const alize::String &name)const
+{
+  return alize::Config::existsParam(name);
+}
 
 bool ConfigManager::isEmpty()const
 {

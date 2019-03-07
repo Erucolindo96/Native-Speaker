@@ -1,10 +1,13 @@
 ﻿#include "SetParameterWindow.hpp"
 
-SetParameterWindow::SetParameterWindow(QWidget *parent) :
-  QDialog(parent)
+SetParameterWindow::SetParameterWindow(ConfigManager conf, QWidget *parent) :
+  QDialog(parent), conf_(conf)
 {
   ui.setupUi(this);
   initComboBox();
+
+  QString first_param = ui.comboBox_param_name->currentText();
+  setParamValueAtLineEdit(first_param);
 }
 
 std::string SetParameterWindow::getParamName()const
@@ -15,6 +18,17 @@ std::string SetParameterWindow::getParamValue()const
 {
   return value_;
 }
+/*
+void SetParameterWindow::setConfig(const ConfigManager &conf)
+{
+  conf_ = conf;
+}
+
+ConfigManager SetParameterWindow::getConfig()const
+{
+  return conf_;
+}
+*/
 
 void SetParameterWindow::on_save_button_released()
 {
@@ -46,6 +60,13 @@ void SetParameterWindow::on_toolButton_released()
   ui.lineEdit_param_value->insert(path);
 }
 
+
+void SetParameterWindow::on_comboBox_param_name_currentIndexChanged(const QString &arg1)
+{
+  setParamValueAtLineEdit(arg1);
+}
+
+
 void SetParameterWindow::initComboBox()const
 {
   for(auto pair_ptr = ConfigManager::VALID_PARAMS_.cbegin();
@@ -62,4 +83,13 @@ void SetParameterWindow::readParamNameAndValue()
 
 }
 
+void SetParameterWindow::setParamValueAtLineEdit(const QString &param_name)
+{
+  ui.lineEdit_param_value->clear();
+  alize::String param_name_alize = param_name.toStdString().c_str();
+  if(conf_.existsParam(param_name_alize))
+  {
+    ui.lineEdit_param_value->insert(conf_.getParam(param_name_alize).c_str());
+  }
+}
 

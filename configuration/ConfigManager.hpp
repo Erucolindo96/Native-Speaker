@@ -45,6 +45,8 @@ public:
   void save(const alize::FileName &f) const;
 
   void setParam(const alize::String &name, const alize::String &content);
+  std::string getParam(const alize::String &name) const;
+  bool existsParam(const alize::String &name)const;
 
   bool isEmpty()const;
   bool haveUbmFolder()const;
