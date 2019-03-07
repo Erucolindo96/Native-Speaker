@@ -29,14 +29,14 @@
     <property name="spacing">
      <number>6</number>
     </property>
-    <item row="7" column="2">
+    <item row="6" column="2">
      <widget class="QCheckBox" name="checkBox_is_ubm">
       <property name="text">
        <string>model UBM</string>
       </property>
      </widget>
     </item>
-    <item row="5" column="2">
+    <item row="4" column="2">
      <widget class="QComboBox" name="comboBox_distrib_type">
       <item>
        <property name="text">
@@ -50,20 +50,7 @@
       </item>
      </widget>
     </item>
-    <item row="3" column="1">
-     <spacer name="verticalSpacer_10">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="4" column="2">
+    <item row="3" column="2">
      <widget class="QTextEdit" name="textEdit_description"/>
     </item>
     <item row="1" column="0">
@@ -86,10 +73,7 @@
       </property>
      </spacer>
     </item>
-    <item row="2" column="2">
-     <widget class="QTextEdit" name="textEdit_distrib_cnt"/>
-    </item>
-    <item row="10" column="1">
+    <item row="9" column="1">
      <spacer name="verticalSpacer_15">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -102,7 +86,7 @@
       </property>
      </spacer>
     </item>
-    <item row="10" column="2">
+    <item row="9" column="2">
      <spacer name="verticalSpacer_16">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -115,7 +99,7 @@
       </property>
      </spacer>
     </item>
-    <item row="7" column="0">
+    <item row="6" column="0">
      <spacer name="verticalSpacer">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -148,26 +132,14 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="2">
-     <widget class="QTextEdit" name="textEdit_model_name">
-      <property name="font">
-       <font>
-        <pointsize>14</pointsize>
-        <weight>75</weight>
-        <italic>true</italic>
-        <bold>true</bold>
-       </font>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="0">
+    <item row="3" column="0">
      <widget class="QLabel" name="label_description">
       <property name="text">
        <string>Opis</string>
       </property>
      </widget>
     </item>
-    <item row="10" column="0">
+    <item row="9" column="0">
      <spacer name="verticalSpacer_17">
       <property name="orientation">
        <enum>Qt::Vertical</enum>
@@ -180,33 +152,7 @@
       </property>
      </spacer>
     </item>
-    <item row="3" column="2">
-     <spacer name="verticalSpacer_13">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="3" column="0">
-     <spacer name="verticalSpacer_14">
-      <property name="orientation">
-       <enum>Qt::Vertical</enum>
-      </property>
-      <property name="sizeHint" stdset="0">
-       <size>
-        <width>20</width>
-        <height>40</height>
-       </size>
-      </property>
-     </spacer>
-    </item>
-    <item row="5" column="0">
+    <item row="4" column="0">
      <widget class="QLabel" name="label_distrib_type">
       <property name="text">
        <string>Typ dystrybucji: </string>
@@ -225,6 +171,12 @@
        </size>
       </property>
      </spacer>
+    </item>
+    <item row="2" column="2">
+     <widget class="QLineEdit" name="lineEdit_distrib_cnt"/>
+    </item>
+    <item row="1" column="2">
+     <widget class="QLineEdit" name="lineEdit_model_name"/>
     </item>
    </layout>
   </widget>

@@ -37,9 +37,9 @@ void CreateModelWindow::on_create_button_released()
     {ui.comboBox_distrib_type->itemText(1).toStdString(), alize::DistribType_GF}
   };
 
-  auto model_name = ui.textEdit_model_name->document()->firstBlock().text();
-  auto distrib_cnt_str = ui.textEdit_distrib_cnt->document()->firstBlock().text();
-  auto description = ui.textEdit_description->document()->firstBlock().text();
+  auto model_name = ui.lineEdit_model_name->text();//ui.textEdit_model_name->document()->firstBlock().text();
+  auto distrib_cnt_str = ui.lineEdit_distrib_cnt->text();//ui.textEdit_distrib_cnt->document()->firstBlock().text();
+  auto description = ui.textEdit_description->document()->toPlainText();
   alize::DistribType type = DISTRIB_TYPE_MAP.at
                             (ui.comboBox_distrib_type->currentText().toStdString());
 
