@@ -3,7 +3,7 @@
 #include"models/diagonal_model.hpp"
 #include"dao/FileModelDao.hpp"
 #include"configuration/ConfigManager.hpp"
-
+#include<QObject>
 
 /**
  * @brief The ModelManager class Odpowiada za zapisywanie i wczytywanie modeli z pliku
@@ -11,9 +11,11 @@
  * Pozwala dodać i usunąć model z bazy
  */
 
-class ModelManager
+class ModelManager: public QObject
 {
-private:
+  Q_OBJECT
+
+protected:
   std::vector<std::unique_ptr<GmmModel>> models_;
   FileModelDao dao_;
   void saveModelToDatabase(const ConfigManager &config_m,

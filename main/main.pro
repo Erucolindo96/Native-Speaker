@@ -7,9 +7,10 @@ CONFIG += windows
 
 TARGET = main
 SOURCES += main.cpp \
-    windows/MainWindow.cpp \
-    windows/CreateModelWindow.cpp \
-    windows/SetParameterWindow.cpp
+#    windows/MainWindow.cpp \
+#    windows/CreateModelWindow.cpp \
+#    windows/SetParameterWindow.cpp \
+#    windows/subcontrollers/ModelController.cpp
 #INCLUDEPATH += ../common ..
 #LIBS += -L../common -lcommon
 
@@ -21,12 +22,13 @@ SOURCES += main.cpp \
 #    ../wybormodelu.ui
 
 FORMS += \
-    windows/MainWindow.ui \
-    windows/CreateModelWindow.ui \
-    windows/SetParameterWindow.ui
+#    windows/MainWindow.ui \
+#    windows/CreateModelWindow.ui \
+#    windows/SetParameterWindow.ui
 
 HEADERS += \
-    windows/MainWindow.hpp \
-    windows/CreateModelWindow.hpp \
-    windows/SetParameterWindow.hpp
+#    windows/MainWindow.hpp \
+#    windows/CreateModelWindow.hpp \
+#    windows/SetParameterWindow.hpp \
+#    windows/subcontrollers/ModelController.hpp
 

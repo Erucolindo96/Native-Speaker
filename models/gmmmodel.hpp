@@ -8,10 +8,11 @@
 #include "models/learning_algo.hpp"
 #include"exceptions/simple_exceptions.hpp"
 
+
 class GmmModel
 {
-protected:
 
+protected:
 
   const uint32_t DISTRIB_CNT, FEATURE_SIZE;
   const double MAX_LLK = 100.0, MIN_LLK = -100.0;

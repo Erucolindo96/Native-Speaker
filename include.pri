@@ -4,6 +4,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 LIBS += -L$$PWD/external-libs/lib -lalize -lboost_unit_test_framework
 
+CONFIG += qt
 INCLUDEPATH += $$PWD \
                $$PWD/external-libs/include \
                /home/erucolindo/Programy/Qt/5.5/gcc/include \
@@ -108,7 +109,12 @@ HEADERS += \
     $$PWD/features/FeatureReaderSilenceCutter.hpp \
     $$PWD/models/ModelManager.hpp \
     $$PWD/utils/Runnable.hpp \
-    $$PWD/configuration/ConfigValidator.hpp
+    $$PWD/configuration/ConfigValidator.hpp \
+    $$PWD/windows/CreateModelWindow.hpp \
+    $$PWD/windows/MainWindow.hpp \
+    $$PWD/windows/SetParameterWindow.hpp \
+    $$PWD/windows/subcontrollers/ModelController.hpp
+
 
 SOURCES += \
     $$PWD/utils/utils.cpp \
@@ -123,10 +129,28 @@ SOURCES += \
     $$PWD/features/FeatureReaderSilenceCutter.cpp \
     $$PWD/models/ModelManager.cpp \
     $$PWD/utils/Runnable.cpp \
-    $$PWD/configuration/ConfigValidator.cpp
+    $$PWD/configuration/ConfigValidator.cpp \
+    $$PWD/windows/CreateModelWindow.cpp \
+    $$PWD/windows/MainWindow.cpp \
+    $$PWD/windows/SetParameterWindow.cpp \
+    $$PWD/windows/subcontrollers/ModelController.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a
+
+
+FORMS += \
+    $$PWD/models/GmmModelWidget.ui \
+    $$PWD/windows/CreateModelWindow.ui \
+    $$PWD/windows/MainWindow.ui \
+    $$PWD/windows/SetParameterWindow.ui
+
+
+HEADERS += \
+    $$PWD/models/GmmModelWidget.hpp
+
+SOURCES += \
+    $$PWD/models/GmmModelWidget.cpp
 
 
 
