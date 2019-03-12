@@ -137,8 +137,21 @@ BOOST_AUTO_TEST_CASE( printCorrectWidgetsCountAtToolBoxAfterRefresh )
   BOOST_CHECK_EQUAL(controller.getActPage(), 0);
   BOOST_CHECK_EQUAL(box.count(),MODELS_CNT);
 
+}
+
+BOOST_AUTO_TEST_CASE( noThrowIfModelsCntIsZero )
+{
+  QToolBox box;
+  const uint32_t MODELS_CNT = 0, MODELS_AT_PAGE = 4;
+  ModelController controller(&box, MODELS_AT_PAGE);
+
+  BOOST_REQUIRE_NO_THROW(controller.refreshDisplayedModels());
+  BOOST_CHECK_EQUAL(controller.getModelsCnt(), MODELS_CNT);
+  BOOST_CHECK_EQUAL(controller.getActPage(), 0);
+  BOOST_CHECK_EQUAL(box.count(),MODELS_CNT);
 
 }
+
 
 
 
