@@ -8,7 +8,7 @@
 #include"models/learning_algo.hpp"
 #include"utils/utils.hpp"
 #include"dao/FileModelDao.hpp"
-#include"main/windows/MainWindow.hpp"
+#include"windows/MainWindow.hpp"
 #include<QtCore/QDir>
 
 using namespace std;
