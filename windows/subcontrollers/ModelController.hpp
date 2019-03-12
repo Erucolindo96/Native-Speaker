@@ -27,6 +27,7 @@ public:
   void setToolBoxPtr(QToolBox *ptr);
 
   uint32_t getActPage()const;
+  void removeToolBoxItems();
 
 public slots:
   void refreshDisplayedModels();
@@ -39,7 +40,7 @@ protected:
   QToolBox *toolbox_ptr_;
 
   void normalizeActPage();
-  void removeToolBoxItems();
+
 /*
   std::pair<uint32_t, uint32_t> getIndexFirstAndLastModelAtPage(uint32_t act_page)const;
 */

@@ -16,6 +16,14 @@ uint32_t ModelController::getActPage()const
   return act_page_;
 }
 
+void ModelController::removeToolBoxItems()
+{
+  while(toolbox_ptr_->count() != 0)
+  {
+    toolbox_ptr_->removeItem(0);
+  }
+}
+
 void ModelController::refreshDisplayedModels()
 {
   normalizeActPage();
@@ -61,15 +69,7 @@ void ModelController::normalizeActPage()
   }
 }
 
-void ModelController::removeToolBoxItems()
-{
-  cout<<toolbox_ptr_<<endl;
-  cout<<toolbox_ptr_->currentIndex();
-  while(toolbox_ptr_->count() != 0)
-  {
-    toolbox_ptr_->removeItem(0);
-  }
-}
+
 /*
 std::pair<uint32_t, uint32_t> ModelController::getIndexFirstAndLastModelAtPage(
     uint32_t act_page)const

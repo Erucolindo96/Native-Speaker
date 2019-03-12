@@ -89,6 +89,13 @@
    </layout>
   </widget>
  </widget>
+ <tabstops>
+  <tabstop>comboBox_param_name</tabstop>
+  <tabstop>lineEdit_param_value</tabstop>
+  <tabstop>toolButton</tabstop>
+  <tabstop>cancel_button</tabstop>
+  <tabstop>save_button</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

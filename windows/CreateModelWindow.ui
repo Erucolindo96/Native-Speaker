@@ -173,10 +173,21 @@
      </spacer>
     </item>
     <item row="2" column="2">
-     <widget class="QLineEdit" name="lineEdit_distrib_cnt"/>
+     <widget class="QLineEdit" name="lineEdit_distrib_cnt">
+      <property name="maxLength">
+       <number>10</number>
+      </property>
+     </widget>
     </item>
     <item row="1" column="2">
-     <widget class="QLineEdit" name="lineEdit_model_name"/>
+     <widget class="QLineEdit" name="lineEdit_model_name">
+      <property name="maxLength">
+       <number>100</number>
+      </property>
+      <property name="dragEnabled">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>
@@ -218,6 +229,15 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>lineEdit_model_name</tabstop>
+  <tabstop>lineEdit_distrib_cnt</tabstop>
+  <tabstop>textEdit_description</tabstop>
+  <tabstop>comboBox_distrib_type</tabstop>
+  <tabstop>checkBox_is_ubm</tabstop>
+  <tabstop>cancell_button</tabstop>
+  <tabstop>create_button</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

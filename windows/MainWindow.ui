@@ -19,22 +19,22 @@
      <rect>
       <x>10</x>
       <y>440</y>
-      <width>321</width>
+      <width>344</width>
       <height>41</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <widget class="QCommandLinkButton" name="commandLinkButton_next_models">
+      <widget class="QCommandLinkButton" name="commandLinkButton_prev_models">
        <property name="text">
-        <string>Next Page</string>
+        <string>Prev Page</string>
        </property>
       </widget>
      </item>
      <item>
-      <widget class="QCommandLinkButton" name="commandLinkButton_prev_models">
+      <widget class="QCommandLinkButton" name="commandLinkButton_next_models">
        <property name="text">
-        <string>Prev Page</string>
+        <string>Next Page</string>
        </property>
       </widget>
      </item>
@@ -79,32 +79,14 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
-    <widget class="QWidget" name="page">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>321</width>
-       <height>299</height>
-      </rect>
-     </property>
+    <property name="tabSpacing">
+     <number>6</number>
+    </property>
+    <widget class="QWidget" name="page1">
      <attribute name="label">
       <string>Page</string>
-     </attribute>
-    </widget>
-    <widget class="QWidget" name="page_4">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>0</y>
-       <width>321</width>
-       <height>359</height>
-      </rect>
-     </property>
-     <attribute name="label">
-      <string>Page 2</string>
      </attribute>
     </widget>
    </widget>
@@ -212,6 +194,12 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>commandLinkButton_prev_models</tabstop>
+  <tabstop>commandLinkButton_next_models</tabstop>
+  <tabstop>toolButton_refresh</tabstop>
+  <tabstop>lineEdit_act_page</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

@@ -5,21 +5,14 @@ MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),models_(nullptr, MODELS_ON_PAGE)
 {
   initMainWindow();
-  cout<<ui_.models_list->count()<<endl;
-  /*
-   * 1. GmmModel będzie dziedziczył z QWidget i zawierał potrzebne okienka do wyświetlania info o modelu
-   * (np. ilość dystrybucji, nazwa itp)
-   * 2. Powstanie nowa klasa, dziedzicząca z ModelManagera, która dodatkowo będzie zarządzać wyświetlaniem modeli w QToolBoxie
-   * Będzie je dodawać, obsługiwać zmianę strony itp.
-   *
-   *
-   */
+
 }
 
 void MainWindow::initMainWindow()
 {
   ui_.setupUi(this);
   models_.setToolBoxPtr(ui_.models_list);
+  models_.removeToolBoxItems();
 }
 
 void MainWindow::on_actionWczytaj_plik_konfiguracyjny_triggered()
