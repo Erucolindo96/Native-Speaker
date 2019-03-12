@@ -6,15 +6,15 @@
 #include<QFileDialog>
 #include<QMessageBox>
 #include<QProgressBar>
-#include"main/windows/CreateModelWindow.hpp"
-#include"main/windows/SetParameterWindow.hpp"
+#include"windows/CreateModelWindow.hpp"
+#include"windows/SetParameterWindow.hpp"
 #include"features/FeatureReader.hpp"
 #include"features/MfccConverter.hpp"
 #include"dao/FileModelDao.hpp"
 #include"models/diagonal_model.hpp"
 #include"models/learning_algo.hpp"
 #include"models/verificator.hpp"
-#include"models/ModelManager.hpp"
+#include"windows/subcontrollers/ModelController.hpp"
 #include"configuration/ConfigValidator.hpp"
 
 #include"configuration/ConfigManager.hpp"
@@ -32,6 +32,7 @@ public:
 
 
 private slots:
+  void initMainWindow();
   void on_actionWczytaj_plik_konfiguracyjny_triggered();
   void on_actionZapisz_plik_konfiguracyjny_triggered();
   void on_actionUtw_rz_model_triggered();
@@ -53,10 +54,19 @@ private slots:
 
 
 
+
+
+  void on_toolButton_refresh_released();
+
+  void on_commandLinkButton_next_models_released();
+
+  void on_commandLinkButton_prev_models_released();
+
 protected:
+  const int32_t MODELS_ON_PAGE =5 ;
   Ui::MainWindow ui_;
   ConfigManager conf_;
-  ModelManager models_;
+  ModelController models_;
   std::unique_ptr<LearningAlgo> models_learning_algo_;
 
   /**
@@ -66,6 +76,8 @@ protected:
    * @return Czy wszystkie niezbędne dla aplikacji parametry są obecne w konfiguracji
    */
   bool checkConfiguration()const;
+
+  void actualizePage();
 
 };
 

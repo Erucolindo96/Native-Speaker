@@ -18,7 +18,7 @@ class ModelController : public ModelManager
   Q_OBJECT
 
 public:
-  ModelController(QToolBox *ptr = nullptr, const uint32_t models_on_page = 10);
+  ModelController(QToolBox *ptr = nullptr, const int32_t models_on_page = 10);
   ModelController(const ModelController &other) = default;
   ModelController& operator=(const ModelController &other) = default;
   ModelController(ModelController &&other) = default;

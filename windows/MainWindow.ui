@@ -14,179 +14,99 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="verticalLayoutWidget">
+   <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>30</x>
-      <y>24</y>
-      <width>346</width>
-      <height>491</height>
+      <x>10</x>
+      <y>440</y>
+      <width>321</width>
+      <height>41</height>
      </rect>
     </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
+    <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
-      <layout class="QVBoxLayout" name="verticalLayout_3">
-       <property name="sizeConstraint">
-        <enum>QLayout::SetNoConstraint</enum>
+      <widget class="QCommandLinkButton" name="commandLinkButton_next_models">
+       <property name="text">
+        <string>Next Page</string>
        </property>
-       <item>
-        <widget class="QToolBox" name="models_list">
-         <property name="currentIndex">
-          <number>9</number>
-         </property>
-         <widget class="QWidget" name="page_3">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>342</width>
-            <height>132</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Page 1</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="page_12">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>342</width>
-            <height>132</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Page</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="page_11">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>342</width>
-            <height>132</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Page</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="page_10">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>342</width>
-            <height>132</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Page</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="page_9">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>342</width>
-            <height>132</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Page</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="page_8">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>342</width>
-            <height>132</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Page</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="page_7">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>342</width>
-            <height>132</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Page</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="page_6">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>342</width>
-            <height>132</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Page</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="page_5">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>342</width>
-            <height>132</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Page</string>
-          </attribute>
-         </widget>
-         <widget class="QWidget" name="page_4">
-          <property name="geometry">
-           <rect>
-            <x>0</x>
-            <y>0</y>
-            <width>342</width>
-            <height>132</height>
-           </rect>
-          </property>
-          <attribute name="label">
-           <string>Page 2</string>
-          </attribute>
-         </widget>
-        </widget>
-       </item>
-      </layout>
+      </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <item>
-        <widget class="QCommandLinkButton" name="commandLinkButton_prev_models">
-         <property name="text">
-          <string>Previous Models</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QCommandLinkButton" name="commandLinkButton_next_models">
-         <property name="text">
-          <string>Next Models</string>
-         </property>
-        </widget>
-       </item>
-      </layout>
+      <widget class="QCommandLinkButton" name="commandLinkButton_prev_models">
+       <property name="text">
+        <string>Prev Page</string>
+       </property>
+      </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QWidget" name="horizontalLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>480</y>
+      <width>101</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QToolButton" name="toolButton_refresh">
+       <property name="text">
+        <string>...</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLineEdit" name="lineEdit_act_page">
+       <property name="enabled">
+        <bool>true</bool>
+       </property>
+       <property name="readOnly">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QToolBox" name="models_list">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>10</y>
+      <width>321</width>
+      <height>421</height>
+     </rect>
+    </property>
+    <property name="currentIndex">
+     <number>1</number>
+    </property>
+    <widget class="QWidget" name="page">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>321</width>
+       <height>299</height>
+      </rect>
+     </property>
+     <attribute name="label">
+      <string>Page</string>
+     </attribute>
+    </widget>
+    <widget class="QWidget" name="page_4">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>321</width>
+       <height>359</height>
+      </rect>
+     </property>
+     <attribute name="label">
+      <string>Page 2</string>
+     </attribute>
+    </widget>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -2,10 +2,10 @@
 using namespace alize;
 using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
-  QMainWindow(parent)
+  QMainWindow(parent),models_(nullptr, MODELS_ON_PAGE)
 {
-  ui_.setupUi(this);
-  ui_.models_list->addItem(new QTextEdit(this),"QWidget" );
+  initMainWindow();
+  cout<<ui_.models_list->count()<<endl;
   /*
    * 1. GmmModel będzie dziedziczył z QWidget i zawierał potrzebne okienka do wyświetlania info o modelu
    * (np. ilość dystrybucji, nazwa itp)
@@ -14,6 +14,12 @@ MainWindow::MainWindow(QWidget *parent) :
    *
    *
    */
+}
+
+void MainWindow::initMainWindow()
+{
+  ui_.setupUi(this);
+  models_.setToolBoxPtr(ui_.models_list);
 }
 
 void MainWindow::on_actionWczytaj_plik_konfiguracyjny_triggered()
@@ -141,3 +147,37 @@ bool MainWindow::checkConfiguration()const
 }
 
 
+
+void MainWindow::on_toolButton_refresh_released()
+{
+    if(checkConfiguration())
+    {
+      models_.loadModels(conf_);
+      models_.refreshDisplayedModels();
+      actualizePage();
+    }
+}
+
+void MainWindow::actualizePage()
+{
+  QString page = QString::number(models_.getActPage());
+  ui_.lineEdit_act_page->setText(page);
+}
+
+void MainWindow::on_commandLinkButton_next_models_released()
+{
+  if(checkConfiguration())
+  {
+    models_.nextPage();
+    actualizePage();
+  }
+}
+
+void MainWindow::on_commandLinkButton_prev_models_released()
+{
+  if(checkConfiguration())
+  {
+    models_.prevPage();
+    actualizePage();
+  }
+}

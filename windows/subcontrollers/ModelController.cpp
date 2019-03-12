@@ -1,6 +1,6 @@
 ﻿#include "ModelController.hpp"
 
-ModelController::ModelController(QToolBox *ptr, const uint32_t models_on_page):
+ModelController::ModelController(QToolBox *ptr, const int32_t models_on_page):
   ModelManager::ModelManager(), MODELS_ON_PAGE(models_on_page), act_page_(0),
   toolbox_ptr_(ptr)
 {}
@@ -63,6 +63,8 @@ void ModelController::normalizeActPage()
 
 void ModelController::removeToolBoxItems()
 {
+  cout<<toolbox_ptr_<<endl;
+  cout<<toolbox_ptr_->currentIndex();
   while(toolbox_ptr_->count() != 0)
   {
     toolbox_ptr_->removeItem(0);
