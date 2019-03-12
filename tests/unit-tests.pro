@@ -17,7 +17,8 @@ HEADERS += \
     ../features/tests/mfcc_converter_tests/mfcc_converter_linux_test.hpp \
     ../models/tests/model-manager-test/model_manager_test.hpp \
     ../configuration/tests/config-manager-test/config_manager_test.hpp \
-    ../configuration/tests/config-validator-test/config_validator_test.hpp
+    ../configuration/tests/config-validator-test/config_validator_test.hpp \
+    ../windows/subcontrollers/tests/model_controller_test/model_controller_test.hpp
 
 SOURCES += \
     main_test.cpp \
@@ -31,4 +32,5 @@ SOURCES += \
     ../features/tests/mfcc_converter_tests/mfcc_converter_linux_test.cpp \
     ../models/tests/model-manager-test/model_manager_test.cpp \
     ../configuration/tests/config-manager-test/config_manager_test.cpp \
-    ../configuration/tests/config-validator-test/config_validator_test.cpp
+    ../configuration/tests/config-validator-test/config_validator_test.cpp \
+    ../windows/subcontrollers/tests/model_controller_test/model_controller_test.cpp

@@ -3,6 +3,7 @@
 #include<QToolBox>
 #include"models/ModelManager.hpp"
 #include<tuple>
+#include"models/GmmModelWidget.hpp"
 
 //class QToolBox;
 
@@ -17,7 +18,7 @@ class ModelController : public ModelManager
   Q_OBJECT
 
 public:
-  ModelController(QToolBox *ptr = nullptr);
+  ModelController(QToolBox *ptr = nullptr, const uint32_t models_on_page = 10);
   ModelController(const ModelController &other) = default;
   ModelController& operator=(const ModelController &other) = default;
   ModelController(ModelController &&other) = default;
@@ -25,6 +26,7 @@ public:
 
   void setToolBoxPtr(QToolBox *ptr);
 
+  uint32_t getActPage()const;
 
 public slots:
   void refreshDisplayedModels();
@@ -32,8 +34,8 @@ public slots:
   void prevPage();
 
 protected:
-  const uint32_t MODELS_ON_PAGE = 10, MIN_PAGE = 1;
-  uint32_t act_page_;
+  const int32_t MODELS_ON_PAGE, MIN_PAGE = 0;
+  int32_t act_page_;
   QToolBox *toolbox_ptr_;
 
   void normalizeActPage();
@@ -41,7 +43,7 @@ protected:
 /*
   std::pair<uint32_t, uint32_t> getIndexFirstAndLastModelAtPage(uint32_t act_page)const;
 */
-  uint32_t MAX_PAGE()const;
+  int32_t MAX_PAGE()const;
 
 
 };

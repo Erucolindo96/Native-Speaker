@@ -1,7 +1,8 @@
 ﻿#include "ModelController.hpp"
 
-ModelController::ModelController(QToolBox *ptr):
-  ModelManager::ModelManager(), toolbox_ptr_(ptr)
+ModelController::ModelController(QToolBox *ptr, const uint32_t models_on_page):
+  ModelManager::ModelManager(), MODELS_ON_PAGE(models_on_page), act_page_(0),
+  toolbox_ptr_(ptr)
 {}
 
 void ModelController::setToolBoxPtr(QToolBox *ptr)
@@ -9,16 +10,22 @@ void ModelController::setToolBoxPtr(QToolBox *ptr)
   toolbox_ptr_ = ptr;
 }
 
+
+uint32_t ModelController::getActPage()const
+{
+  return act_page_;
+}
+
 void ModelController::refreshDisplayedModels()
 {
   normalizeActPage();
   removeToolBoxItems();
-  auto first_m = models_.cbegin(), last_m=models_.cbegin()+MODELS_ON_PAGE-1;
-  first_m+=(act_page_-1)*MODELS_ON_PAGE;
-  last_m+=(act_page_-1)*MODELS_ON_PAGE;
-  for(auto i = first_m; i != last_m; ++i)
+
+  uint32_t first_m = (act_page_)*MODELS_ON_PAGE;
+  uint32_t last_m = (act_page_+1)*MODELS_ON_PAGE-1;
+  for(auto i = first_m; (i <= last_m)&&(i<models_.size()); ++i)
   {
-    GmmModel& model = *(*i);
+    GmmModel& model = *models_.at(i);
     toolbox_ptr_->addItem(new GmmModelWidget(toolbox_ptr_, model.getName().c_str(),
                                              model.getDistribCount(),
                                              model.getType(), ""),model.getName().c_str() );
@@ -28,7 +35,7 @@ void ModelController::refreshDisplayedModels()
 
 void ModelController::nextPage()
 {
-  if(act_page_+1 > MAX_PAGE())
+  if(act_page_ + 1 > MAX_PAGE())
   {
     return;
   }
@@ -56,9 +63,9 @@ void ModelController::normalizeActPage()
 
 void ModelController::removeToolBoxItems()
 {
-  for(int32_t i = 0; i < toolbox_ptr_->count(); ++i)
+  while(toolbox_ptr_->count() != 0)
   {
-    toolbox_ptr_->removeItem(i);
+    toolbox_ptr_->removeItem(0);
   }
 }
 /*
@@ -76,8 +83,9 @@ std::pair<uint32_t, uint32_t> ModelController::getIndexFirstAndLastModelAtPage(
   return std::pair<uint32_t, uint32_t>(first_elem, last_elem);
 }
 */
-uint32_t ModelController::MAX_PAGE()const
+int32_t ModelController::MAX_PAGE()const
 {
-  return (models_.size()/MODELS_ON_PAGE) + 1;
+  uint32_t max_page = (models_.size()/MODELS_ON_PAGE);
+  return max_page ;
 }
 
