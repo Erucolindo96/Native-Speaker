@@ -20,7 +20,9 @@ void ModelController::removeToolBoxItems()
 {
   while(toolbox_ptr_->count() != 0)
   {
+    QWidget* to_delete = toolbox_ptr_->widget(0);
     toolbox_ptr_->removeItem(0);
+    delete to_delete;
   }
 }
 
@@ -34,7 +36,7 @@ void ModelController::refreshDisplayedModels()
   for(auto i = first_m; (i <= last_m)&&(i<models_.size()); ++i)
   {
     GmmModel& model = *models_.at(i);
-    toolbox_ptr_->addItem(new GmmModelWidget(toolbox_ptr_, model.getName().c_str(),
+    toolbox_ptr_->addItem(new GmmModelWidget(nullptr, model.getName().c_str(),
                                              model.getDistribCount(),
                                              model.getType(), ""),model.getName().c_str() );
   }
