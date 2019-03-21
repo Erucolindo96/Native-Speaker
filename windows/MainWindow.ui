@@ -85,8 +85,16 @@
      <number>6</number>
     </property>
     <widget class="QWidget" name="page1">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>321</width>
+       <height>390</height>
+      </rect>
+     </property>
      <attribute name="label">
-      <string>Page</string>
+      <string/>
      </attribute>
     </widget>
    </widget>

@@ -16,7 +16,7 @@
 #include"models/verificator.hpp"
 #include"windows/subcontrollers/ModelController.hpp"
 #include"configuration/ConfigValidator.hpp"
-
+#include"windows/LearningModelWindow.hpp"
 #include"configuration/ConfigManager.hpp"
 #include<vector>
 #include<thread>
@@ -33,9 +33,6 @@ public:
 
 private slots:
   void initMainWindow();
-  void on_actionWczytaj_plik_konfiguracyjny_triggered();
-  void on_actionZapisz_plik_konfiguracyjny_triggered();
-  void on_actionUtw_rz_model_triggered();
 
   void on_actionRead_Configuration_File_triggered();
   void on_actionSave_Configuration_File_triggered();
@@ -61,6 +58,8 @@ private slots:
   void on_commandLinkButton_next_models_released();
 
   void on_commandLinkButton_prev_models_released();
+
+  void on_action_ModelLearning_triggered();
 
 protected:
   const int32_t MODELS_ON_PAGE =5 ;

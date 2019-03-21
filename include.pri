@@ -113,7 +113,9 @@ HEADERS += \
     $$PWD/windows/CreateModelWindow.hpp \
     $$PWD/windows/MainWindow.hpp \
     $$PWD/windows/SetParameterWindow.hpp \
-    $$PWD/windows/subcontrollers/ModelController.hpp
+    $$PWD/windows/subcontrollers/ModelController.hpp \
+    $$PWD/windows/LearningModelWindow.hpp \
+    $$PWD/models/AlgoManager.hpp
 
 
 SOURCES += \
@@ -133,7 +135,9 @@ SOURCES += \
     $$PWD/windows/CreateModelWindow.cpp \
     $$PWD/windows/MainWindow.cpp \
     $$PWD/windows/SetParameterWindow.cpp \
-    $$PWD/windows/subcontrollers/ModelController.cpp
+    $$PWD/windows/subcontrollers/ModelController.cpp \
+    $$PWD/windows/LearningModelWindow.cpp \
+    $$PWD/models/AlgoManager.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a
@@ -143,7 +147,8 @@ FORMS += \
     $$PWD/models/GmmModelWidget.ui \
     $$PWD/windows/CreateModelWindow.ui \
     $$PWD/windows/MainWindow.ui \
-    $$PWD/windows/SetParameterWindow.ui
+    $$PWD/windows/SetParameterWindow.ui \
+    $$PWD/windows/LearningModelWindow.ui
 
 
 HEADERS += \

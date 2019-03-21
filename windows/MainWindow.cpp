@@ -15,27 +15,6 @@ void MainWindow::initMainWindow()
   models_.removeToolBoxItems();
 }
 
-void MainWindow::on_actionWczytaj_plik_konfiguracyjny_triggered()
-{
-  throw std::runtime_error("Dead code");
-//  const QString DEF_DIR = "/home/erucolindo",FILTER_TYPE = "Config Files (*.alize *.conf)";
-//  QString filename = QFileDialog::getOpenFileName(this, "", DEF_DIR, FILTER_TYPE);
-//  conf_.load(filename.toStdString().c_str());
-}
-void MainWindow::on_actionZapisz_plik_konfiguracyjny_triggered()
-{
-  throw std::runtime_error("Dead code");
-//  const QString DEF_SAVE_FILE = "/home/erucolindo/Dokumenty/untitled.conf",FILTER_TYPE = "Config Files (*.alize *.conf)";
-//  QString filename = QFileDialog::getSaveFileName(this, "", DEF_SAVE_FILE, FILTER_TYPE);
-//  conf_.save(filename.toStdString().c_str());
-}
-
-void MainWindow::on_actionUtw_rz_model_triggered()
-{
-  throw std::runtime_error("Dead code");
-}
-
-
 void MainWindow::on_actionRead_Configuration_File_triggered()
 {
 
@@ -173,4 +152,13 @@ void MainWindow::on_commandLinkButton_prev_models_released()
     models_.prevPage();
     actualizePage();
   }
+}
+
+void MainWindow::on_action_ModelLearning_triggered()
+{
+    if(checkConfiguration())
+    {
+      std::unique_ptr<LearningModelWindow> window = std::make_unique<LearningModelWindow>(models_, conf_);
+      window->exec();
+    }
 }
