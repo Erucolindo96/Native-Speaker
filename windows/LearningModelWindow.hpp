@@ -5,6 +5,7 @@
 #include"configuration/ConfigManager.hpp"
 #include"models/ModelManager.hpp"
 #include"models/AlgoManager.hpp"
+#include"windows/subcontrollers/RecordsFromFilesystemController.hpp"
 class LearningModelWindow : public QDialog
 {
   Q_OBJECT
@@ -24,8 +25,11 @@ private:
   ConfigManager config_;
   ModelManager &model_man_ref_;
 
+  RecordsFromFilesystemController from_fsys_controller_;
+
   void initModelsInComboBox();
   void initAlgosInComboBox();
+  void setSubcontrollers();
 
 };
 

@@ -5,14 +5,16 @@ LearningModelWindow::LearningModelWindow(ModelManager &models_ref,const ConfigMa
   QDialog(parent), model_man_ref_(models_ref), config_(config)
 {
   ui.setupUi(this);
+
   initModelsInComboBox();
   initAlgosInComboBox();
+  setSubcontrollers();
 }
 
 
 void LearningModelWindow::on_pushButton_cancell_released()
 {
-    QDialog::close();
+  QDialog::close();
 }
 
 void LearningModelWindow::initModelsInComboBox()
@@ -31,5 +33,12 @@ void LearningModelWindow::initAlgosInComboBox()
   auto algos_list = AlgoManager::getAlgosNames();
   ui.comboBox_algo_2->insertItems(FIRST_POS, algos_list);
 
+}
+
+void LearningModelWindow::setSubcontrollers()
+{
+  from_fsys_controller_.setAddButtonPtr(ui.pushButton_add_fromFilesystem);
+  from_fsys_controller_.setRemoveButtonPtr(ui.pushButton_remove_fromFilesystem);
+  from_fsys_controller_.setRecordListPtr(ui.listWidget_fromFilesystem);
 }
 
