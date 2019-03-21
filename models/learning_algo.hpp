@@ -12,6 +12,13 @@ using namespace std;
 
 class GmmModel;
 
+enum AlgoType
+{
+  EM_ALGO,
+  MAX_POSTERIORI_ALGO
+};
+
+
 class LearningAlgo {
 
 public:
@@ -22,6 +29,8 @@ public:
   LearningAlgo& operator =(LearningAlgo &&other) = delete;
   virtual void learnModel(GmmModel &model, const std::vector<alize::Feature> &feature_vec, const uint32_t iterations) = 0;
   virtual ~LearningAlgo() = default;
+
+//  static std::string getAlgoName()
 };
 
 class ExpectationMaximalizationAlgo: public LearningAlgo{
@@ -83,6 +92,8 @@ public:
   ~ExpectationMaximalizationAlgo()override = default;
 
 };
+
+
 
 #endif // LEARNING_ALGO_HPP
 
