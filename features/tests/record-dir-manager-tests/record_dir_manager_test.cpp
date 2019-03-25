@@ -4,7 +4,7 @@ using namespace std;
 using namespace alize;
 using namespace boost;
 
-BOOST_AUTO_TEST_SUITE( ModelsDirManagerTest )
+BOOST_AUTO_TEST_SUITE( RecordDirManagerTest )
 
 BOOST_AUTO_TEST_CASE( checkExistanceOfModelFolderIfTheyExist )
 {

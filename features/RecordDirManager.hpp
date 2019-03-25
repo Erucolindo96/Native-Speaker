@@ -22,10 +22,10 @@ public:
   void setConfig(const ConfigManager &conf);
   ConfigManager getConfig()const;
 
-  bool isDirExist(const std::string &model_name)const;
-  void createModelDir(const std::string &model_name);
-  void removeModelDir(const std::string &model_name);
-  void cleanModelDir(const std::string &model_name);
+  virtual bool isDirExist(const std::string &model_name)const;
+  virtual void createModelDir(const std::string &model_name);
+  virtual void removeModelDir(const std::string &model_name);
+  virtual void cleanModelDir(const std::string &model_name);
 
 
 protected:

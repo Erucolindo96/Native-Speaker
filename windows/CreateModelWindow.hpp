@@ -19,7 +19,9 @@ public:
   class CreateModelValidator
     {
   public:
-      const QList<QChar> invalid_chars_model_name_ = {'/', '\\', '\'', '\'', ' ', '\t'};
+      const QList<QChar> invalid_chars_model_name_ = {'/', '\\', '\'', '\'', ' ',
+                                                      '\t', '\"', '$', '@', '#',
+                                                     '%'};
 
       explicit CreateModelValidator() = default;
       CreateModelValidator(const CreateModelValidator& other) = default;

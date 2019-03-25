@@ -117,7 +117,8 @@ HEADERS += \
     $$PWD/windows/LearningModelWindow.hpp \
     $$PWD/models/AlgoManager.hpp \
     $$PWD/windows/subcontrollers/RecordsFromFilesystemController.hpp \
-    $$PWD/features/RecordDirManager.hpp
+    $$PWD/features/RecordDirManager.hpp \
+    $$PWD/features/TempDirManager.hpp
 
 
 SOURCES += \
@@ -141,7 +142,8 @@ SOURCES += \
     $$PWD/windows/LearningModelWindow.cpp \
     $$PWD/models/AlgoManager.cpp \
     $$PWD/windows/subcontrollers/RecordsFromFilesystemController.cpp \
-    $$PWD/features/RecordDirManager.cpp
+    $$PWD/features/RecordDirManager.cpp \
+    $$PWD/features/TempDirManager.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a
