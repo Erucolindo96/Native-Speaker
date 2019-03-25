@@ -97,5 +97,27 @@ public:
 
 };
 
+class UnableToCreateFolder: public std::logic_error
+{
+public:
+  explicit UnableToCreateFolder(const std::string &msg): std::logic_error(msg)
+  {}
+};
+
+class UnableToRemoveFolder: public std::logic_error
+{
+public:
+  explicit UnableToRemoveFolder(const std::string &msg): std::logic_error(msg)
+  {}
+};
+
+class UnableToCleanFolder: public std::logic_error
+{
+public:
+  explicit UnableToCleanFolder(const std::string &msg): std::logic_error(msg)
+  {}
+};
+
+
 #endif // SIMPLE_EXCEPTIONS_HPP
 
