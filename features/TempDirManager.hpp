@@ -1,8 +1,8 @@
 ﻿#ifndef TEMPDIRMANAGER_HPP
 #define TEMPDIRMANAGER_HPP
-#include"record-base/ModelDirManager.hpp"
+#include"record-base/RecordDirManager.hpp"
 
-class TempDirManager : public ModelDirManager
+class TempDirManager : public RecordDirManager
 {
 public:
 //  const std::string TEMP_DIR_NAME = "@temp";

@@ -4,14 +4,14 @@ using namespace std;
 using namespace alize;
 using namespace boost;
 
-BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
+BOOST_AUTO_TEST_SUITE( RecordDirManagerTest )
 
 //BOOST_AUTO_TEST_CASE( checkExistanceOfModelFolderIfTheyExist )
 //{
 //  ConfigManager conf;
 //  const string F_FOLDER = "feature-folder";
 //  conf.setFeatureFolder(F_FOLDER);
-//  ModelDirManager manager;
+//  RecordDirManager manager;
 //  manager.setConfig(conf);
 //  BOOST_CHECK(manager.isDirExist("model1"));
 //}
@@ -21,7 +21,7 @@ BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
 //  ConfigManager conf;
 //  const string F_FOLDER = "feature-folder", M_NAME = "model_created";
 //  conf.setFeatureFolder(F_FOLDER);
-//  ModelDirManager manager(conf);
+//  RecordDirManager manager(conf);
 //  BOOST_CHECK_NO_THROW(manager.createModelDir(M_NAME));
 //  QDir model_dir((F_FOLDER + "/" + M_NAME).c_str());
 //  BOOST_REQUIRE(model_dir.exists());
@@ -37,7 +37,7 @@ BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
 
 //  ConfigManager conf;
 //  conf.setFeatureFolder(FAKE_FOLDER);
-//  ModelDirManager manager(conf);
+//  RecordDirManager manager(conf);
 //  BOOST_CHECK_THROW(manager.createModelDir(M_NAME), DirNotFound);
 //  BOOST_CHECK(!QDir((FAKE_FOLDER + "/" + M_NAME).c_str()).exists());
 //}
@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
 
 //  ConfigManager conf;
 //  conf.setFeatureFolder(F_FOLDER);
-//  ModelDirManager manager(conf);
+//  RecordDirManager manager(conf);
 //  BOOST_CHECK_THROW(manager.createModelDir(M_NAME), UnableToCreateFolder);//folder istnieje, ale jest read-only. Mimo to exists nie może odczytać info o folderze i zwraca false.
 //  //na razie nie mam pomysłu jak można napisać do tego test
 //  BOOST_CHECK(!QDir((F_FOLDER + "/" + M_NAME).c_str()).exists());
@@ -61,7 +61,7 @@ BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
 //  ConfigManager conf;
 //  const string F_FOLDER = "feature-folder", M_NAME = "model_to_remove";
 //  conf.setFeatureFolder(F_FOLDER);
-//  ModelDirManager manager(conf);
+//  RecordDirManager manager(conf);
 //  BOOST_CHECK_NO_THROW(manager.removeModelDir(M_NAME));
 //  QDir model_dir((F_FOLDER + "/" + M_NAME).c_str());
 //  BOOST_REQUIRE(!model_dir.exists());
@@ -76,7 +76,7 @@ BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
 
 //  ConfigManager conf;
 //  conf.setFeatureFolder(FAKE_FOLDER);
-//  ModelDirManager manager(conf);
+//  RecordDirManager manager(conf);
 //  BOOST_CHECK_THROW(manager.removeModelDir(M_NAME), DirNotFound);
 
 //}
@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
 
 //  ConfigManager conf;
 //  conf.setFeatureFolder(F_FOLDER);
-//  ModelDirManager manager(conf);
+//  RecordDirManager manager(conf);
 //  BOOST_CHECK_THROW(manager.removeModelDir(FAKE_M_NAME), UnableToRemoveFolder);
 
 //}
@@ -100,7 +100,7 @@ BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
 
 //  ConfigManager conf;
 //  conf.setFeatureFolder(F_FOLDER);
-//  ModelDirManager manager(conf);
+//  RecordDirManager manager(conf);
 //  BOOST_CHECK_THROW(manager.removeModelDir(M_NAME), UnableToRemoveFolder);
 //  BOOST_CHECK(QDir((F_FOLDER + "/" + M_NAME).c_str()).exists());
 
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
 //  ConfigManager conf;
 //  const string F_FOLDER = "feature-folder", M_NAME = "model_to_clean";
 //  conf.setFeatureFolder(F_FOLDER);
-//  ModelDirManager manager(conf);
+//  RecordDirManager manager(conf);
 //  BOOST_CHECK_NO_THROW(manager.cleanModelDir(M_NAME));
 //  QDir model_dir((F_FOLDER + "/" + M_NAME).c_str());
 //  BOOST_REQUIRE(model_dir.exists());
@@ -135,7 +135,7 @@ BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
 
 //  ConfigManager conf;
 //  conf.setFeatureFolder(FAKE_FOLDER);
-//  ModelDirManager manager(conf);
+//  RecordDirManager manager(conf);
 //  BOOST_CHECK_THROW(manager.cleanModelDir(M_NAME), DirNotFound);
 
 //}
@@ -147,7 +147,7 @@ BOOST_AUTO_TEST_SUITE( ModelDirManagerTest )
 
 //  ConfigManager conf;
 //  conf.setFeatureFolder(F_FOLDER);
-//  ModelDirManager manager(conf);
+//  RecordDirManager manager(conf);
 //  BOOST_CHECK_THROW(manager.cleanModelDir(FAKE_M_NAME), UnableToCleanFolder);
 
 //}

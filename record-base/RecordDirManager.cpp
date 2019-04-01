@@ -1,55 +1,55 @@
-﻿#include "ModelDirManager.hpp"
+﻿#include "RecordDirManager.hpp"
 
-//ModelDirManager::ModelDirManager(ConfigManager conf):conf_(conf)
+//RecordDirManager::RecordDirManager(ConfigManager conf):conf_(conf)
 //{}
 
-//void ModelDirManager::setConfig(const ConfigManager &conf)
+//void RecordDirManager::setConfig(const ConfigManager &conf)
 //{
 //  conf_ = conf;
 //}
 
-//ConfigManager ModelDirManager::getConfig()const
+//ConfigManager RecordDirManager::getConfig()const
 //{
 //  return conf_;
 //}
 
-void ModelDirManager::setFeatureFolder(const QString &path)
+void RecordDirManager::setFeatureFolder(const QString &path)
 {
 
 }
 
-QDir ModelDirManager::getFeatureFolder()const
+QDir RecordDirManager::getFeatureFolder()const
 {
 
 }
 
-bool ModelDirManager::isDirExist(const std::string &model_name)const
+bool RecordDirManager::isDirExist(const std::string &model_name)const
 {
 //  QDir model_dir((conf_.getFeatureFolder() + "/" + model_name).c_str());
 //  return model_dir.exists();
   throw std::runtime_error("TODO");
 }
 
-RecordDir ModelDirManager::createModelDir(const std::string &model_name)
+RecordDir RecordDirManager::createModelDir(const std::string &model_name)
 {
 
 }
 
-void ModelDirManager::removeModelDir(const std::string &model_name)
+void RecordDirManager::removeModelDir(const std::string &model_name)
 {
 
 }
 
-RecordDir ModelDirManager::getRecordDir(const std::string &model_name)const
+RecordDir RecordDirManager::getRecordDir(const std::string &model_name)const
 {
 
 }
-std::vector<RecordDir> ModelDirManager::getAllDirs()const
+std::vector<RecordDir> RecordDirManager::getAllDirs()const
 {
 
 }
 
-//void ModelDirManager::createModelDir(const std::string &model_name)
+//void RecordDirManager::createModelDir(const std::string &model_name)
 //{
 //  checkFeatureFolder();
 //  QDir feature_dir(conf_.getFeatureFolder().c_str() );
@@ -61,7 +61,7 @@ std::vector<RecordDir> ModelDirManager::getAllDirs()const
 //  }
 //}
 
-//void ModelDirManager::removeModelDir(const std::string &model_name)
+//void RecordDirManager::removeModelDir(const std::string &model_name)
 //{
 //  checkFeatureFolder();
 
@@ -75,7 +75,7 @@ std::vector<RecordDir> ModelDirManager::getAllDirs()const
 
 //}
 
-//void ModelDirManager::cleanModelDir(const std::string &model_name)
+//void RecordDirManager::cleanModelDir(const std::string &model_name)
 //{
 //  checkFeatureFolder();
 //  QDir model_dir((conf_.getFeatureFolder()+ "/" + model_name).c_str() );
@@ -101,7 +101,7 @@ std::vector<RecordDir> ModelDirManager::getAllDirs()const
 //}
 
 
-//void ModelDirManager::checkFeatureFolder()const
+//void RecordDirManager::checkFeatureFolder()const
 //{
 //  QDir feature_dir(conf_.getFeatureFolder().c_str());
 //  if(!feature_dir.exists())

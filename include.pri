@@ -120,8 +120,8 @@ HEADERS += \
     $$PWD/features/TempDirManager.hpp \
     $$PWD/record-base/Record.hpp \
     $$PWD/record-base/RecBaseManager.hpp \
-    $$PWD/record-base/ModelDirManager.hpp \
-    $$PWD/record-base/RecordDir.hpp
+    $$PWD/record-base/RecordDir.hpp \
+    $$PWD/record-base/RecordDirManager.hpp
 
 
 SOURCES += \
@@ -148,8 +148,8 @@ SOURCES += \
     $$PWD/features/TempDirManager.cpp \
     $$PWD/record-base/Record.cpp \
     $$PWD/record-base/RecBaseManager.cpp \
-    $$PWD/record-base/ModelDirManager.cpp \
-    $$PWD/record-base/RecordDir.cpp
+    $$PWD/record-base/RecordDir.cpp \
+    $$PWD/record-base/RecordDirManager.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a

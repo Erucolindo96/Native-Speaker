@@ -8,18 +8,18 @@
 #include"exceptions/simple_exceptions.hpp"
 #include"record-base/RecordDir.hpp"
 /**
- * @brief The ModelsDirManager class Zarządza tworzeniem i usuwaniem folderów z nagraniami mówców
+ * @brief The RecordDirManager class Zarządza tworzeniem i usuwaniem folderów z nagraniami mówców
  * W tych folderach będą przechowywane nagrania, którymi uczono dane modele
  */
-class ModelDirManager
+class RecordDirManager
 {
 
 public:
-  ModelDirManager() = default;
-  ModelDirManager(const ModelDirManager &other) = default;
-  ModelDirManager& operator=(const ModelDirManager &other) = default;
-  ModelDirManager(ModelDirManager &&other) = default;
-  ModelDirManager& operator=(ModelDirManager &&other) = default;
+  RecordDirManager() = default;
+  RecordDirManager(const RecordDirManager &other) = default;
+  RecordDirManager& operator=(const RecordDirManager &other) = default;
+  RecordDirManager(RecordDirManager &&other) = default;
+  RecordDirManager& operator=(RecordDirManager &&other) = default;
 
 //  void setConfig(const ConfigManager &conf);
 //  ConfigManager getConfig()const;
