@@ -53,7 +53,7 @@ public:
 
 protected:
 
-  mutable QDir dir_;
+  QDir dir_;
   RecordDir() = default;
   void checkExistanceOfDir()const;
   void setDir(const QDir &dir);
