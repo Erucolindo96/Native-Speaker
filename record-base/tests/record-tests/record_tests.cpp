@@ -35,7 +35,14 @@ BOOST_AUTO_TEST_CASE( setPathIfPathPointToRealFile )
 
 BOOST_AUTO_TEST_CASE( throwFileNotFoundAtSetPathIfPathNotPointToRealFile )
 {
-  const QString path = "fake-folder/fake_file.mp3";//, name = "record1.mp3";
+  const QString path = "fake-folder/fake_file.mp3";
+  Record r;
+  BOOST_REQUIRE_THROW(r.setPath(path), FileNotFound);
+}
+
+BOOST_AUTO_TEST_CASE( throwFileNotFoundAtSetPathIfPathPointToDir )
+{
+  const QString path = "feature-folder/other_folder";
   Record r;
   BOOST_REQUIRE_THROW(r.setPath(path), FileNotFound);
 }

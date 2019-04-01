@@ -61,7 +61,7 @@ bool Record::exists()const
 void Record::checkFileExistance()const
 {
   record_path_.refresh();
-  if(!record_path_.exists())
+  if(!record_path_.exists() || !record_path_.isFile())
   {
     throw FileNotFound(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
                        + std::string("record pointed by class does not exists"));
