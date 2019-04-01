@@ -9,9 +9,9 @@ void RecordDirManager::setFeatureFolder(const QString &dir_path)
   checkFeatureFolder();
 }
 
-QDir RecordDirManager::getFeatureFolder()const
+QString RecordDirManager::getFeatureFolder()const
 {
-  return QDir(feature_folder_path_);
+  return feature_folder_path_;
 }
 
 bool RecordDirManager::isDirExists(const std::string &model_name)const

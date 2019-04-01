@@ -30,9 +30,9 @@ public:
 
   /**
    * @brief getFeatureFolder Zwraca folder ustawiony jako folder bazy nagrań
-   * @return Folder bazy nagrań
+   * @return Ścieżka do folderu bazy nagrań
    */
-  QDir getFeatureFolder()const;
+  QString getFeatureFolder()const;
 
   /**
    * @brief isDirExists Zwraca informację, czy folder danego modelu istnieje w bazie nagrań
