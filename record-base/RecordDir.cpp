@@ -13,10 +13,10 @@ const std::vector<Record> RecordDir::list()const
   std::vector<Record> ret;
   for(auto file: dir_.entryList())
   {
-    if(file == "." || file == "..")
-    {
-      continue;
-    }
+//    if(file == "." || file == "..")
+//    {
+//      continue;
+//    }
     Record r;
     r.setPath(file, dir_);
     ret.push_back(r);
@@ -56,6 +56,7 @@ void RecordDir::checkExistanceOfDir()const
 void RecordDir::setDir(const QDir &dir)
 {
   dir_ = dir;
+  dir_.setFilter(QDir::NoDotAndDotDot|QDir::Files);
 }
 
 QDir RecordDir::getDir()const
