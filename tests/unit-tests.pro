@@ -20,10 +20,9 @@ HEADERS += \
     ../configuration/tests/config-validator-test/config_validator_test.hpp \
     ../windows/subcontrollers/tests/model_controller_test/model_controller_test.hpp \
     ../models/tests/algo-manager-test/algo_manager_test.hpp \
-    ../features/tests/record-dir-manager-tests/record_dir_manager_test.hpp \
-    ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.hpp \
     ../record-base/tests/record-tests/record_tests.hpp \
-    ../record-base/tests/record-dir-tests/record_dir_test.hpp
+    ../record-base/tests/record-dir-tests/record_dir_test.hpp \
+    ../record-base/tests/record-dir-manager-tests/record_dir_manager_test.hpp
 
 
 SOURCES += \
@@ -41,7 +40,6 @@ SOURCES += \
     ../configuration/tests/config-validator-test/config_validator_test.cpp \
     ../windows/subcontrollers/tests/model_controller_test/model_controller_test.cpp \
     ../models/tests/algo-manager-test/algo_manager_test.cpp \
-    ../features/tests/record-dir-manager-tests/record_dir_manager_test.cpp \
-    ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.cpp \
     ../record-base/tests/record-tests/record_tests.cpp \
-    ../record-base/tests/record-dir-tests/record_dir_test.cpp
+    ../record-base/tests/record-dir-tests/record_dir_test.cpp \
+    ../record-base/tests/record-dir-manager-tests/record_dir_manager_test.cpp

@@ -15,39 +15,61 @@ class RecordDirManager
 {
 
 public:
-  RecordDirManager() = default;
+  RecordDirManager()=default;
   RecordDirManager(const RecordDirManager &other) = default;
   RecordDirManager& operator=(const RecordDirManager &other) = default;
   RecordDirManager(RecordDirManager &&other) = default;
   RecordDirManager& operator=(RecordDirManager &&other) = default;
 
-//  void setConfig(const ConfigManager &conf);
-//  ConfigManager getConfig()const;
+  /**
+   * @brief setFeatureFolder Ustawia klasie folder wskazany jako folder bazy nagrań
+   * @param dir Ustawiany folder
+   * @throw DirNotFound Jesli taki folder nie istnieje w filesystemie
+   */
+  void setFeatureFolder(const QString &dir_path);
 
-  void setFeatureFolder(const QString &path);
+  /**
+   * @brief getFeatureFolder Zwraca folder ustawiony jako folder bazy nagrań
+   * @return Folder bazy nagrań
+   */
   QDir getFeatureFolder()const;
 
-  bool isDirExist(const std::string &model_name)const;
-  RecordDir createModelDir(const std::string &model_name);
+  /**
+   * @brief isDirExists Zwraca informację, czy folder danego modelu istnieje w bazie nagrań
+   * @param model_name Nazwa modelu, o którego folder pytamy
+   * @return True Jesli folder istnieje, w przeciwnym razie false
+   * @throw FeatureFolderNotFound Jesli nie ustawiono folderu bazy nagrań
+   */
+  bool isDirExists(const std::string &model_name)const;
+
+  /**
+   * @brief getModelDir Tworzy folder nagrań dla wskazanego w parametrze modelu(jeśli go jeszze nie ma w bazie)
+   * i zwraca klasę-uchwyt do utworzonego folderu
+   * @param model_name Model, którego folder chcemy utworzyć
+   * @return Uchwyt do utworzonego folderu
+   * @throw FeatureFolderNotFound Jesli nie ustawiono folderu bazy nagrań
+   */
+  RecordDir getModelDir(const std::string &model_name);
+
+  /**
+   * @brief removeModelDir Usuwa folder nagrań wskazanego w parametrze modelu(jeśli istnieje)
+   * @param model_name Model, którego folder chcemy usunąć
+   * @throw FeatureFolderNotFound Jesli nie ustawiono folderu bazy nagrań
+   */
   void removeModelDir(const std::string &model_name);
-  RecordDir getRecordDir(const std::string &model_name)const;
+
+
+  /**
+   * @brief getAllDirs Zwraca uchwyty do wszystkich folderów utworzonych w bazie próbek
+   * @return Uchwyty do folderów z nagraniami modeli, które istnieja aktualnie w bazie
+   * @throw FeatureFolderNotFound Jeśli nie ustawiono folderu bazy nagrań
+   */
   std::vector<RecordDir> getAllDirs()const;
-
-
-//  virtual bool isDirExist(const std::string &model_name)const;
-//  virtual void createModelDir(const std::string &model_name);
-//  virtual void removeModelDir(const std::string &model_name);
-//  virtual void cleanModelDir(const std::string &model_name);
-
- // virtual void writeRecord(const std::string &model_name, const QFile &file_to_write);
- // virtual void removeRecord(const std::string &model_name, const QFile &file_to_remove);
- // virtual QList<QFile> listModelDir(const std::string &model_dir);
-  //  virtual void readRecord(const std::string &model_name, const QFile file_to_read, QString dest_path)
 
 protected:
   void checkFeatureFolder()const;
-  //ConfigManager conf_;
-  QDir feature_folder_;
+  QString feature_folder_path_;
+
 };
 
 #endif // MODELSDIRMANAGER_HPP

@@ -1,113 +1,75 @@
 ﻿#include "RecordDirManager.hpp"
 
-//RecordDirManager::RecordDirManager(ConfigManager conf):conf_(conf)
-//{}
 
-//void RecordDirManager::setConfig(const ConfigManager &conf)
-//{
-//  conf_ = conf;
-//}
 
-//ConfigManager RecordDirManager::getConfig()const
-//{
-//  return conf_;
-//}
 
-void RecordDirManager::setFeatureFolder(const QString &path)
+void RecordDirManager::setFeatureFolder(const QString &dir_path)
 {
-
+  feature_folder_path_ = dir_path;
+  checkFeatureFolder();
 }
 
 QDir RecordDirManager::getFeatureFolder()const
 {
+  return QDir(feature_folder_path_);
+}
+
+bool RecordDirManager::isDirExists(const std::string &model_name)const
+{
+  checkFeatureFolder();
+  QDir checked_dir(feature_folder_path_);
+  return checked_dir.cd(model_name.c_str());
 
 }
 
-bool RecordDirManager::isDirExist(const std::string &model_name)const
+RecordDir RecordDirManager::getModelDir(const std::string &model_name)
 {
-//  QDir model_dir((conf_.getFeatureFolder() + "/" + model_name).c_str());
-//  return model_dir.exists();
-  throw std::runtime_error("TODO");
-}
-
-RecordDir RecordDirManager::createModelDir(const std::string &model_name)
-{
-
+  checkFeatureFolder();
+  if(!QDir(feature_folder_path_).cd(model_name.c_str()))
+  {
+    QDir(feature_folder_path_).mkdir(model_name.c_str());
+  }
+  RecordDir ret;
+  QDir getted_dir(feature_folder_path_);
+  getted_dir.cd(model_name.c_str());
+  ret.setDir(getted_dir);
+  return ret;
 }
 
 void RecordDirManager::removeModelDir(const std::string &model_name)
 {
-
+  checkFeatureFolder();
+  RecordDir model_dir;
+  QDir removed_dir(feature_folder_path_);
+  if(removed_dir.cd(model_name.c_str())) //znaczy, ze folder istnieje i trzeba go usunąć
+  {
+    model_dir.setDir(removed_dir);
+    model_dir.removeAll();
+    QDir(feature_folder_path_).rmdir(model_name.c_str());
+  }
 }
 
-RecordDir RecordDirManager::getRecordDir(const std::string &model_name)const
-{
-
-}
 std::vector<RecordDir> RecordDirManager::getAllDirs()const
 {
+  checkFeatureFolder();
+  std::vector<RecordDir> ret;
+  RecordDir dir;
+  QDir feature_dir(feature_folder_path_);
+  feature_dir.setFilter(QDir::AllDirs|QDir::NoDotAndDotDot	);
 
+  for(auto file: feature_dir.entryInfoList())
+  {
+    dir.setDir(file.absoluteDir());
+    ret.push_back(dir);
+  }
+  return ret;
 }
 
-//void RecordDirManager::createModelDir(const std::string &model_name)
-//{
-//  checkFeatureFolder();
-//  QDir feature_dir(conf_.getFeatureFolder().c_str() );
-//  bool created = feature_dir.mkdir( model_name.c_str());
-//  if(!created)
-//  {
-//    throw UnableToCreateFolder(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
-//                               + std::string(" - unable to create folder named" + model_name));
-//  }
-//}
-
-//void RecordDirManager::removeModelDir(const std::string &model_name)
-//{
-//  checkFeatureFolder();
-
-//  QDir feature_dir(conf_.getFeatureFolder().c_str() );
-//  bool removed = feature_dir.rmdir(model_name.c_str());
-//  if(!removed)
-//  {
-//    throw UnableToRemoveFolder(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
-//                               + std::string(" - unable to remove folder named" + model_name));
-//  }
-
-//}
-
-//void RecordDirManager::cleanModelDir(const std::string &model_name)
-//{
-//  checkFeatureFolder();
-//  QDir model_dir((conf_.getFeatureFolder()+ "/" + model_name).c_str() );
-//  if(!isDirExist(model_name))
-//  {
-//    throw UnableToCleanFolder(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
-//                      + std::string(" - model dir does not exist"));
-
-//  }
-//  auto files_to_remove = model_dir.entryList();
-//  for(auto file:files_to_remove)
-//  {
-//    model_dir.remove(file);
-//  }
-//  model_dir.refresh();
-////  const QString this_dir = ".", up_dir = "..";
-//  const int32_t EMPTY_DIR_FILES_CNT = 2;// zawiera folder "." i ".."
-//  if(model_dir.entryList().size() > EMPTY_DIR_FILES_CNT )
-//  {
-//    throw UnableToCleanFolder(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
-//                              + std::string(" - unable to clean model folder"));
-//  }
-//}
-
-
-//void RecordDirManager::checkFeatureFolder()const
-//{
-//  QDir feature_dir(conf_.getFeatureFolder().c_str());
-//  if(!feature_dir.exists())
-//  {
-//    throw DirNotFound(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
-//                      + std::string(" - feature folder dir does not exist"));
-//  }
-
-//}
+void RecordDirManager::checkFeatureFolder()const
+{
+  if(feature_folder_path_.isEmpty() || !QDir(feature_folder_path_).exists())
+  {
+    throw FeatureFolderNotFound(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                      + std::string("feature folder path does not point to any real dir in filesystem"));
+  }
+}
