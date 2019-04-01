@@ -1,6 +1,6 @@
 ﻿#ifndef RECBASEMANAGER_HPP
 #define RECBASEMANAGER_HPP
-#include"record-base/ModelDirManager.hpp"
+#include"record-base/RecordDirManager.hpp"
 
 
 class RecBaseManager
@@ -20,7 +20,7 @@ public:
   bool isRecordExists(const Record &r, const std::string &model_name)const;
 
 protected:
-  ModelDirManager dir_manager_;
+  RecordDirManager dir_manager_;
 };
 
 #endif // RECBASEMANAGER_HPP
