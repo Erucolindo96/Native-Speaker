@@ -3,19 +3,54 @@
 
 void RecordDir::addRecord(const Record &rec)
 {
-  throw std::runtime_error("TODO");
+  checkExistanceOfDir();
+  rec.copy(dir_);
 }
 
 const std::vector<Record> RecordDir::list()const
 {
-  throw std::runtime_error("TODO");
+  checkExistanceOfDir();
+  std::vector<Record> ret;
+  for(auto file: dir_.entryList())
+  {
+    if(file == "." || file == "..")
+    {
+      continue;
+    }
+    Record r;
+    r.setPath(file, dir_);
+    ret.push_back(r);
+  }
+  return ret;
 }
 void RecordDir::removeAll()
 {
-  throw std::runtime_error("TODO");
+  checkExistanceOfDir();
+  for(auto file: dir_.entryList())
+  {
+    dir_.remove(file);
+  }
 }
 
 bool RecordDir::haveRecord(const Record &other)const
 {
-  throw std::runtime_error("TODO");
+  checkExistanceOfDir();
+  return dir_.entryList().contains(other.getRecordInfo().fileName());
 }
+bool RecordDir::exists()const
+{
+  dir_.refresh();
+  return dir_.exists();
+}
+
+void RecordDir::checkExistanceOfDir()const
+{
+  dir_.refresh();
+  if(!dir_.exists())
+  {
+    throw DirNotFound(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                      + std::string("record dir pointed by class does not exists"));
+  }
+}
+
+
