@@ -16,7 +16,7 @@ public:
 
   void setDir(const QDir &dir)
   {
-    dir_= dir;
+    RecordDir::setDir(dir);
   }
 
 };

@@ -56,6 +56,8 @@ protected:
   mutable QDir dir_;
   RecordDir() = default;
   void checkExistanceOfDir()const;
+  void setDir(const QDir &dir);
+  QDir getDir()const;
 
   friend class RecordDirManager;
 };

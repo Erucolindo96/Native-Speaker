@@ -53,4 +53,14 @@ void RecordDir::checkExistanceOfDir()const
   }
 }
 
+void RecordDir::setDir(const QDir &dir)
+{
+  dir_ = dir;
+}
+
+QDir RecordDir::getDir()const
+{
+  return dir_;
+}
+
 
