@@ -50,6 +50,15 @@ public:
    * @throw FeatureFolderNotFound Jesli nie ustawiono folderu bazy nagrań
    */
   RecordDir getModelDir(const std::string &model_name);
+  /**
+   * @brief getModelDir Zwraca klasę-uchwyt do folderu modelu.
+   * Jesli folder nie istnieje, rzuca wyjątek DirNotFound.
+   * @param model_name Nazwa modelu, do którego folderu chcemy uzyskac uchwyt
+   * @return Uchwyt do folderu wskazanego modelu
+   * @throw DirNotFound Jeśli nie istnieje folder danego modelu
+   * @throw FeatureFolderNotFound Jesli nie ustawiono folderu bazy nagrań
+   */
+  RecordDir getModelDir(const std::string &model_name)const;
 
   /**
    * @brief removeModelDir Usuwa folder nagrań wskazanego w parametrze modelu(jeśli istnieje)

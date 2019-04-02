@@ -36,6 +36,20 @@ RecordDir RecordDirManager::getModelDir(const std::string &model_name)
   return ret;
 }
 
+RecordDir RecordDirManager::getModelDir(const std::string &model_name)const
+{
+  checkFeatureFolder();
+  RecordDir ret;
+  QDir getted_dir(feature_folder_path_);
+  if(!getted_dir.cd(model_name.c_str()))
+  {
+    throw DirNotFound(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                      + std::string("dir, which was getted, was not found"));
+  }
+  ret.setDir(getted_dir);
+  return ret;
+}
+
 void RecordDirManager::removeModelDir(const std::string &model_name)
 {
   checkFeatureFolder();

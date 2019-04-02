@@ -108,6 +108,48 @@ BOOST_AUTO_TEST_CASE(throwFeatureFolderNotFoundAtCreatingNewModelIfFeatureFolder
 }
 
 
+BOOST_AUTO_TEST_CASE(getRecordDirOfExistingDirIfFeatureFolderExistsAndRecordDirManagerIsConst)
+{
+  const string DIR_NAME = "model1";
+  const QString FEATURE_FOLDER_PATH("feature-folder-record-dir-manager"),
+      DIR_PATH = "feature-folder-record-dir-manager/model1";
+
+  BOOST_REQUIRE(QDir(FEATURE_FOLDER_PATH).exists());
+  BOOST_REQUIRE(QDir(DIR_PATH).exists());
+
+  RecordDirManager manager;
+  BOOST_REQUIRE_NO_THROW(manager.setFeatureFolder(FEATURE_FOLDER_PATH));
+
+  BOOST_CHECK_NO_THROW(static_cast<const RecordDirManager>(manager).getModelDir(DIR_NAME));
+
+  RecordDir dir = manager.getModelDir(DIR_NAME);
+}
+
+BOOST_AUTO_TEST_CASE(throwDirNotFoundIfFeatureFolderExistsAndRecordDirManagerIsConstAndModelDirDoesNotExists)
+{
+  const string DIR_NAME = "new-model";
+  const QString FEATURE_FOLDER_PATH("feature-folder-record-dir-manager"),
+      DIR_PATH = "feature-folder-record-dir-manager/new-model";
+
+  BOOST_REQUIRE(QDir(FEATURE_FOLDER_PATH).exists());
+  BOOST_REQUIRE(!QDir(DIR_PATH).exists());
+
+  RecordDirManager manager;
+  BOOST_REQUIRE_NO_THROW(manager.setFeatureFolder(FEATURE_FOLDER_PATH));
+
+  BOOST_CHECK_THROW(static_cast<const RecordDirManager>(manager).getModelDir(DIR_NAME), DirNotFound);
+}
+
+BOOST_AUTO_TEST_CASE(throwFeatureFolderNotFoundAtGettingModelIfFeatureFolderWasNotSetAndNewDirDoesNotExistsAndManagerIsConst)
+{
+  const string DIR_NAME = "new-model";
+  const QString DIR_PATH = "feature-folder-record-dir-manager/new-model";
+
+  BOOST_REQUIRE(!QDir(DIR_PATH).exists());
+  const RecordDirManager manager;
+  BOOST_REQUIRE_THROW(manager.getModelDir(DIR_NAME), FeatureFolderNotFound);
+}
+
 BOOST_AUTO_TEST_CASE(removeEmptyModelDirIfFeatureFolderExists)
 {
   const string DIR_TO_REMOVE = "model1";
