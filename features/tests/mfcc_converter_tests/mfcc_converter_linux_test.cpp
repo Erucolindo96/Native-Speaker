@@ -14,7 +14,7 @@ static bool exist(const std::string &filename)
 
 BOOST_AUTO_TEST_SUITE( MfccConverterLinuxTest )
 
-
+/*
 BOOST_AUTO_TEST_CASE( throwFileNotFoundIfSourceFileDoesNotExist )
 {
   MfccConverterLinux con;
@@ -23,7 +23,7 @@ BOOST_AUTO_TEST_CASE( throwFileNotFoundIfSourceFileDoesNotExist )
                     FileNotFound);
 
 }
-/*
+
 BOOST_AUTO_TEST_CASE( throwDirNotFoundIfSourceDirDoesNotExist )
 {
   MfccConverterLinux con;
@@ -32,7 +32,7 @@ BOOST_AUTO_TEST_CASE( throwDirNotFoundIfSourceDirDoesNotExist )
                     FileNotFound);
 
 }
-*/
+
 BOOST_AUTO_TEST_CASE( throwDirNotFoundIfDestDirDoesNotExist )
 {
   MfccConverterLinux con;
@@ -68,5 +68,5 @@ BOOST_AUTO_TEST_CASE(correctlyConvertMp3FileToSPro4MfccFormat)
   system((string("rm ") + dest_dir+ "/"+ dest_file).c_str() );
 
 }
-
+*/
 BOOST_AUTO_TEST_SUITE_END()

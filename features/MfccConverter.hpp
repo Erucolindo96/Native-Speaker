@@ -9,7 +9,7 @@
 #include<sys/wait.h>
 #include"utils/utils.hpp"
 
-
+#include"features/SPro4File.hpp"
 
 /**
  * @brief The MfccConverter Klasa, która przetwarza plik w formacie MP3
@@ -26,30 +26,29 @@ public:
   MfccConverter(MfccConverter &&other) = default;
   MfccConverter& operator=(MfccConverter &&other) = default;
 
-  virtual void convertToSPro4(const std::string &source_path,
-                      const std::string &dest_dir,const std::string &dest_name)const = 0;
+  virtual SPro4File convertToSPro4(const Record &source_record)const = 0;
 
 };
 
-class MfccConverterLinux
-{
-protected:
-  const std::string CONVERT_SCRIPT_PATH = "./scripts/convert_mp3_to_SPro4.sh";
-public:
-  MfccConverterLinux() = default;
-  MfccConverterLinux(const MfccConverterLinux &other) = default;
-  MfccConverterLinux& operator=(const MfccConverterLinux &other) = default;
-  MfccConverterLinux(MfccConverterLinux &&other) = default;
-  MfccConverterLinux& operator=(MfccConverterLinux &&other) = default;
+//class MfccConverterLinux
+//{
+//protected:
+//  const std::string CONVERT_SCRIPT_PATH = "./scripts/convert_mp3_to_SPro4.sh";
+//public:
+//  MfccConverterLinux() = default;
+//  MfccConverterLinux(const MfccConverterLinux &other) = default;
+//  MfccConverterLinux& operator=(const MfccConverterLinux &other) = default;
+//  MfccConverterLinux(MfccConverterLinux &&other) = default;
+//  MfccConverterLinux& operator=(MfccConverterLinux &&other) = default;
 
-  int32_t runMadPlay(const std::string &source_dir,const std::string &source_name,
-                  const std::string &dest_dir,const std::string &dest_name)const;
-  int32_t runSfbcep(const std::string &source_dir,const std::string &source_name,
-                    const std::string &dest_dir,const std::string &dest_name)const;
-  virtual void convertToSPro4(const std::string &source_path,
-                              const std::string &dest_dir,const std::string &dest_name)const ;
+//  int32_t runMadPlay(const std::string &source_dir,const std::string &source_name,
+//                  const std::string &dest_dir,const std::string &dest_name)const;
+//  int32_t runSfbcep(const std::string &source_dir,const std::string &source_name,
+//                    const std::string &dest_dir,const std::string &dest_name)const;
+//  virtual void convertToSPro4(const std::string &source_path,
+//                              const std::string &dest_dir,const std::string &dest_name)const ;
 
-};
+//};
 
 
 #endif // MFCCCONVERTER_HPP

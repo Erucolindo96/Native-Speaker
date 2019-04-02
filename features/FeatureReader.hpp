@@ -5,7 +5,7 @@
 #include<memory>
 #include<vector>
 #include"exceptions/simple_exceptions.hpp"
-
+#include"features/SPro4File.hpp"
 
 
 /**
@@ -31,10 +31,8 @@ public:
   std::string getFeatureDir()const;
   void setFeatureDir(const std::string &dir);
 
-  virtual std::vector<alize::Feature> readFile(const std::string &file_name,
-                                               const std::string &extention)const;
-  virtual double getSampleRate(const std::string &file_name,
-                               const std::string &extention)const;
+  virtual std::vector<alize::Feature> readFile(const SPro4File &mfcc_file)const;
+  virtual double getSampleRate(const SPro4File &mfcc_file)const;
 
 
 };

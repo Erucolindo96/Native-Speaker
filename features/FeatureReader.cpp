@@ -36,59 +36,59 @@ void FeatureReader::setFeatureDir(const std::string &dir)
   dir_ = dir;
 }
 
-std::vector<alize::Feature> FeatureReader::readFile(const std::string &file_name,
-                                     const std::string &extention)const
+std::vector<alize::Feature> FeatureReader::readFile(const SPro4File &mfcc_file)const
 {
-  alize::Config conf = createConfig(extention);
-  alize::FeatureFileReaderSPro4 reader(file_name.c_str(),
-                                       conf);
-  std::vector<alize::Feature> ret;
-  alize::Feature temp;
+  throw std::runtime_error("TODO");
+//  alize::Config conf = createConfig(extention);
+//  alize::FeatureFileReaderSPro4 reader(file_name.c_str(),
+//                                       conf);
+//  std::vector<alize::Feature> ret;
+//  alize::Feature temp;
 
-  try
-  {
-    const uint32_t F_CNT = reader.getFeatureCount(), STEP = 1;
+//  try
+//  {
+//    const uint32_t F_CNT = reader.getFeatureCount(), STEP = 1;
 
-    for(uint32_t i = 0; i<F_CNT;++i)
-    {
-      reader.readFeature(temp,STEP);
-      ret.push_back(temp);
-    }
-    reader.close();
-    return ret;
+//    for(uint32_t i = 0; i<F_CNT;++i)
+//    {
+//      reader.readFeature(temp,STEP);
+//      ret.push_back(temp);
+//    }
+//    reader.close();
+//    return ret;
 
-  }
-  catch(alize::FileNotFoundException &e)
-  {
-    throw FileNotFound(e.toString().c_str());
-  }
-  catch(alize::Exception  &e)
-  {
-    std::cerr<<"File "<<__FILE__<<"Line "<<__LINE__<<": unexcepted Alize Exception"<<endl;
-    throw std::runtime_error(e.toString().c_str());
-  }
+//  }
+//  catch(alize::FileNotFoundException &e)
+//  {
+//    throw FileNotFound(e.toString().c_str());
+//  }
+//  catch(alize::Exception  &e)
+//  {
+//    std::cerr<<"File "<<__FILE__<<"Line "<<__LINE__<<": unexcepted Alize Exception"<<endl;
+//    throw std::runtime_error(e.toString().c_str());
+//  }
 }
-double FeatureReader::getSampleRate(const std::string &file_name,
-                     const std::string &extention)const
+double FeatureReader::getSampleRate(const SPro4File &mfcc_file)const
 {
-  alize::Config conf = createConfig(extention);
-  alize::FeatureFileReaderSPro4 reader(file_name.c_str(),
-                                       conf);
-  try
-  {
-    double ret = reader.getSampleRate();
-    reader.close();
-    return ret;
-  }
-  catch(alize::FileNotFoundException &e)
-  {
-    throw FileNotFound(e.toString().c_str());
-  }
-  catch(alize::Exception  &e)
-  {
-    std::cerr<<"File "<<__FILE__<<"Line "<<__LINE__<<": unexcepted Alize Exception"<<endl;
-    throw std::runtime_error(e.toString().c_str());
-  }
+  throw std::runtime_error("TODO");
+  //  alize::Config conf = createConfig(extention);
+//  alize::FeatureFileReaderSPro4 reader(file_name.c_str(),
+//                                       conf);
+//  try
+//  {
+//    double ret = reader.getSampleRate();
+//    reader.close();
+//    return ret;
+//  }
+//  catch(alize::FileNotFoundException &e)
+//  {
+//    throw FileNotFound(e.toString().c_str());
+//  }
+//  catch(alize::Exception  &e)
+//  {
+//    std::cerr<<"File "<<__FILE__<<"Line "<<__LINE__<<": unexcepted Alize Exception"<<endl;
+//    throw std::runtime_error(e.toString().c_str());
+//  }
 
 }
 

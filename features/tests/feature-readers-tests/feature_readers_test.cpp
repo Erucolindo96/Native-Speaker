@@ -17,7 +17,7 @@ static bool exist(const std::string &filename)
 
 
 BOOST_AUTO_TEST_SUITE( FeatureReaderTests )
-
+/*
 BOOST_AUTO_TEST_CASE( getCorrectFeatureReadDirectoryIfThatWasSetInSetter )
 {
   FeatureReader reader;
@@ -156,6 +156,7 @@ BOOST_AUTO_TEST_CASE(CutSilenceFromVectsIfDirExistWithSavedFeature)
   }
 }
 
+*/
 BOOST_AUTO_TEST_SUITE_END()
 
 

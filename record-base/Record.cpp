@@ -58,6 +58,13 @@ bool Record::exists()const
   return record_path_.exists();
 }
 
+std::unique_ptr<MfccConverter> Record::getConverter()const
+{
+  throw std::runtime_error("TODO");
+}
+
+
+  //protected
 void Record::checkFileExistance()const
 {
   record_path_.refresh();

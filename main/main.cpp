@@ -23,108 +23,111 @@ using namespace utils;
  */
 int verification(uint32_t argc, char *argv[])
 {
-  string model_dir = argv[2], model_name =argv[3], ubm_name = argv[4];
-  double threshold = stod(argv[5]);
-  string f_path = argv[6], ext = "";
+  throw std::runtime_error("TODO");
+  //  string model_dir = argv[2], model_name =argv[3], ubm_name = argv[4];
+//  double threshold = stod(argv[5]);
+//  string f_path = argv[6], ext = "";
 
-  FeatureReader f_reader;
-  f_reader.setFeatureDir("");
-  auto f_vec = f_reader.readFile(f_path, ext);
+//  FeatureReader f_reader;
+//  f_reader.setFeatureDir("");
+//  auto f_vec = f_reader.readFile(f_path, ext);
 
-  FileModelDao dao;
-  dao.setModelsDir(model_dir);
-  dao.setVectSize(f_vec[0].getVectSize());
+//  FileModelDao dao;
+//  dao.setModelsDir(model_dir);
+//  dao.setVectSize(f_vec[0].getVectSize());
 
-  auto ubm = dao.readModel(ubm_name);
-//  cout<<"UBM "<<ubm->getName()<<" readed"<<endl<<endl;
+//  auto ubm = dao.readModel(ubm_name);
+////  cout<<"UBM "<<ubm->getName()<<" readed"<<endl<<endl;
 
-  auto model = dao.readModel(model_name);
-//  cout<<"Model "<<model->getName()<<" readed"<<endl<<endl;
+//  auto model = dao.readModel(model_name);
+////  cout<<"Model "<<model->getName()<<" readed"<<endl<<endl;
 
-  Verificator v(threshold);
-//  cout<<"Feature Vec size: "<<f_vec.size()<<endl<<endl;
+//  Verificator v(threshold);
+////  cout<<"Feature Vec size: "<<f_vec.size()<<endl<<endl;
 
-  cout<<"Log Likehood for model "<<model->getName() <<":"<<v.countLogLikehood(*model, f_vec)<<endl;
-  cout<<"Log Likehood for ubm "<<ubm->getName() <<":"<<v.countLogLikehood(*ubm, f_vec)<<endl;
+//  cout<<"Log Likehood for model "<<model->getName() <<":"<<v.countLogLikehood(*model, f_vec)<<endl;
+//  cout<<"Log Likehood for ubm "<<ubm->getName() <<":"<<v.countLogLikehood(*ubm, f_vec)<<endl;
 
-  bool is_speaker_voice = v.verifyModel(*model, f_vec, *ubm);
-  cout<<"Verificator return: "<<is_speaker_voice<<endl;
-  if(is_speaker_voice)
-  {
-//    cout<<"This is speaker voice"<<endl;
-  }
-  else
-  {
-//    cout<<"No, this is not a speaker voice"<<endl;
-  }
-  return is_speaker_voice;
+//  bool is_speaker_voice = v.verifyModel(*model, f_vec, *ubm);
+//  cout<<"Verificator return: "<<is_speaker_voice<<endl;
+//  if(is_speaker_voice)
+//  {
+////    cout<<"This is speaker voice"<<endl;
+//  }
+//  else
+//  {
+////    cout<<"No, this is not a speaker voice"<<endl;
+//  }
+//  return is_speaker_voice;
 }
 
 void learnExistModel(uint32_t  argc,char *argv[],  const string &model_dir)
 {
-  string dir_with_mfcc = argv[2], model_name = argv[3];
-  vector<Feature> training_features;
-  FeatureReader reader(dir_with_mfcc);
-  vector<Feature> features_vec;
-  for(uint32_t i = 4; i < argc; ++i)
-  {
-    cout<<"Load file: "<<argv[i]<<endl;
-    features_vec = reader.readFile(argv[i], "");
-    training_features.insert(training_features.end(), features_vec.begin(), features_vec.end());
-    cout<<"Training features in "<<argv[i]<<" : "<<features_vec.size()<<endl<<endl;
-  }
-  cout<<"All training features: "<<training_features.size()<<endl<<endl;
+     throw std::runtime_error("TODO");
+//  string dir_with_mfcc = argv[2], model_name = argv[3];
+//  vector<Feature> training_features;
+//  FeatureReader reader(dir_with_mfcc);
+//  vector<Feature> features_vec;
+//  for(uint32_t i = 4; i < argc; ++i)
+//  {
+//    cout<<"Load file: "<<argv[i]<<endl;
+//    features_vec = reader.readFile(argv[i], "");
+//    training_features.insert(training_features.end(), features_vec.begin(), features_vec.end());
+//    cout<<"Training features in "<<argv[i]<<" : "<<features_vec.size()<<endl<<endl;
+//  }
+//  cout<<"All training features: "<<training_features.size()<<endl<<endl;
 
-  FileModelDao dao;
-  dao.setModelsDir(model_dir);
-  dao.setVectSize(features_vec[0].getVectSize());
-  auto model = dao.readModel(model_name);
-  //DiagonalModel model(D_CNT ,training_features[0].getVectSize());
-  //model.setName(model_name);
+//  FileModelDao dao;
+//  dao.setModelsDir(model_dir);
+//  dao.setVectSize(features_vec[0].getVectSize());
+//  auto model = dao.readModel(model_name);
+//  //DiagonalModel model(D_CNT ,training_features[0].getVectSize());
+//  //model.setName(model_name);
 
-  ExpectationMaximalizationAlgo algo;
-  const uint32_t ITERATIONS = 5;
-  algo.learnModel(*model,training_features, ITERATIONS );
-  cout<<"Model "<<model->getName() <<" have learned"<<endl;
+//  ExpectationMaximalizationAlgo algo;
+//  const uint32_t ITERATIONS = 5;
+//  algo.learnModel(*model,training_features, ITERATIONS );
+//  cout<<"Model "<<model->getName() <<" have learned"<<endl;
 
-  dao.writeModel(*model);
-  cout<<"Model "<<model->getName()<<" saved to file"<<endl<<endl;
+//  dao.writeModel(*model);
+//  cout<<"Model "<<model->getName()<<" saved to file"<<endl<<endl;
 
-  cout<<"Likehood for last of training feature vec: "<<model->countLikehoodWithWeight(features_vec)<<endl;
+//  cout<<"Likehood for last of training feature vec: "<<model->countLikehoodWithWeight(features_vec)<<endl;
 
 }
 
 void createModel(uint32_t  argc,char *argv[],  const string &model_dir)
 {
-  const uint32_t D_CNT = 512;
-  string dir_with_mfcc = argv[2], model_name = argv[3];
-  vector<Feature> training_features;
-  FeatureReader reader(dir_with_mfcc);
-  vector<Feature> features_vec;
-  for(uint32_t i = 4; i < argc; ++i)
-  {
-    cout<<"Load file: "<<argv[i]<<endl;
-    features_vec = reader.readFile(argv[i], "");
-    training_features.insert(training_features.end(), features_vec.begin(), features_vec.end());
-    cout<<"Training features in "<<argv[i]<<" : "<<features_vec.size()<<endl<<endl;
-  }
-  cout<<"All training features: "<<training_features.size()<<endl<<endl;
+     throw std::runtime_error("TODO");
+//  const uint32_t D_CNT = 512;
+//  string dir_with_mfcc = argv[2], model_name = argv[3];
+//  vector<Feature> training_features;
+//  FeatureReader reader(dir_with_mfcc);
+//  vector<Feature> features_vec;
+//  for(uint32_t i = 4; i < argc; ++i)
+//  {
+//    cout<<"Load file: "<<argv[i]<<endl;
+//    features_vec = reader.readFile(argv[i], "");
+//    training_features.insert(training_features.end(), features_vec.begin(), features_vec.end());
+//    cout<<"Training features in "<<argv[i]<<" : "<<features_vec.size()<<endl<<endl;
+//  }
+//  cout<<"All training features: "<<training_features.size()<<endl<<endl;
 
-  DiagonalModel model(D_CNT ,training_features[0].getVectSize());
-  model.setName(model_name);
+//  DiagonalModel model(D_CNT ,training_features[0].getVectSize());
+//  model.setName(model_name);
 
-  ExpectationMaximalizationAlgo algo;
-  const uint32_t ITERATIONS = 5;
-  algo.learnModel(model,training_features, ITERATIONS );
-  cout<<"Model "<<model.getName() <<" have learned"<<endl;
+//  ExpectationMaximalizationAlgo algo;
+//  const uint32_t ITERATIONS = 5;
+//  algo.learnModel(model,training_features, ITERATIONS );
+//  cout<<"Model "<<model.getName() <<" have learned"<<endl;
 
-  FileModelDao dao;
-  dao.setModelsDir(model_dir);
-  dao.setVectSize(training_features[0].getVectSize());
-  dao.writeModel(model);
-  cout<<"Model "<<model.getName()<<" saved to file"<<endl<<endl;
+//  FileModelDao dao;
+//  dao.setModelsDir(model_dir);
+//  dao.setVectSize(training_features[0].getVectSize());
+//  dao.writeModel(model);
+//  cout<<"Model "<<model.getName()<<" saved to file"<<endl<<endl;
 
-  cout<<"Likehood for last of training feature vec: "<<model.countLikehoodWithWeight(features_vec)<<endl;
+//  cout<<"Likehood for last of training feature vec: "<<model.countLikehoodWithWeight(features_vec)<<endl;
 }
 
 /**

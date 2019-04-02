@@ -1,5 +1,35 @@
 ﻿#include "TempDirManager.hpp"
 
+void TempDirManager::setFeatureFolderPath(const QString &dir_path)
+{
+  throw std::runtime_error("TODO");
+}
+
+QString TempDirManager::getFeatureFolderPath()const
+{
+  throw std::runtime_error("TODO");
+
+}
+
+bool TempDirManager::isDirExists()const
+{
+  throw std::runtime_error("TODO");
+
+}
+TempDir TempDirManager::getTempDir()
+{
+  throw std::runtime_error("TODO");
+
+}
+
+TempDir TempDirManager::getTempDir()const
+{
+  throw std::runtime_error("TODO");
+
+}
+
+
+
 //TempDirManager::TempDirManager(ConfigManager conf):RecordDirManager(conf)
 //{}
 

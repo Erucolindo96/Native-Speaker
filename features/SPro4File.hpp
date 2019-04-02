@@ -1,34 +1,23 @@
-﻿#ifndef RECORD_HPP
-#define RECORD_HPP
+﻿#ifndef SPRO4FILE_HPP
+#define SPRO4FILE_HPP
 
-#include"exceptions/simple_exceptions.hpp"
-#include<memory>
-#include<QFileInfo>
+#include"record-base/Record.hpp"
 
-#include<QDir>
-
-  class MfccConverter;
-/**
- * @brief The Record class Służy jako reprezentacja uchwytu do pliku z nagraniem.
- * Nie przechowuje samego nagrania w pamięci, lecz posiada ścieżkę do pliku w filesystemie
- */
-class Record
+class SPro4File: public Record
 {
-
 public:
-
-  Record() = default;
-  Record(const Record &other) = default;
-  Record& operator=(const Record &other) = default;
-  Record(Record &&other) = default;
-  Record& operator=(Record &&other) = default;
+  SPro4File()=default;
+  SPro4File(const SPro4File &other)=default;
+  SPro4File& operator=(const SPro4File &other)=default;
+  SPro4File(SPro4File &&other)=default;
+  SPro4File& operator=(SPro4File &&other)=default;
 
   /**
    * @brief setPath Ustawia ścieżkę do pliku z nagraniem, wskazywanego przez klasę
    * @param rec_path Scieżka do nagrania
    * @throw FileNotFound jeśli nie można znaleźć pliku określonego daną ścieżką
    */
-  virtual void setPath(const QString &rec_path);
+  void setPath(const QString &rec_path) override;
   /**
    * @brief setPath Ustawia ścieżkę do pliku z nagraniem, wskazywanego przez klasę
    * @param rec_name pełna nazwa pliku
@@ -36,14 +25,14 @@ public:
    * @throw FileNotFound jeśli w danym folderze nie ma nagrania o danej nazwie
    * @throw DirNotFound jeśli wskazany jako parametr folder nie istnieje
    */
-  virtual void setPath(const QString &rec_name, const QDir &rec_dir);
+  void setPath(const QString &rec_name, const QDir &rec_dir) override;
 
   /**
    * @brief getRecordInfo Zwraca informację o nagraniu wskazywanym przez klasę
    * @return Informację o nagraniu wskazywanym przez klasę
    * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
    */
-  virtual QFileInfo getRecordInfo()const;
+  QFileInfo getRecordInfo()const override;
 
   /**
    * @brief copy Kopiuje nagranie wskazywane przez klasę do folderu podanego jako parametr
@@ -52,47 +41,32 @@ public:
    * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
    * @throw DirNotFound jeśli wskazany jako parametr folder nie istnieje
    */
-  virtual Record copy(const QDir &dest_dir)const;
+  Record copy(const QDir &dest_dir)const override;
   /**
    * @brief move Przemieszcza nagranie wskazywane przez klasę do innego folderu
    * @param dest_dir Folder, do którego zostanie przeniesione nagranie
    * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
    * @throw DirNotFound jeśli wskazany jako parametr folder nie istnieje
    */
-  virtual void move(const QDir &dest_dir);
+  void move(const QDir &dest_dir) override;
 
   /**
    * @brief rename Zmienia nazwę nagrania na inną
    * @param new_name Nowa nazwa pliku z nagraniem
    * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
    */
-  virtual void rename(const QString new_name);
+  void rename(const QString new_name) override;
   /**
    * @brief exists Zwraca informację, czy plik na który wskazuje klasa istnieje
    * @return True jeżeli istnieje, false w przeciwnym razie
    */
-  virtual bool exists()const;
+  bool exists()const override;
 
-
-  std::unique_ptr<MfccConverter> getConverter()const;
+  std::unique_ptr<MfccConverter> getConverter()const = delete;
 
 protected:
-
-  /**
-   * @brief checkFileExistance Sprawdza, czy plik opisany polem "record_path_" istnieje
-   * Odświeża również pole "record_path_"
-   * @throw FileNotFound Jeśli plik nie istnieje w filesystemie
-   */
-  void checkFileExistance()const;
-  /**
-   * @brief checkDirExistance Sprawdza, czy istnieje w filesystemie wskazany folder
-   * @param dir Weryfikowany folder
-   * @throw DirNotFound Jesli folder nie istnieje
-   */
-  void checkDirExistance(const QDir &dir)const;
-
-  mutable QFileInfo record_path_;
+  void validate()const;
 
 };
 
-#endif // RECORD_HPP
+#endif // SPRO4FILE_HPP

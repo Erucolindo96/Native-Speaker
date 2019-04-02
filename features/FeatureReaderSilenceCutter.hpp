@@ -14,8 +14,7 @@ public:
   FeatureReaderSilenceCutter(FeatureReaderSilenceCutter &&other) = default;
   FeatureReaderSilenceCutter& operator=(FeatureReaderSilenceCutter &&other) = default;
 
-  std::vector<alize::Feature> readFile(const std::string &file_name,
-                                               const std::string &extention)const override;
+  std::vector<alize::Feature> readFile(const SPro4File &mfcc_file)const override;
 
   std::vector<alize::Feature> cutSilenceFeatures(const std::vector<alize::Feature> &f)const;
 
