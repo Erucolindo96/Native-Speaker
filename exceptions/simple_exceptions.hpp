@@ -118,6 +118,12 @@ public:
   {}
 };
 
+class FeatureFolderNotFound: public DirNotFound
+{
+public:
+  explicit FeatureFolderNotFound(const std::string &msg): DirNotFound(msg)
+  {}
+};
 
 #endif // SIMPLE_EXCEPTIONS_HPP
 
