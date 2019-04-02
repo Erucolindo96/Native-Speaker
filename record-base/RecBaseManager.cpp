@@ -1,26 +1,37 @@
 ﻿#include "RecBaseManager.hpp"
 
-void RecBaseManager::setFeatureFolder(const QString &path)
+void RecBaseManager::setFeatureFolderPath(const QString &path)
 {
-  throw std::runtime_error("TODO");
+  dir_manager_.setFeatureFolder(path);
 }
 
-QDir RecBaseManager::getFeatureFolder()const
+QString RecBaseManager::getFeatureFolderPath()const
 {
-  throw std::runtime_error("TODO");
+  return dir_manager_.getFeatureFolder();
 }
 
 const std::vector<Record> RecBaseManager::getRecordsOfModel(const std::string &model_name)const
 {
-  throw std::runtime_error("TODO");
+  if(!dir_manager_.isDirExists(model_name))
+  {
+    return std::vector<Record>();
+  }
+  return dir_manager_.getModelDir(model_name).list();
 }
 
 void RecBaseManager::setRecordToBase(const Record &r, const std::string &model_name)
 {
-  throw std::runtime_error("TODO");
+  auto model_dir = dir_manager_.getModelDir(model_name);
+  model_dir.addRecord(r);
 }
 
 bool RecBaseManager::isRecordExists(const Record &r, const std::string &model_name)const
 {
-  throw std::runtime_error("TODO");
+
+  if(!dir_manager_.isDirExists(model_name))
+  {
+    return false;
+  }
+  return dir_manager_.getModelDir(model_name).haveRecord(r);
+
 }

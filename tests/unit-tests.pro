@@ -22,7 +22,8 @@ HEADERS += \
     ../models/tests/algo-manager-test/algo_manager_test.hpp \
     ../record-base/tests/record-tests/record_tests.hpp \
     ../record-base/tests/record-dir-tests/record_dir_test.hpp \
-    ../record-base/tests/record-dir-manager-tests/record_dir_manager_test.hpp
+    ../record-base/tests/record-dir-manager-tests/record_dir_manager_test.hpp \
+    ../record-base/tests/rec-base-manager-tests/rec_base_manager_test.hpp
 
 
 SOURCES += \
@@ -42,4 +43,5 @@ SOURCES += \
     ../models/tests/algo-manager-test/algo_manager_test.cpp \
     ../record-base/tests/record-tests/record_tests.cpp \
     ../record-base/tests/record-dir-tests/record_dir_test.cpp \
-    ../record-base/tests/record-dir-manager-tests/record_dir_manager_test.cpp
+    ../record-base/tests/record-dir-manager-tests/record_dir_manager_test.cpp \
+    ../record-base/tests/rec-base-manager-tests/rec_base_manager_test.cpp
