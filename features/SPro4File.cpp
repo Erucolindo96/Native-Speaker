@@ -1,42 +1,56 @@
 ﻿#include "SPro4File.hpp"
 
-void SPro4File::setPath(const QString &rec_path)
+const QString SPro4File::VALID_EXT = "mfcc";
+
+void SPro4File::setPath(const QString &file_path)
 {
-  throw std::runtime_error("TODO");
+  Record::setPath(file_path);
+  validate();
 }
 
-void SPro4File::setPath(const QString &rec_name, const QDir &rec_dir)
+void SPro4File::setPath(const QString &file_name, const QDir &file_dir)
 {
-  throw std::runtime_error("TODO");
+  Record::setPath(file_name, file_dir);
+  validate();
 }
 
 QFileInfo SPro4File::getRecordInfo()const
 {
-    throw std::runtime_error("TODO");
+  validate();
+  return Record::getRecordInfo();
 }
 
-Record SPro4File::copy(const QDir &dest_dir)const
+SPro4File SPro4File::copy(const QDir &dest_dir)const
 {
-    throw std::runtime_error("TODO");
+  return SPro4File(Record::copy(dest_dir));
 }
+/*
 void SPro4File::move(const QDir &dest_dir)
 {
-    throw std::runtime_error("TODO");
+  validate();
+  Record::move(dest_dir);
 }
 
 void SPro4File::rename(const QString new_name)
 {
-    throw std::runtime_error("TODO");
-}
+  validate();
+  Record::rename(new_name);
+}*/
 
 
-bool SPro4File::exists()const
+
+SPro4File::SPro4File(const Record &rec):Record(rec)
 {
-    throw std::runtime_error("TODO");
+  validate();
 }
 
 void SPro4File::validate()const
 {
-    throw std::runtime_error("TODO");
+  record_path_.refresh();
+  if(!(record_path_.suffix() == VALID_EXT))
+  {
+    throw NotASProFile(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                       + std::string("file pointed by class is not a SPro4File"));
+  }
 }
 

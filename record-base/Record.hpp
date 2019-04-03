@@ -52,26 +52,26 @@ public:
    * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
    * @throw DirNotFound jeśli wskazany jako parametr folder nie istnieje
    */
-  virtual Record copy(const QDir &dest_dir)const;
+  Record copy(const QDir &dest_dir)const;
   /**
    * @brief move Przemieszcza nagranie wskazywane przez klasę do innego folderu
    * @param dest_dir Folder, do którego zostanie przeniesione nagranie
    * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
    * @throw DirNotFound jeśli wskazany jako parametr folder nie istnieje
    */
-  virtual void move(const QDir &dest_dir);
+  void move(const QDir &dest_dir);
 
   /**
    * @brief rename Zmienia nazwę nagrania na inną
    * @param new_name Nowa nazwa pliku z nagraniem
    * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
    */
-  virtual void rename(const QString new_name);
+  void rename(const QString new_name);
   /**
    * @brief exists Zwraca informację, czy plik na który wskazuje klasa istnieje
    * @return True jeżeli istnieje, false w przeciwnym razie
    */
-  virtual bool exists()const;
+  bool exists()const;
 
 
   std::unique_ptr<MfccConverter> getConverter()const;

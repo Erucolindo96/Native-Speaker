@@ -124,6 +124,12 @@ public:
   explicit FeatureFolderNotFound(const std::string &msg): DirNotFound(msg)
   {}
 };
+class NotASProFile: public FileNotFound
+{
+public:
+  explicit NotASProFile(const std::string &msg) : FileNotFound(msg)
+  {}
+};
 
 #endif // SIMPLE_EXCEPTIONS_HPP
 

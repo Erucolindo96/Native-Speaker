@@ -6,6 +6,8 @@
 class SPro4File: public Record
 {
 public:
+  static const QString VALID_EXT;
+
   SPro4File()=default;
   SPro4File(const SPro4File &other)=default;
   SPro4File& operator=(const SPro4File &other)=default;
@@ -16,6 +18,8 @@ public:
    * @brief setPath Ustawia ścieżkę do pliku z nagraniem, wskazywanego przez klasę
    * @param rec_path Scieżka do nagrania
    * @throw FileNotFound jeśli nie można znaleźć pliku określonego daną ścieżką
+   * @throw NotASProFile jeśli plik o danej ścieżce nie jest plikiem z rozszerzeniem VALID_MFCC
+   * @see SPro4File::VALID_EXT
    */
   void setPath(const QString &rec_path) override;
   /**
@@ -24,6 +28,8 @@ public:
    * @param rec_dir folder, w którym znajduje się nagranie
    * @throw FileNotFound jeśli w danym folderze nie ma nagrania o danej nazwie
    * @throw DirNotFound jeśli wskazany jako parametr folder nie istnieje
+   * @throw NotASProFile jeśli plik o danej ścieżce nie jest plikiem z rozszerzeniem VALID_MFCC
+   * @see SPro4File::VALID_EXT
    */
   void setPath(const QString &rec_name, const QDir &rec_dir) override;
 
@@ -31,6 +37,8 @@ public:
    * @brief getRecordInfo Zwraca informację o nagraniu wskazywanym przez klasę
    * @return Informację o nagraniu wskazywanym przez klasę
    * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
+   * @throw NotASProFile jeśli plik wskazywany przez klasę nie jest plikiem z rozszerzeniem VALID_MFCC
+   * @see SPro4File::VALID_EXT
    */
   QFileInfo getRecordInfo()const override;
 
@@ -40,31 +48,15 @@ public:
    * @return Odnośnik do kopii nagrania
    * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
    * @throw DirNotFound jeśli wskazany jako parametr folder nie istnieje
+   * @throw NotASProFile jeśli plik wskazywany przez klasę nie jest plikiem z rozszerzeniem VALID_MFCC
+   * @see SPro4File::VALID_EXT
    */
-  Record copy(const QDir &dest_dir)const override;
-  /**
-   * @brief move Przemieszcza nagranie wskazywane przez klasę do innego folderu
-   * @param dest_dir Folder, do którego zostanie przeniesione nagranie
-   * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
-   * @throw DirNotFound jeśli wskazany jako parametr folder nie istnieje
-   */
-  void move(const QDir &dest_dir) override;
-
-  /**
-   * @brief rename Zmienia nazwę nagrania na inną
-   * @param new_name Nowa nazwa pliku z nagraniem
-   * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
-   */
-  void rename(const QString new_name) override;
-  /**
-   * @brief exists Zwraca informację, czy plik na który wskazuje klasa istnieje
-   * @return True jeżeli istnieje, false w przeciwnym razie
-   */
-  bool exists()const override;
+  SPro4File copy(const QDir &dest_dir)const;
 
   std::unique_ptr<MfccConverter> getConverter()const = delete;
 
 protected:
+  explicit SPro4File(const Record &rec);
   void validate()const;
 
 };
