@@ -10,28 +10,38 @@
 
 /**
  *
- * Klasa czytająca plik w formacie SPRO4 i tworząca na jego podstawie wektor cech
+ * Klasa czytająca plik w formacie SPRO4 i tworząca na jego podstawie wektory cech
  *
  */
 class FeatureReader
 {
 
 protected:
-  std::string dir_;
-  alize::Config createConfig(const std::string & file_ext)const;
+  alize::Config createConfig(const SPro4File &mfcc_file)const;
 
 public:
   FeatureReader() = default;
-  explicit FeatureReader(const std::string &feature_dir);
   FeatureReader(const FeatureReader &other) = default;
   FeatureReader& operator=(const FeatureReader &other) = default;
   FeatureReader(FeatureReader &&other) = default;
   FeatureReader& operator=(FeatureReader &&other) = default;
 
-  std::string getFeatureDir()const;
-  void setFeatureDir(const std::string &dir);
-
+  /**
+   * @brief readFile Wczytuje wektory cech, zapisane w pliku podanym jako parametr
+   * @param mfcc_file plik w formacie SPro4, z którego wczytywane są wektory cech
+   * @return Wektor wektorów cech, pochodzących z danego pliku
+   * @throw FileNotFound jeśli plik reprezentowany przez mfcc_file nie istnieje
+   * @throw NotASProFile jeśli plik nie jest plikiem w formacie SPro4
+   */
   virtual std::vector<alize::Feature> readFile(const SPro4File &mfcc_file)const;
+  /**
+   * @brief getSampleRate Zwraca ile wektorów cech na sekundę zawierało nagranie, z którego pochodzi plik z wektorami cech
+   * @param mfcc_file Plik zawierający wektory cech
+   * @return Ilość wektorów cech na sekundę w pierwotnym nagraniu
+   * @throw FileNotFound jeśli plik reprezentowany przez mfcc_file nie istnieje
+   * @throw NotASProFile jeśli plik nie jest plikiem w formacie SPro4
+   *
+   */
   virtual double getSampleRate(const SPro4File &mfcc_file)const;
 
 

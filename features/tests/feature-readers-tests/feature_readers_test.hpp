@@ -13,6 +13,7 @@
 #include<memory>
 #include"exceptions/simple_exceptions.hpp"
 #include<fstream>
+#include<QDir>
 
 #endif // FEATURE_READERS_TEST_HPP
 

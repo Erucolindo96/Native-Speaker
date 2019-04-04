@@ -1,9 +1,9 @@
 ﻿#include "FeatureReaderSilenceCutter.hpp"
 
 
- FeatureReaderSilenceCutter::FeatureReaderSilenceCutter(const std::string &feature_dir):
-   FeatureReader(feature_dir)
-{}
+// FeatureReaderSilenceCutter::FeatureReaderSilenceCutter(const std::string &feature_dir):
+//   FeatureReader(feature_dir)
+//{}
 
  std::vector<alize::Feature> FeatureReaderSilenceCutter::readFile(const SPro4File &mfcc_file)const
  {
