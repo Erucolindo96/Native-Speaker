@@ -1,6 +1,6 @@
 ﻿#include "SPro4File.hpp"
 
-const QString SPro4File::VALID_EXT = "mfcc";
+const QString SPro4File::VALID_EXT = ".mfcc";
 
 void SPro4File::setPath(const QString &file_path)
 {
@@ -47,7 +47,7 @@ SPro4File::SPro4File(const Record &rec):Record(rec)
 void SPro4File::validate()const
 {
   record_path_.refresh();
-  if(!(record_path_.suffix() == VALID_EXT))
+  if(!("." + record_path_.completeSuffix() == VALID_EXT))
   {
     throw NotASProFile(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
                        + std::string("file pointed by class is not a SPro4File"));

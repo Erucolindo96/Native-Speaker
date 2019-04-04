@@ -29,7 +29,7 @@ BOOST_AUTO_TEST_CASE( setPathIfPathPointToSPro4File )
   BOOST_REQUIRE(QFileInfo(path).exists());
   BOOST_REQUIRE_NO_THROW(f.setPath(path));
   BOOST_CHECK(f.getRecordInfo().fileName() == name);
-  BOOST_CHECK(f.getRecordInfo().suffix() == SPro4File::VALID_EXT);
+  BOOST_CHECK("." + f.getRecordInfo().completeSuffix() == SPro4File::VALID_EXT);
 
 }
 
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE( setNameAndDirIfDirExistsAndSProFileExists )
   BOOST_REQUIRE(dir.exists());
   BOOST_REQUIRE_NO_THROW(f.setPath(name, dir));
   BOOST_CHECK(f.getRecordInfo().fileName() == name);
-  BOOST_CHECK(f.getRecordInfo().suffix() == SPro4File::VALID_EXT);
+  BOOST_CHECK("." + f.getRecordInfo().completeSuffix() == SPro4File::VALID_EXT);
 
 }
 
