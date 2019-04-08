@@ -23,7 +23,7 @@ public:
   Record& operator=(const Record &other) = default;
   Record(Record &&other) = default;
   Record& operator=(Record &&other) = default;
-
+  virtual ~Record() = default;
   /**
    * @brief setPath Ustawia ścieżkę do pliku z nagraniem, wskazywanego przez klasę
    * @param rec_path Scieżka do nagrania

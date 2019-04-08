@@ -23,6 +23,7 @@ public:
   ModelController& operator=(const ModelController &other) = default;
   ModelController(ModelController &&other) = default;
   ModelController& operator=(ModelController &&other) = default;
+  ~ModelController() override = default;
 
   void setToolBoxPtr(QToolBox *ptr);
 

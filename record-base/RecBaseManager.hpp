@@ -15,6 +15,7 @@ public:
   RecBaseManager& operator=(const RecBaseManager &other) = default;
   RecBaseManager(RecBaseManager &&other) = default;
   RecBaseManager& operator=(RecBaseManager &&other) = default;
+  virtual ~RecBaseManager() = default;
 
   /**
    * @brief setFeatureFolderPath Ustawia ścieżkę do folderu bazy próbek

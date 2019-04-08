@@ -15,6 +15,7 @@ public:
                                QWidget *parent = 0 );
   void setConfig(ConfigManager conf);
   ConfigManager getConfig()const;
+  ~LearningModelWindow() override = default;
 
 private slots:
 

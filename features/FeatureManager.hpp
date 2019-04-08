@@ -10,7 +10,7 @@ public:
   FeatureManager& operator=(const FeatureManager &other)=default;
   FeatureManager(FeatureManager &&other)=default;
   FeatureManager& operator=(FeatureManager &&other)=default;
-
+  virtual ~FeatureManager() = default;
 
   std::vector<alize::Feature> convertRecord(const Record &r);
   std::vector<alize::Feature> convertRecordWithoutSilence(const Record &r);

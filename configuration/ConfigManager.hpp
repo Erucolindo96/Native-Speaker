@@ -28,6 +28,7 @@ public:
   ConfigManager& operator=(const ConfigManager &other);
   ConfigManager(ConfigManager &&other);
   ConfigManager& operator=(ConfigManager &&other);
+  ~ConfigManager() override = default;
 
   uint32_t getVectSize()const;
   void setVectSize(uint32_t vect_size);
@@ -60,7 +61,6 @@ public:
   static std::string PARAM_MODEL_DIR();
   static std::string PARAM_VECT_SIZE();
 
-  virtual ~ConfigManager()=default;
 
 };
 

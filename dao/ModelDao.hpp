@@ -11,6 +11,7 @@ public:
   ModelDao& operator =(const ModelDao &other) = default;
   ModelDao(ModelDao &&other) = default;
   ModelDao& operator =(ModelDao &&other) = default;
+  virtual ~ModelDao() = default;
 
   virtual void writeModel(const GmmModel &m)const = 0;
   virtual std::unique_ptr<GmmModel> readModel(const std::string &model_name) = 0;

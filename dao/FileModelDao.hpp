@@ -35,6 +35,7 @@ public:
   FileModelDao& operator =(const FileModelDao &other) = default;
   FileModelDao(FileModelDao &&other) = default;
   FileModelDao& operator =(FileModelDao &&other) = default;
+  ~FileModelDao() override = default;
 /*
   alize::DistribType getDistribType()const;
   void setDistribType(alize::DistribType t);

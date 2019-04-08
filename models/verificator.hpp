@@ -15,6 +15,7 @@ public:
   Verificator& operator=(const Verificator &other) = default;
   Verificator(Verificator &&other) = default;
   Verificator& operator=(Verificator &&other) = default;
+  virtual ~Verificator() = default;
 
   double getThreshold() const;
   void setThreshold(double new_threshold);

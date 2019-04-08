@@ -19,7 +19,7 @@ public:
   RecordDir& operator=(const RecordDir &other) = default;
   RecordDir(RecordDir &&other) = default;
   RecordDir& operator=(RecordDir &&other) = default;
-
+  virtual ~RecordDir() = default;
   /**
    * @brief addRecord Dodaje nagranie do folderu
    * @param rec dodawane nagranie

@@ -30,7 +30,7 @@ public:
   MfccConverter& operator=(const MfccConverter &other) = default;
   MfccConverter(MfccConverter &&other) = default;
   MfccConverter& operator=(MfccConverter &&other) = default;
-
+  virtual ~MfccConverter() = default;
   /**
    * @brief convertToSPro4 Przetwarza dane nagranie do postaci wektorów cech Mfcc,
    * i zwraca uchwyt do pliku, zawierającego wynikowe wektory cech
@@ -113,6 +113,7 @@ public:
   MfccConverterWav& operator=(const MfccConverterWav &other) = default;
   MfccConverterWav(MfccConverterWav &&other) = default;
   MfccConverterWav& operator=(MfccConverterWav &&other) = default;
+  ~MfccConverterWav() override = default;
 
   /**
    * @brief convertToSPro4 Przetwarza dane nagranie do postaci wektorów cech Mfcc,

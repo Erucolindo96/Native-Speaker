@@ -16,6 +16,8 @@ public:
   explicit SetParameterWindow(ConfigManager conf, QWidget *parent = 0);
   std::string getParamName()const;
   std::string getParamValue()const;
+  ~SetParameterWindow() override = default;
+
 //  void setConfig(const ConfigManager &conf);
 //  ConfigManager getConfig()const;
 

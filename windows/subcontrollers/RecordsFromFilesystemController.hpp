@@ -16,6 +16,7 @@ public:
   RecordsFromFilesystemController& operator=(const RecordsFromFilesystemController &other) = default;
   RecordsFromFilesystemController(RecordsFromFilesystemController &&other) = default;
   RecordsFromFilesystemController& operator=(RecordsFromFilesystemController &&other) = default;
+  ~RecordsFromFilesystemController() override = default;
 
   void setRemoveButtonPtr(QAbstractButton *ptr);
   void setAddButtonPtr(QAbstractButton *ptr);

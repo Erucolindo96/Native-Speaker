@@ -28,6 +28,7 @@ public:
   ModelManager& operator=(const ModelManager &other) = default;
   ModelManager(ModelManager &&other) = default;
   ModelManager& operator=(ModelManager &&other) = default;
+  virtual ~ModelManager() = default;
 
   void loadModels(const ConfigManager &config_m);
   void addModel(const ConfigManager &config_m,

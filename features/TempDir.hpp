@@ -19,6 +19,8 @@ public:
   TempDir& operator=(const TempDir &other) = default;
   TempDir(TempDir &&other) = default;
   TempDir& operator=(TempDir &&other) = default;
+  ~TempDir() override = default;
+
 
   void setFeatureReader(std::unique_ptr<FeatureReader> &&reader);
 

@@ -25,7 +25,7 @@ public:
   FeatureReader& operator=(const FeatureReader &other) = default;
   FeatureReader(FeatureReader &&other) = default;
   FeatureReader& operator=(FeatureReader &&other) = default;
-
+  virtual ~FeatureReader() = default;
   /**
    * @brief readFile Wczytuje wektory cech, zapisane w pliku podanym jako parametr
    * @param mfcc_file plik w formacie SPro4, z którego wczytywane są wektory cech

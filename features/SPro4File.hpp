@@ -13,7 +13,7 @@ public:
   SPro4File& operator=(const SPro4File &other)=default;
   SPro4File(SPro4File &&other)=default;
   SPro4File& operator=(SPro4File &&other)=default;
-
+  ~SPro4File() override = default;
   /**
    * @brief setPath Ustawia ścieżkę do pliku z nagraniem, wskazywanego przez klasę
    * @param rec_path Scieżka do nagrania

@@ -23,7 +23,7 @@ public:
 
   alize::RealVector<double> getDistribCovariance(uint32_t distrib)const override;
 
-
+  ~DiagonalModel() override = default;
 
 };
 

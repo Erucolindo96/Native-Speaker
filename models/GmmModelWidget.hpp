@@ -22,6 +22,7 @@ public:
   void setType(alize::DistribType type);
   void setDescription(const QString &desc);
 
+  virtual ~GmmModelWidget() = default;
 private:
   Ui::GmmModelWidget ui;
 };

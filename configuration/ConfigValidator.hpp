@@ -11,7 +11,7 @@ public:
   ConfigValidator& operator=(const ConfigValidator &other) = default;
   ConfigValidator(ConfigValidator &&other) = default;
   ConfigValidator& operator=(ConfigValidator &&other) = default;
-
+  virtual ~ConfigValidator() = default;
 
   void isParamValid(const std::string param_name, const std::string param_val)const;
   void validateConfiguration(const ConfigManager &conf)const;

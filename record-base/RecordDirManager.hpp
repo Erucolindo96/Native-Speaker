@@ -20,7 +20,7 @@ public:
   RecordDirManager& operator=(const RecordDirManager &other) = default;
   RecordDirManager(RecordDirManager &&other) = default;
   RecordDirManager& operator=(RecordDirManager &&other) = default;
-
+  virtual ~RecordDirManager() = default;
   /**
    * @brief setFeatureFolder Ustawia klasie folder wskazany jako folder bazy nagrań
    * @param dir Ustawiany folder
