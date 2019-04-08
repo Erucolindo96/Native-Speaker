@@ -1,5 +1,5 @@
 ﻿#include "Record.hpp"
-
+#include"features/MfccConverter.hpp"
 
 void Record::setPath(const QString &rec_path)
 {
@@ -60,7 +60,13 @@ bool Record::exists()const
 
 std::unique_ptr<MfccConverter> Record::getConverter()const
 {
-  throw std::runtime_error("TODO");
+  std::unique_ptr<MfccConverter> ret;
+  if(getRecordInfo().completeSuffix() == "wav")
+  {
+    ret = std::make_unique<MfccConverterWav>();
+    ret->setSampleRate(48000);
+  }
+  return ret;
 }
 
 

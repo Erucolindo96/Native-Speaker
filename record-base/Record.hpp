@@ -8,6 +8,7 @@
 #include<QDir>
 
   class MfccConverter;
+  class MfccConverterWav;
 /**
  * @brief The Record class Służy jako reprezentacja uchwytu do pliku z nagraniem.
  * Nie przechowuje samego nagrania w pamięci, lecz posiada ścieżkę do pliku w filesystemie
@@ -73,7 +74,13 @@ public:
    */
   bool exists()const;
 
-
+  /**
+   * @brief getConverter Zwraca klasę pozwalającą konwertować dane nagranie.
+   * Jeżeli plik nie może być skonwertowany(np. nie obsługujemy danego formatu lub nie jest to plik muzyczny)
+   * to zwracany jest nullptr
+   * @return Klasa, pozwalająca skonwertować dane nagranie.
+   * Jeśli nie ma klasy, która umie konwertować dany plik, zwraca nullptra
+  */
   std::unique_ptr<MfccConverter> getConverter()const;
 
 protected:

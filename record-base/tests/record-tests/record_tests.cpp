@@ -1,4 +1,5 @@
 ﻿#include "record_tests.hpp"
+#include"features/MfccConverter.hpp"
 
 using namespace std;
 using namespace alize;
@@ -234,6 +235,36 @@ BOOST_AUTO_TEST_CASE( throwFileNotFoundAtRenameIfFilePathNotSet )
   BOOST_REQUIRE_THROW(r.rename("fake-file"), FileNotFound);
 }
 
+BOOST_AUTO_TEST_CASE( returnConverterIfFileHasWavExtention )
+{
+  const QString path = "feature-folder/record2.wav", name = "record2.wav";
+  QDir dir("feature-folder");
+  BOOST_REQUIRE(dir.exists());
+  BOOST_REQUIRE(QFileInfo(path).exists());
+
+  Record r;
+  r.setPath(path);
+  std::unique_ptr<MfccConverter> converter;
+  BOOST_REQUIRE_NO_THROW(converter = r.getConverter());
+  BOOST_CHECK(converter != nullptr);
+  BOOST_CHECK(dynamic_cast<MfccConverterWav*>(converter.get()) != nullptr);
+
+}
+
+BOOST_AUTO_TEST_CASE( returnNullptrIfFileHasTxtExtention )
+{
+  const QString path = "feature-folder/record3.txt", name = "record3.txt";
+  QDir dir("feature-folder");
+  BOOST_REQUIRE(dir.exists());
+  BOOST_REQUIRE(QFileInfo(path).exists());
+
+  Record r;
+  r.setPath(path);
+  std::unique_ptr<MfccConverter> converter;
+  BOOST_REQUIRE_NO_THROW(converter = r.getConverter());
+  BOOST_CHECK(converter == nullptr);
+
+}
 
 
 
