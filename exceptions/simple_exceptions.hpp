@@ -130,6 +130,12 @@ public:
   explicit NotASProFile(const std::string &msg) : FileNotFound(msg)
   {}
 };
+class UnableToConvertToMfcc: public std::logic_error
+{
+public:
+  explicit UnableToConvertToMfcc(const std::string &msg) : std::logic_error(msg)
+  {}
+};
 
 #endif // SIMPLE_EXCEPTIONS_HPP
 

@@ -10,6 +10,8 @@ INCLUDEPATH += $$PWD \
                /home/erucolindo/Programy/Qt/5.5/gcc/include \
 
 QMAKE_CXXFLAGS += -std=c++14
+QMAKE_CXXFLAGS += -Werror=return-type
+
 
 HEADERS += \
     $$PWD/utils/utils.hpp \
