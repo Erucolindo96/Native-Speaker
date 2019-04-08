@@ -121,7 +121,7 @@ public:
    * Musi być to nagranie w formacie WAV, inaczej konwersja się nie powiedzie
    * @return Uchwyt do pliku w formacie SPro4, zawierającego wektory cech po przetworzeniu
    * @throw FileNotFound Jesli plik wskazywany przez source_record nie istnieje
-   * @throw UnableToConvertToMfcc Jesli program konwertujący zawodzi
+   * @throw UnableToConvertToMfcc Jesli program konwertujący zawodzi lub nie można skonwertować danego formatu pliku
    */
   SPro4File convertToSPro4(const Record &source_record)const override;
 protected:
