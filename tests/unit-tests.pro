@@ -14,7 +14,6 @@ HEADERS += \
 #    ../dao/tests/dao-test/dao_test.hpp
     ../models/tests/verificator-test/verificator_test.hpp \
     ../dao/tests/dao-test/dao_test.hpp \
-    ../features/tests/mfcc_converter_tests/mfcc_converter_linux_test.hpp \
     ../models/tests/model-manager-test/model_manager_test.hpp \
     ../configuration/tests/config-manager-test/config_manager_test.hpp \
     ../configuration/tests/config-validator-test/config_validator_test.hpp \
@@ -24,7 +23,8 @@ HEADERS += \
     ../record-base/tests/record-dir-tests/record_dir_test.hpp \
     ../record-base/tests/record-dir-manager-tests/record_dir_manager_test.hpp \
     ../record-base/tests/rec-base-manager-tests/rec_base_manager_test.hpp \
-    ../features/tests/spro4-file-tests/spro4_file_test.hpp
+    ../features/tests/spro4-file-tests/spro4_file_test.hpp \
+    ../features/tests/mfcc_converter_tests/mfcc_converter_test.hpp
 
 
 SOURCES += \
@@ -36,7 +36,6 @@ SOURCES += \
 #    ../dao/tests/dao-test/dao_test.cpp
     ../models/tests/verificator-test/verificator_test.cpp \
     ../dao/tests/dao-test/dao_test.cpp \
-    ../features/tests/mfcc_converter_tests/mfcc_converter_linux_test.cpp \
     ../models/tests/model-manager-test/model_manager_test.cpp \
     ../configuration/tests/config-manager-test/config_manager_test.cpp \
     ../configuration/tests/config-validator-test/config_validator_test.cpp \
@@ -46,4 +45,5 @@ SOURCES += \
     ../record-base/tests/record-dir-tests/record_dir_test.cpp \
     ../record-base/tests/record-dir-manager-tests/record_dir_manager_test.cpp \
     ../record-base/tests/rec-base-manager-tests/rec_base_manager_test.cpp \
-    ../features/tests/spro4-file-tests/spro4_file_test.cpp
+    ../features/tests/spro4-file-tests/spro4_file_test.cpp \
+    ../features/tests/mfcc_converter_tests/mfcc_converter_test.cpp

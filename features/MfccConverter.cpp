@@ -94,6 +94,12 @@ uint32_t MfccConverter::getFeatureLenght()const
 
 SPro4File MfccConverterWav::convertToSPro4(const Record &source_record)const
 {
+  if(source_record.getRecordInfo().completeSuffix() != "wav")
+  {
+    throw UnableToConvertToMfcc(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
+                                + std::string(" source record is not a wav file"));
+  }
+
   const QString COMMAND = "sfbcep",
       SOURCE_FILE = source_record.getRecordInfo().absoluteFilePath(),
       DEST_FILE = source_record.getRecordInfo().absolutePath() + "/" +

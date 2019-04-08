@@ -1,4 +1,4 @@
-﻿#include"features/tests/mfcc_converter_tests/mfcc_converter_linux_test.hpp"
+﻿#include"features/tests/mfcc_converter_tests/mfcc_converter_test.hpp"
 
 using namespace boost;
 using namespace std;
@@ -117,8 +117,8 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavRecordToMfccIfRecordExists)
       RECORD_NAME = "janfigat1_2-01",
       record_path = RECORD_DIR + RECORD_NAME + ".wav",
       DEST_FILE_PATH = RECORD_DIR + RECORD_NAME + SPro4File::VALID_EXT;
-  const int32_t SAMPLE_RATE = 64000;
-  const uint32_t F_CNT = 362;
+  const int32_t SAMPLE_RATE = 48000;
+  const uint32_t F_CNT = 483;
 
   std::unique_ptr<MfccConverter> conv = make_unique<MfccConverterWav>();
   BOOST_REQUIRE_NO_THROW(conv->setSampleRate(SAMPLE_RATE));
@@ -138,7 +138,8 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavRecordToMfccIfRecordExists)
 
 BOOST_AUTO_TEST_CASE(throwFileNotFoundAtConvertingRecordIfRecordDoesNotExists)
 {
-  const int32_t SAMPLE_RATE = 64000;
+
+  const int32_t SAMPLE_RATE = 48000;
   std::unique_ptr<MfccConverter> conv = make_unique<MfccConverterWav>();
   BOOST_REQUIRE_NO_THROW(conv->setSampleRate(SAMPLE_RATE));
 
@@ -146,6 +147,23 @@ BOOST_AUTO_TEST_CASE(throwFileNotFoundAtConvertingRecordIfRecordDoesNotExists)
   BOOST_CHECK_THROW(auto converted_file = conv->convertToSPro4(r), FileNotFound);
 }
 
+BOOST_AUTO_TEST_CASE(throwUnableToConvertToMfccAtConvertingIfRecordIsNotAWavFile)
+{
+  const QString RECORD_DIR = "samples/mp3/",
+      RECORD_NAME = "inwokacja",
+      record_path = RECORD_DIR + RECORD_NAME + ".mp3",
+      DEST_FILE_PATH = RECORD_DIR + RECORD_NAME + SPro4File::VALID_EXT;
+
+  const int32_t SAMPLE_RATE = 48000;
+  std::unique_ptr<MfccConverter> conv = make_unique<MfccConverterWav>();
+  BOOST_REQUIRE_NO_THROW(conv->setSampleRate(SAMPLE_RATE));
+  BOOST_REQUIRE(QFileInfo(record_path).exists());
+
+  Record r;
+  r.setPath(record_path);
+  BOOST_CHECK_THROW(auto converted_file = conv->convertToSPro4(r), UnableToConvertToMfcc);
+  BOOST_CHECK(!QFileInfo(DEST_FILE_PATH).exists());
+}
 
 BOOST_AUTO_TEST_SUITE_END()
 
