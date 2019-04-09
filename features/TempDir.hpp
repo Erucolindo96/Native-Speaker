@@ -12,7 +12,7 @@
  * @see MfccConverter
  * @see Record
  */
-class TempDir : public RecordDir
+class TempDir : protected RecordDir
 {
 public:
   TempDir(const TempDir &other) = default;
@@ -21,17 +21,44 @@ public:
   TempDir& operator=(TempDir &&other) = default;
   ~TempDir() override = default;
 
-
+  /**
+   * @brief setFeatureReader Ustawia instancję klasy FeatureReader, która ma wczytać do pamięci przekonwerowane wektory cech
+   * Jeżeli nie zostanie ustawiona - do konwersji zostanie używa klasa bazowa, FeatureReader
+   * @param reader Instancja klasy FeatureReader, która ma być użyta do wczytania wektorów cech do pamięci programu
+   * @throw DirNotFound jeśli nie istnieje folder reprezentowany przez klasę
+   */
   void setFeatureReader(std::unique_ptr<FeatureReader> &&reader);
+  /**
+   * @brief getFeatureReaderRef Zwraca referencje do obiektu ustawionego jako FeatureReader
+   * @return Const referencja do obiektu ustawionego jako FeatureReader
+   * @throw DirNotFound jeśli nie istnieje folder reprezentowany przez klasę
+   */
+  const std::unique_ptr<FeatureReader>& getFeatureReaderRef()const;
 
+  /**
+   * @brief convertToMfcc Konwertuje wskazane nagranie i wczytuje uzyskane w wyniku konwersji wektory cech
+   * @param rec_to_convert Konwertowane nagranie
+   * @return  Wektory cech uzyskane z danego nagrania
+   * @throw FileNotFound Jeśli plik wskazywany przez rec_to_convert nie istenieje
+   * @throw UnableToConvertToMfcc Jesli nie jesteśmy w stanie przekonwertować danego pliku
+   * @throw DirNotFound jeśli nie istnieje folder reprezentowany przez klasę
+   */
   std::vector<alize::Feature> convertToMfcc(const Record &rec_to_convert);
+
+  /**
+   * @brief cleanDir Usuwa wszystkie pliki znajdujące się w folderze
+   * @throw DirNotFound jeśli nie istnieje folder reprezentowany przez klasę
+   */
+  void cleanDir();
+
+
 
 
 protected:
   TempDir() = default;
   std::unique_ptr<FeatureReader> f_reader_;
 
-
+  friend class TempDirManager;
 
 };
 
