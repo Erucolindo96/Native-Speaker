@@ -266,6 +266,15 @@ BOOST_AUTO_TEST_CASE( returnNullptrIfFileHasTxtExtention )
 
 }
 
+BOOST_AUTO_TEST_CASE( throwFileNotFoundAtGettingConverterIfFilePathWasNotSet )
+{
+
+  Record r;
+  BOOST_REQUIRE_THROW(auto converter = r.getConverter(), FileNotFound);
+
+}
+
+
 
 
 
