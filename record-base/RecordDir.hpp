@@ -54,11 +54,15 @@ public:
 
 protected:
 
-  QDir dir_;
+  mutable QDir dir_;
+  QString dir_path_;
+
   RecordDir() = default;
+
   void checkExistanceOfDir()const;
+
   void setDir(const QDir &dir);
-  QDir getDir()const;
+  QString getDirPath()const;
 
   friend class RecordDirManager;
 };

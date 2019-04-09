@@ -82,6 +82,18 @@ BOOST_AUTO_TEST_CASE(throwDirNotFoundAtAddingRecordIfDirRepresentedByClassDoesNo
   BOOST_CHECK_THROW(rec_dir.addRecord(rec), DirNotFound);
 }
 
+BOOST_AUTO_TEST_CASE(throwDirNotFoundAtAddingRecordIfDirWasNotSet)
+{
+  const QString REC_PATH = "other-dir/record1.mp3",
+      REC_NAME = "record1.mp3";
+  BOOST_REQUIRE(QFileInfo(REC_PATH).exists());
+
+  RecordDirMock rec_dir;
+  Record rec;
+  rec.setPath(REC_PATH);
+
+  BOOST_CHECK_THROW(rec_dir.addRecord(rec), DirNotFound);
+}
 
 BOOST_AUTO_TEST_CASE(correctlyListRecordDirIfRecordDirExists)
 {
@@ -111,6 +123,14 @@ BOOST_AUTO_TEST_CASE(throwDirNotFoundAtListingDirIfRecordDirDoesNotExists)
   RecordDirMock rec_dir;
   rec_dir.setDir(QDir(REC_DIR_PATH));
 
+  BOOST_CHECK_THROW(rec_dir.list(), DirNotFound);
+
+}
+
+BOOST_AUTO_TEST_CASE(throwDirNotFoundAtListingDirIfRecordDirWasNotSet)
+{
+
+  RecordDirMock rec_dir;
   BOOST_CHECK_THROW(rec_dir.list(), DirNotFound);
 
 }
@@ -184,6 +204,21 @@ BOOST_AUTO_TEST_CASE(throwDirNotFoundAtCheckingExistanceOfRecordInRecordDirDoesN
   BOOST_REQUIRE_THROW(rec_dir.haveRecord(rec), DirNotFound);
 }
 
+
+BOOST_AUTO_TEST_CASE(throwDirNotFoundAtCheckingExistanceOfRecordIfRecordDirWasNotSetAndQuerredRecordExists)
+{
+  const QString REC_PATH = "other-dir/record1.mp3",
+      REC_NAME = "record1.mp3";
+  BOOST_REQUIRE(QFileInfo(REC_PATH).exists());
+
+  RecordDirMock rec_dir;
+
+  Record rec;
+  rec.setPath(REC_PATH);
+
+  BOOST_REQUIRE_THROW(rec_dir.haveRecord(rec), DirNotFound);
+}
+
 BOOST_AUTO_TEST_CASE(checkExistanceOfRecordDirIfDirDoesExists)
 {
   const QString REC_DIR_PATH = "record-dir";
@@ -206,6 +241,16 @@ BOOST_AUTO_TEST_CASE(checkExistanceOfRecordDirIfDirDoesNotExists)
 
   RecordDirMock rec_dir;
   rec_dir.setDir(QDir(REC_DIR_PATH));
+
+  BOOST_REQUIRE_NO_THROW(rec_dir.exists());
+  BOOST_CHECK(!rec_dir.exists());
+
+}
+
+BOOST_AUTO_TEST_CASE(checkExistanceOfRecordDirIfDirWasNotSet)
+{
+
+  RecordDirMock rec_dir;
 
   BOOST_REQUIRE_NO_THROW(rec_dir.exists());
   BOOST_CHECK(!rec_dir.exists());

@@ -13,10 +13,6 @@ const std::vector<Record> RecordDir::list()const
   std::vector<Record> ret;
   for(auto file: dir_.entryList())
   {
-//    if(file == "." || file == "..")
-//    {
-//      continue;
-//    }
     Record r;
     r.setPath(file, dir_);
     ret.push_back(r);
@@ -39,29 +35,30 @@ bool RecordDir::haveRecord(const Record &other)const
 }
 bool RecordDir::exists()const
 {
-  dir_.refresh();
-  return dir_.exists();
+  return QFileInfo(dir_path_).exists() && QFileInfo(dir_path_).isDir();
 }
 
 void RecordDir::checkExistanceOfDir()const
 {
-  dir_.refresh();
-  if(!dir_.exists())
+  if(!QFileInfo(dir_path_).exists())
   {
     throw DirNotFound(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
-                      + std::string("record dir pointed by class does not exists"));
+                      + std::string(" record dir pointed by class does not exists"));
   }
+  dir_.setPath(dir_path_);
+  dir_.refresh();
 }
 
 void RecordDir::setDir(const QDir &dir)
 {
+  dir_path_ = dir.absolutePath();
   dir_ = dir;
   dir_.setFilter(QDir::NoDotAndDotDot|QDir::Files);
 }
 
-QDir RecordDir::getDir()const
+QString RecordDir::getDirPath()const
 {
-  return dir_;
+  return dir_path_;
 }
 
 
