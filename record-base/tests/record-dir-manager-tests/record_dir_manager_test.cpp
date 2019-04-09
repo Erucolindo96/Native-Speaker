@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE(checkExistanceOfModelRecordDirIfThisOneDoesNotExists)
   BOOST_CHECK(!manager.isDirExists(DIR_NAME));
 }
 
-BOOST_AUTO_TEST_CASE(throwDirNotFoundIfFeatureFolderWasNotSet)
+BOOST_AUTO_TEST_CASE(throwDirNotFoundAtCheckingExistanceOfModelDirIfFeatureFolderWasNotSet)
 {
   const string DIR_NAME = "not-exists";
   RecordDirManager manager;

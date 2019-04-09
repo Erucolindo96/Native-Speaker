@@ -51,6 +51,11 @@ public:
    */
   void cleanDir();
 
+  /**
+   * @brief exists Zwraca informację, czy folder którego reprezentuje klasa istnieje
+   * @return True jeśli istnieje, false jesli nie istnieje
+   */
+  bool exists()const;
 
 
 

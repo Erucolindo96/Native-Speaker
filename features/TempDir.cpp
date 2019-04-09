@@ -34,3 +34,7 @@ void TempDir::cleanDir()
   RecordDir::removeAll();
 }
 
+bool TempDir::exists()const
+{
+  return RecordDir::exists();
+}

@@ -16,10 +16,6 @@ public:
     RecordDir::setDir(dir);
   }
 
-  bool exists() const
-  {
-    return RecordDir::exists();
-  }
 
 };
 
@@ -216,6 +212,60 @@ BOOST_AUTO_TEST_CASE(throwDirNotFoundAtCleaningTempDirIfDirWasNotSet)
   BOOST_CHECK_THROW(dir.cleanDir(), DirNotFound);
 }
 
+
+BOOST_AUTO_TEST_CASE(checkExistanceOfTempDirIfDirDoesExists)
+{
+  const QString TEMP_DIR_PATH = "feature-folder-temp-dir/temp-dir";
+
+  BOOST_REQUIRE(QDir(TEMP_DIR_PATH).exists());
+
+  TempDirMock temp_dir;
+  temp_dir.setDir(QDir(TEMP_DIR_PATH));
+
+  BOOST_REQUIRE_NO_THROW(temp_dir.exists());
+  BOOST_CHECK(temp_dir.exists());
+
+}
+
+BOOST_AUTO_TEST_CASE(checkExistanceOfTempDirIfDirDoesNotExists)
+{
+  const QString TEMP_DIR_PATH = "fake-temp-dir";
+
+  BOOST_REQUIRE(!QDir(TEMP_DIR_PATH).exists());
+
+  TempDirMock temp_dir;
+  temp_dir.setDir(QDir(TEMP_DIR_PATH));
+
+  BOOST_REQUIRE_NO_THROW(temp_dir.exists());
+  BOOST_CHECK(!temp_dir.exists());
+
+}
+
+BOOST_AUTO_TEST_CASE(checkExistanceOfTempDirIfDirWasNotSet)
+{
+
+  TempDirMock temp_dir;
+
+  BOOST_REQUIRE_NO_THROW(temp_dir.exists());
+  BOOST_CHECK(!temp_dir.exists());
+
+}
+
+BOOST_AUTO_TEST_CASE(checkExistanceOfTempDirIfDirWasRemovedAtRuntime)
+{
+  const QString TEMP_DIR_PATH = "another-temp-dir";
+
+  BOOST_REQUIRE(!QDir(TEMP_DIR_PATH).exists());
+  BOOST_REQUIRE(QDir(".").mkdir(TEMP_DIR_PATH));
+
+  TempDirMock temp_dir;
+  temp_dir.setDir(QDir(TEMP_DIR_PATH));
+
+  BOOST_CHECK(temp_dir.exists());
+  BOOST_REQUIRE(QDir(".").rmdir(TEMP_DIR_PATH));
+  BOOST_CHECK(!temp_dir.exists());
+
+}
 
 
 
