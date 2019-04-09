@@ -46,10 +46,10 @@ BOOST_AUTO_TEST_CASE(addRecordToDirIfDirExistsAndAddedRecordExists)
   rec_dir.setDir(QDir(REC_DIR_PATH));
   Record rec;
   rec.setPath(REC_PATH);
-
-  BOOST_REQUIRE_NO_THROW(rec_dir.addRecord(rec));
+  const Record copied = rec_dir.addRecord(rec);
   BOOST_CHECK(QDir(REC_DIR_PATH).entryList().contains(REC_NAME));
-
+  BOOST_CHECK_EQUAL(copied.getRecordInfo().fileName().toStdString(),
+                    rec.getRecordInfo().fileName().toStdString());
   //sprzątanie
   BOOST_CHECK(QDir(REC_DIR_PATH).remove(REC_NAME));
 }

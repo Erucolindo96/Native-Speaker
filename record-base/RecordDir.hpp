@@ -23,10 +23,11 @@ public:
   /**
    * @brief addRecord Dodaje nagranie do folderu
    * @param rec dodawane nagranie
+   * @return Uchwyt do skopiowanego nagrania
    * @throw FileNotFound jeśli rec nie reprezentuje żadnego pliku w Filesystemie
    * @throw DirNotFound jeśli folder, którego reprezentuje klasa nie istnieje
    */
-  void addRecord(const Record &rec);
+  const Record addRecord(const Record &rec);
   /**
    * @brief list Listuje folder reprezentowany przez klasę i zwraca wektor plików zawartych w katalogu
    * @return Wektor plików, które zawiera katalog

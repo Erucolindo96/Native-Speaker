@@ -1,10 +1,10 @@
 ﻿#include "RecordDir.hpp"
 
 
-void RecordDir::addRecord(const Record &rec)
+const Record RecordDir::addRecord(const Record &rec)
 {
   checkExistanceOfDir();
-  rec.copy(dir_);
+  return rec.copy(dir_);
 }
 
 const std::vector<Record> RecordDir::list()const
