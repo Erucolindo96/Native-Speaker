@@ -6,7 +6,7 @@
 class TempDirManager : protected RecordDirManager
 {
 public:
-  const std::string TEMP_DIR_NAME = "@temp";
+  const QString TEMP_DIR_NAME = "@temp";
 
   TempDirManager()= default;
   TempDirManager(const TempDirManager &other) = default;
@@ -16,17 +16,17 @@ public:
 
 
   /**
-   * @brief setFeatureFolderPath Ustawia klasie folder wskazany jako folder bazy nagrań
+   * @brief setFeatureFolder Ustawia klasie folder wskazany jako folder bazy nagrań
    * @param dir Ustawiany folder
    * @throw DirNotFound Jesli taki folder nie istnieje w filesystemie
    */
-  void setFeatureFolderPath(const QString &dir_path);
+  void setFeatureFolder(const QString &dir_path);
 
   /**
    * @brief getFeatureFolder Zwraca folder ustawiony jako folder bazy nagrań
    * @return Ścieżka do folderu bazy nagrań
    */
-  QString getFeatureFolderPath()const;
+  QString getFeatureFolder()const;
 
   /**
    * @brief isDirExists Zwraca informację, czy folder danego modelu istnieje w bazie nagrań

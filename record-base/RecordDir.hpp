@@ -65,6 +65,7 @@ protected:
   QString getDirPath()const;
 
   friend class RecordDirManager;
+  friend class TempDirManager;
 };
 
 #endif // MODELDIR_HPP
