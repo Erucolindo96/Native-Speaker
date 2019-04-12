@@ -26,7 +26,8 @@ HEADERS += \
     ../features/tests/spro4-file-tests/spro4_file_test.hpp \
     ../features/tests/mfcc_converter_tests/mfcc_converter_test.hpp \
     ../features/tests/temp-dir-tests/temp_dir_test.hpp \
-    ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.hpp
+    ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.hpp \
+    ../features/tests/feature-manager-tests/feature_manager_test.hpp
 
 
 SOURCES += \
@@ -50,4 +51,5 @@ SOURCES += \
     ../features/tests/spro4-file-tests/spro4_file_test.cpp \
     ../features/tests/mfcc_converter_tests/mfcc_converter_test.cpp \
     ../features/tests/temp-dir-tests/temp_dir_test.cpp \
-    ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.cpp
+    ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.cpp \
+    ../features/tests/feature-manager-tests/feature_manager_test.cpp

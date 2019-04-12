@@ -1,13 +1,42 @@
 ﻿#include "FeatureManager.hpp"
 
 
-
-std::vector<alize::Feature> FeatureManager::convertRecord(const Record &r)
+void FeatureManager::setFeatureFolder(const QString &path)
 {
-  throw std::runtime_error("TODO");
+  temp_manager_.setFeatureFolder(path);
 }
 
-std::vector<alize::Feature> FeatureManager::convertRecordWithoutSilence(const Record &r)
+QString FeatureManager::getFeatureFolder()const
 {
-  throw std::runtime_error("TODO");
+  return temp_manager_.getFeatureFolder();
 }
+
+
+std::vector<alize::Feature> FeatureManager::convertRecord(const Record &r,
+                                          std::unique_ptr<FeatureReader>&& reader)
+{
+  auto temp_dir = temp_manager_.getTempDir();
+  temp_dir.setFeatureReader(std::move(reader));
+  return temp_dir.convertToMfcc(r);
+}
+
+std::vector<alize::Feature> FeatureManager::convertRecord(const std::vector<Record> &r_vec,
+                                          std::unique_ptr<FeatureReader>&& reader )
+{
+  auto temp_dir = temp_manager_.getTempDir();
+  temp_dir.setFeatureReader(std::move(reader));
+  std::vector<alize::Feature> ret;
+  for(auto rec : r_vec)
+  {
+    auto mfcc_vec = temp_dir.convertToMfcc(rec);
+    ret.insert(ret.cend(), mfcc_vec.cbegin(), mfcc_vec.cend());
+  }
+  return ret;
+}
+
+void FeatureManager::clean()
+{
+  auto temp_dir = temp_manager_.getTempDir();
+  temp_dir.cleanDir();
+}
+

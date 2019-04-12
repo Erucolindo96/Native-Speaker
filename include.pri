@@ -126,7 +126,7 @@ HEADERS += \
     $$PWD/record-base/RecordDirManager.hpp \
     $$PWD/features/TempDir.hpp \
     $$PWD/features/SPro4File.hpp \
-    $$PWD/features/FeatureManager.hpp
+    $$PWD/features/FeatureManager.hpp \
 
 
 SOURCES += \
@@ -157,7 +157,7 @@ SOURCES += \
     $$PWD/record-base/RecordDirManager.cpp \
     $$PWD/features/TempDir.cpp \
     $$PWD/features/SPro4File.cpp \
-    $$PWD/features/FeatureManager.cpp
+    $$PWD/features/FeatureManager.cpp \
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a
