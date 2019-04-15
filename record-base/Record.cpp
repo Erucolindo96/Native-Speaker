@@ -64,7 +64,6 @@ std::unique_ptr<MfccConverter> Record::getConverter()const
   if(getRecordInfo().completeSuffix() == "wav")
   {
     ret = std::make_unique<MfccConverterWav>();
-    ret->setSampleRate(48000);
   }
   return ret;
 }

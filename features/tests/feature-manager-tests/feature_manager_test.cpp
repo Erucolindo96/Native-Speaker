@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavFileIfConverterExistsAndFeatureReaderWas
   const QString FEATURE_FOLDER_PATH("feature-folder-feature-manager"),
       RECORD_PATH = "samples-feature-manager/wav/janfigat1_2-01.wav",
       RECORD_NAME = "janfigat1_2-01.wav";
-  const uint32_t F_CNT  = 483;
+  const uint32_t F_CNT  = 241;
   BOOST_REQUIRE(QDir(FEATURE_FOLDER_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH).exists());
 
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavFileIfConverterExistsAndFeatureReaderWas
   const QString FEATURE_FOLDER_PATH("feature-folder-feature-manager"),
       RECORD_PATH = "samples-feature-manager/wav/janfigat1_2-01.wav",
       RECORD_NAME = "janfigat1_2-01.wav";
-  const uint32_t F_CNT  = 483;
+  const uint32_t F_CNT  = 241;
   BOOST_REQUIRE(QDir(FEATURE_FOLDER_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH).exists());
 
@@ -150,7 +150,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertTwoWavFileIfConverterExistsAndFeatureReader
       RECORD_PATH = "samples-feature-manager/wav/janfigat1_2-01.wav",
       RECORD_PATH2 = "samples-feature-manager/wav/kasprzak10_3-01.wav";
 
-  const uint32_t F_CNT = 1049;
+  const uint32_t F_CNT = 523;
   BOOST_REQUIRE(QDir(FEATURE_FOLDER_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH2).exists());
@@ -182,7 +182,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertTwoWavFileIfConverterExistsAndFeatureReader
       RECORD_PATH = "samples-feature-manager/wav/janfigat1_2-01.wav",
       RECORD_PATH2 = "samples-feature-manager/wav/kasprzak10_3-01.wav";
 
-  const uint32_t F_CNT  = 1049;
+  const uint32_t F_CNT  = 523;
   BOOST_REQUIRE(QDir(FEATURE_FOLDER_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH2).exists());

@@ -13,8 +13,9 @@
 #include"features/SPro4File.hpp"
 
 /**
- * @brief The MfccConverter Klasa, która przetwarza plik w formacie MP3
+ * @brief The MfccConverter Klasa, która przetwarza plik dźwiękowy
  * na wektory cech w formacie SPro4
+ * Klasy pochodne implementują sposób konwersji poszczególnych formatów dźwiękowych.
  */
 class MfccConverter
 {
@@ -104,11 +105,18 @@ protected:
 
 
 };
-
+/**
+ * @brief The MfccConverterWav class Klasa zdolna konwertować pliki w formacie .wav.
+ * W konstruktorze domyślnym ustawiane są parametry konwersji, dedykowane do pliku w formacie .wav o częstotliwości próbkowania 48kHz.
+ * Wynikowy wektor cech ma 24 elementy, oraz dodany na końcu wektora logarytm energii
+ */
 class MfccConverterWav: public MfccConverter
 {
 public:
-  MfccConverterWav()=default;
+  /**
+   * @brief MfccConverterWav Ustawia parametry konwersji, pasujące do pliku .wav o częstotliwości próbkowania 48kHz
+   */
+  MfccConverterWav();
   MfccConverterWav(const MfccConverterWav &other) = default;
   MfccConverterWav& operator=(const MfccConverterWav &other) = default;
   MfccConverterWav(MfccConverterWav &&other) = default;

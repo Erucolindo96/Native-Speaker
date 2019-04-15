@@ -84,7 +84,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertRecordIfDirWasSetAndRecordIsWavAndFeatureRe
   Record r;
   r.setPath(RECORD_PATH);
 
-  const uint32_t F_CNT = 483;
+  const uint32_t F_CNT = 241;
   std::vector<alize::Feature> vec;
   BOOST_REQUIRE_NO_THROW(vec = dir.convertToMfcc(r));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
@@ -112,7 +112,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertRecordIfDirWasSetAndRecordIsWavAndFeatureRe
   Record r;
   r.setPath(RECORD_PATH);
 
-  const uint32_t F_CNT = 483;
+  const uint32_t F_CNT = 241;
   std::vector<alize::Feature> vec;
   BOOST_REQUIRE_NO_THROW(vec = dir.convertToMfcc(r));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);

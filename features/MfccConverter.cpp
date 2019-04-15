@@ -92,6 +92,14 @@ uint32_t MfccConverter::getFeatureLenght()const
 
 
 
+MfccConverterWav::MfccConverterWav():MfccConverter()
+{
+  const uint32_t SAMPLE_RATE_WAV = 48000, F_LENGHT = 24;
+  setSampleRate(SAMPLE_RATE_WAV*2);
+  setFeatureLenght(F_LENGHT);
+  setLogEnergy(true);
+}
+
 SPro4File MfccConverterWav::convertToSPro4(const Record &source_record)const
 {
   if(source_record.getRecordInfo().completeSuffix() != "wav")
