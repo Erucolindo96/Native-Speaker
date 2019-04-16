@@ -127,6 +127,8 @@ HEADERS += \
     $$PWD/features/TempDir.hpp \
     $$PWD/features/SPro4File.hpp \
     $$PWD/features/FeatureManager.hpp \
+    $$PWD/learn-performing/LearningThread.hpp \
+    $$PWD/learn-performing/LearningPerformer.hpp
 
 
 SOURCES += \
@@ -158,6 +160,8 @@ SOURCES += \
     $$PWD/features/TempDir.cpp \
     $$PWD/features/SPro4File.cpp \
     $$PWD/features/FeatureManager.cpp \
+    $$PWD/learn-performing/LearningThread.cpp \
+    $$PWD/learn-performing/LearningPerformer.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a

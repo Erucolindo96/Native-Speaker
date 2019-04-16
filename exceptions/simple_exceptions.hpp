@@ -137,5 +137,12 @@ public:
   {}
 };
 
+class RerunningLearningThread: public std::logic_error
+{
+public:
+  explicit RerunningLearningThread(const std::string &msg) : std::logic_error(msg)
+  {}
+};
+
 #endif // SIMPLE_EXCEPTIONS_HPP
 

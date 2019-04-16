@@ -1,0 +1,207 @@
+﻿#include "learning_thread_test.hpp"
+using namespace std;
+using namespace alize;
+using namespace boost;
+using namespace utils;
+
+
+BOOST_AUTO_TEST_SUITE( LearningThreadTest )
+
+BOOST_AUTO_TEST_CASE(correctlySetGmmModelAndGetReferenceToIt)
+{
+  uint32_t DISTRIB_CNT = 100, F_SIZE = 20;
+  std::unique_ptr<GmmModel> model = make_unique<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+
+  BOOST_REQUIRE_NO_THROW(LearningThread t(model));
+  LearningThread t(model);
+  BOOST_CHECK_EQUAL(t.getModelRef().get(), model.get());
+
+}
+
+
+BOOST_AUTO_TEST_CASE(correctlyIncrementIterCounter)
+{
+
+  uint32_t DISTRIB_CNT = 100, F_SIZE = 20;
+  std::unique_ptr<GmmModel> model = make_unique<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+
+  LearningThread t(model);
+  BOOST_CHECK_EQUAL(t.getIter(), 0);
+  BOOST_REQUIRE_NO_THROW(t.incrementIter());
+  BOOST_CHECK_EQUAL(t.getIter(), 1);
+  BOOST_REQUIRE_NO_THROW(t.incrementIter());
+  BOOST_CHECK_EQUAL(t.getIter(), 2);
+
+}
+
+
+BOOST_AUTO_TEST_CASE(correctlyCopyClass_WithoutIterCounterAndThreadSettings)
+{
+  uint32_t DISTRIB_CNT = 100, F_SIZE = 20;
+  std::unique_ptr<GmmModel> model = make_unique<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+
+  BOOST_REQUIRE_NO_THROW(LearningThread t(model));
+  LearningThread t(model);
+
+  t.incrementIter();
+  t.incrementIter();
+
+  LearningThread copy(t);
+  BOOST_CHECK_EQUAL(t.getModelRef().get(), copy.getModelRef().get());
+  BOOST_REQUIRE_EQUAL(t.getIter(), 2);
+  BOOST_CHECK_EQUAL(copy.getIter(), 0);
+
+}
+
+BOOST_AUTO_TEST_CASE(correctlyMoveClass_WithIterCounterAndThreadSettings)
+{
+  uint32_t DISTRIB_CNT = 100, F_SIZE = 20;
+  std::unique_ptr<GmmModel> model = make_unique<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+
+  BOOST_REQUIRE_NO_THROW(LearningThread t(model));
+  LearningThread t(model);
+
+  t.incrementIter();
+  t.incrementIter();
+  uint32_t t_iter_cnt = t.getIter();
+  std::unique_ptr<GmmModel> &t_model_ref = t.getModelRef();
+
+  LearningThread copy(std::move(t));
+  BOOST_CHECK_EQUAL(t_model_ref.get(), copy.getModelRef().get());
+  BOOST_CHECK_EQUAL(t_iter_cnt, copy.getIter());
+}
+
+BOOST_AUTO_TEST_CASE(correctlyPerformLearningAndCheckStateMethod)
+{
+  uint32_t DISTRIB_CNT = 10, F_SIZE = 3, TEST_DISTRIB_NUM = 0;
+  std::unique_ptr<GmmModel> model = make_unique<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+  auto begin_distrib_mean = model->getDistribMean(TEST_DISTRIB_NUM);
+  std::vector<Feature> f_vec = {
+    toFeature({0, 1.2, -0.3}),
+     toFeature({0, 1.2, -0.3}),
+     toFeature({-2.4, 1.2, -0.3})
+  };
+
+  BOOST_REQUIRE_NO_THROW(LearningThread t(model));
+  LearningThread t(model);
+
+  BOOST_CHECK(!t.isDone());
+  uint32_t ITERS = 2;
+  BOOST_REQUIRE_NO_THROW(LearningThread::learningOperation(t, make_unique<ExpectationMaximalizationAlgo>(),
+                                     f_vec, ITERS));
+  BOOST_CHECK_EQUAL(t.getIter(), ITERS);
+  BOOST_CHECK(!t.isDone());//ponieważ nie został uruchomiony drugi wątek
+  //sprawdzenie, czy zmieniły się parametry modelu
+  BOOST_REQUIRE_EQUAL(t.getModelRef().get(), model.get());
+  BOOST_CHECK_EQUAL(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[0],
+                      model->getDistribMean(TEST_DISTRIB_NUM)[0]);
+  BOOST_CHECK_EQUAL(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[1],
+                      model->getDistribMean(TEST_DISTRIB_NUM)[1]);
+  BOOST_CHECK_EQUAL(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[2],
+                      model->getDistribMean(TEST_DISTRIB_NUM)[2]);
+
+  BOOST_CHECK_NE(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[0],
+                      begin_distrib_mean[0]);
+  BOOST_CHECK_NE(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[1],
+                      begin_distrib_mean[1]);
+  BOOST_CHECK_NE(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[2],
+                      begin_distrib_mean[2]);
+
+}
+
+BOOST_AUTO_TEST_CASE(throwLearningModelWithoutFeaturesAtPerformingLearningWithNoFeatureVector)
+{
+  uint32_t DISTRIB_CNT = 10, F_SIZE = 3, ITERS = 2;
+  std::unique_ptr<GmmModel> model = make_unique<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+
+  std::vector<Feature> f_vec;
+
+  LearningThread t(model);
+  BOOST_CHECK_THROW(LearningThread::learningOperation(t, make_unique<ExpectationMaximalizationAlgo>(),
+                                  f_vec, ITERS),
+                    LearningModelWithoutFeatures);
+}
+
+BOOST_AUTO_TEST_CASE(correctlyRunLearningInOtherThreadAndCheckStateMethod)
+{
+  uint32_t DISTRIB_CNT = 10, F_SIZE = 3, TEST_DISTRIB_NUM = 0;
+  std::unique_ptr<GmmModel> model = make_unique<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+  auto begin_distrib_mean = model->getDistribMean(TEST_DISTRIB_NUM);
+  std::vector<Feature> f_vec = {
+    toFeature({0, 1.2, -0.3}),
+     toFeature({0, 1.2, -0.3}),
+     toFeature({-2.4, 1.2, -0.3})
+  };
+
+  BOOST_REQUIRE_NO_THROW(LearningThread t(model));
+  LearningThreadMock t(model);
+
+
+  BOOST_CHECK(!t.isDone());
+  uint32_t ITERS = 2;
+  BOOST_REQUIRE_NO_THROW(t.run(make_unique<ExpectationMaximalizationAlgo>(),
+                                     f_vec, ITERS));
+  t.join();
+
+  BOOST_CHECK_EQUAL(t.getIter(), ITERS);
+  BOOST_CHECK(t.isDone());
+  //sprawdzenie, czy zmieniły się parametry modelu
+  BOOST_REQUIRE_EQUAL(t.getModelRef().get(), model.get());
+  BOOST_CHECK_EQUAL(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[0],
+                      model->getDistribMean(TEST_DISTRIB_NUM)[0]);
+  BOOST_CHECK_EQUAL(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[1],
+                      model->getDistribMean(TEST_DISTRIB_NUM)[1]);
+  BOOST_CHECK_EQUAL(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[2],
+                      model->getDistribMean(TEST_DISTRIB_NUM)[2]);
+
+  BOOST_CHECK_NE(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[0],
+                      begin_distrib_mean[0]);
+  BOOST_CHECK_NE(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[1],
+                      begin_distrib_mean[1]);
+  BOOST_CHECK_NE(t.getModelRef()->getDistribMean(TEST_DISTRIB_NUM)[2],
+                      begin_distrib_mean[2]);
+
+}
+
+BOOST_AUTO_TEST_CASE(throwLearningModelWithoutFeaturesAtRunLearningWithNoFeatureVector)
+{
+  uint32_t DISTRIB_CNT = 10, F_SIZE = 3, ITERS = 2;
+  std::unique_ptr<GmmModel> model = make_unique<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+
+  std::vector<Feature> f_vec;
+
+  LearningThread t(model);
+  BOOST_CHECK_THROW(t.run(make_unique<ExpectationMaximalizationAlgo>(),
+                                  f_vec, ITERS),
+                    LearningModelWithoutFeatures);
+}
+
+BOOST_AUTO_TEST_CASE(throwRerunningLearningThreadAtRunningLearningIfThreadWasRunned)
+{
+  uint32_t DISTRIB_CNT = 10, F_SIZE = 3, TEST_DISTRIB_NUM = 0;
+  std::unique_ptr<GmmModel> model = make_unique<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+  auto begin_distrib_mean = model->getDistribMean(TEST_DISTRIB_NUM);
+  std::vector<Feature> f_vec = {
+    toFeature({0, 1.2, -0.3}),
+     toFeature({0, 1.2, -0.3}),
+     toFeature({-2.4, 1.2, -0.3})
+  };
+
+  LearningThreadMock t(model);
+
+  uint32_t ITERS = 10;
+  BOOST_CHECK(!t.isDone());
+  BOOST_REQUIRE_NO_THROW(t.run(make_unique<ExpectationMaximalizationAlgo>(),
+                                     f_vec, ITERS));
+  t.join();
+  BOOST_CHECK(t.isDone());
+  BOOST_CHECK_THROW(t.run(make_unique<ExpectationMaximalizationAlgo>(),
+                                     f_vec, ITERS), RerunningLearningThread);
+  BOOST_CHECK(t.isDone());
+}
+
+
+
+
+
+BOOST_AUTO_TEST_SUITE_END()

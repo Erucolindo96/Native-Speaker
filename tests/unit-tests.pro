@@ -27,7 +27,9 @@ HEADERS += \
     ../features/tests/mfcc_converter_tests/mfcc_converter_test.hpp \
     ../features/tests/temp-dir-tests/temp_dir_test.hpp \
     ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.hpp \
-    ../features/tests/feature-manager-tests/feature_manager_test.hpp
+    ../features/tests/feature-manager-tests/feature_manager_test.hpp \
+    ../learn-performing/tests/learning-thread-tests/learning_thread_test.hpp \
+    ../learn-performing/tests/learning-thread-tests/LearningThreadMock.hpp
 
 
 SOURCES += \
@@ -52,4 +54,6 @@ SOURCES += \
     ../features/tests/mfcc_converter_tests/mfcc_converter_test.cpp \
     ../features/tests/temp-dir-tests/temp_dir_test.cpp \
     ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.cpp \
-    ../features/tests/feature-manager-tests/feature_manager_test.cpp
+    ../features/tests/feature-manager-tests/feature_manager_test.cpp \
+    ../learn-performing/tests/learning-thread-tests/learning_thread_test.cpp \
+    ../learn-performing/tests/learning-thread-tests/LearningThreadMock.cpp
