@@ -2,7 +2,7 @@
 
 LearningModelWindow::LearningModelWindow(ModelManager &models_ref,const ConfigManager &config,
                                          QWidget *parent ) :
-  QDialog(parent), model_man_ref_(models_ref), config_(config)
+  QDialog(parent), config_(config), model_man_ref_(models_ref)
 {
   ui.setupUi(this);
 
