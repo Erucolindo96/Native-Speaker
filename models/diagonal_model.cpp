@@ -25,11 +25,13 @@ DiagonalModel::DiagonalModel(DiagonalModel &&other):GmmModel(std::move(other))
 void DiagonalModel::setDistribCovariance(uint32_t distrib, const alize::RealVector<double> &diagonal_covariance)
 {
   if (diagonal_covariance.size() != getFeatureVectorSize())
-    throw InvalidFeatureSize("File:" + std::string(__FILE__) + " Line :" + std::to_string(__LINE__) +
+  {  throw InvalidFeatureSize("File:" + std::string(__FILE__) + " Line :" + std::to_string(__LINE__) +
                                    ": size of diagonal_covariance vector is not equal \
                                     to set in configuration of model");
+  }
   try
   {
+    std::lock_guard<std::mutex> l(m_);
     alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( getMixtureRef().getDistrib(distrib));
     distrib_ref.getCovVect() = diagonal_covariance;
     distrib_ref.computeAll();
@@ -48,6 +50,7 @@ alize::RealVector<double> DiagonalModel::getDistribCovariance(uint32_t distrib)c
 {
   try
   {
+    std::lock_guard<std::mutex> l(m_);
     alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( getMixtureRef().getDistrib(distrib));
     return distrib_ref.getCovVect();
   }

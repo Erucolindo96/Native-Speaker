@@ -7,7 +7,7 @@
 #include <vector>
 #include "models/learning_algo.hpp"
 #include"exceptions/simple_exceptions.hpp"
-
+#include<mutex>
 
 class GmmModel
 {
@@ -19,6 +19,7 @@ protected:
   std::unique_ptr<alize::MixtureServer> s_;
   alize::DistribType type_;
   std::vector<alize::Feature> features_;
+  mutable std::mutex m_;
 
   alize::Config createConfig()const;
   virtual void initDefaultMixture(uint32_t distrib_cnt);
