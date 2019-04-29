@@ -11,6 +11,6 @@
 #include"utils/utils.hpp"
 #include<memory>
 #include<fstream>
-#include"learn-performing/tests/learning-thread-tests/LearningThreadMock.hpp"
+
 
 #endif // LEARNING_PERFORMER_TEST_HPP
