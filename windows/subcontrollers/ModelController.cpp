@@ -71,22 +71,6 @@ void ModelController::normalizeActPage()
   }
 }
 
-
-/*
-std::pair<uint32_t, uint32_t> ModelController::getIndexFirstAndLastModelAtPage(
-    uint32_t act_page)const
-{
-  uint32_t all_models_cnt = models_.size(), first_elem = 0,
-      last_elem = MODELS_ON_PAGE;
-  if((act_page-1) >= all_models_cnt/MODELS_ON_PAGE)
-  {
-    throw std::runtime_error("TODO");
-  }
-  first_elem = (act_page-1) * MODELS_ON_PAGE;
-  last_elem = first_elem + MODELS_ON_PAGE -1;
-  return std::pair<uint32_t, uint32_t>(first_elem, last_elem);
-}
-*/
 int32_t ModelController::MAX_PAGE()const
 {
   uint32_t max_page = (models_.size()/MODELS_ON_PAGE);

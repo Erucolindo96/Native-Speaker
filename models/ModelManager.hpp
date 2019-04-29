@@ -4,6 +4,7 @@
 #include"dao/FileModelDao.hpp"
 #include"configuration/ConfigManager.hpp"
 #include<QObject>
+#include<algorithm>
 
 /**
  * @brief The ModelManager class Odpowiada za zapisywanie i wczytywanie modeli z pliku
@@ -16,10 +17,10 @@ class ModelManager: public QObject
   Q_OBJECT
 
 protected:
-  std::vector<std::unique_ptr<GmmModel>> models_;
+  std::vector<std::shared_ptr<GmmModel>> models_;
   FileModelDao dao_;
   void saveModelToDatabase(const ConfigManager &config_m,
-                           std::unique_ptr<GmmModel>& model_to_save);
+                           std::shared_ptr<GmmModel> model_to_save);
   void loadModelsFromDatabase(const ConfigManager &config_m);
 
 public:
@@ -36,7 +37,7 @@ public:
 
   uint32_t getModelsCnt()const;
 
-  std::unique_ptr<GmmModel>& operator[](uint32_t index);
+  std::shared_ptr<GmmModel> operator[](uint32_t index);
 
 
 };
