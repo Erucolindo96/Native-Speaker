@@ -10,9 +10,8 @@
 
 /**
  * @brief The LearningThread class Klasa odpowiedzialna za uruchomienie uczenia dla zadanego modelu
- * Przetwarzanie modelu odbywa się "w miejscu" - pobierana jest referencja do wskaźnika do modelu.
- * Metody GmmModel powinny być synchronizowane, aby możliwe było ich wołanie z kilku wątków.
- * Po zakończonym uczeniu emitowany jest sygnał learningComplete().
+ * Przetwarzanie modelu odbywa się "w miejscu" - pobierana jest wskazanie shared_ptr do modelu.
+ * Metody GmmModel powinny być synchronizowane, aby możliwe było ich wołanie z kilku wątków(np przez wątek wyświetlający parametry modelu w okienku).
  * Klasa udostępnia metody, pozwalające poznać stan uczenia, tzn czy wątek uczący skończył pracę i która iteracja jest właśnie wykonywana
  * Można ich bezpiecznie używać w kilku wątkach
  */
@@ -21,30 +20,35 @@ class LearningThread: public QObject
   Q_OBJECT
 public:
   /**
-   * @brief LearningThread Tworzy klasę, dodając jej referencję do unique_ptra zawierającego GmmModel
-   * Unique_ptr musi być koniecznie utworzony na stercie - inaczej nie będzie działać.
+   * @brief LearningThread Tworzy klasę, dodając shared_ptra zawierającego GmmModel
    * Może pochodzić np. z jakiejś kolekcji
    * @param m_ref Referencja do unique_ptra z GmmModelem.
-   * Unique_ptr musi być koniecznie utworzony na stercie - inaczej nie będzie działać.
    * Może pochodzić np. z jakiejś kolekcji
    */
-  LearningThread(std::unique_ptr<GmmModel> &m_ref);
+  explicit LearningThread(std::shared_ptr<GmmModel> m_ref = nullptr);
 
   /**
-   * @brief LearningThread Konstruktor kopiujący, działający w ten sposób, że kopiuje referencję do modelu,
+   * @brief LearningThread Konstruktor kopiujący, działający w ten sposób, że kopiuje shared_ptr do modelu,
    * natomiast nie kopiuje już działającego wątku ani licznika iteracji.
    * @param other Kopiowany obiekt
    */
   LearningThread(const LearningThread &other);
+
   LearningThread& operator=(const LearningThread &other)=delete;
 
   /**
-   * @brief LearningThread Konstruktor przesuwający. Kopiuje zarówno referencję do modelu,
+   * @brief LearningThread Konstruktor przesuwający. Kopiuje zarówno shared_ptr do modelu,
    * oraz przesuwa obiekt reprezentujący wątek, oraz licznik iteracji.
    * @param other Przesuwany obiekt
    */
   LearningThread(LearningThread &&other);
-  LearningThread& operator=(LearningThread &&other)=delete;
+  /**
+   * @brief operator = Operator= przesuwający. Kopiuje zarówno shared_ptr do modelu,
+   * oraz przesuwa obiekt reprezentujący wątek, oraz licznik iteracji.
+   * @param other Przesuwany obiekt
+   * @return Referencje do samego siebie
+   */
+  LearningThread& operator=(LearningThread &&other);
 
   /**
    * @brief learningOperation Wykonywany przez wątek algorytm uczenia
@@ -69,11 +73,11 @@ public:
            std::vector<alize::Feature> f_vec, uint32_t iters);
 
   /**
-   * @brief getModelRef Zwraca referencję do uczonego modelu
+   * @brief getModelPtr Zwraca shared_ptr do uczonego modelu
    * Jest synchronizowana mutexem
-   * @return Referencja do uczonego modelu
+   * @return Shared_ptr do uczonego modelu
    */
-  std::unique_ptr<GmmModel>& getModelRef()const;
+  std::shared_ptr<GmmModel> getModelPtr()const;
   /**
    * @brief incrementIter Zwiększa licznik iteracji o 1
    * Jest synchronizowana mutexem
@@ -94,15 +98,21 @@ public:
   uint32_t getIter()const;
 
 
-  ~LearningThread() override = default;
+  ~LearningThread() override=default;
 
 
 protected:
   mutable std::mutex mutex_;
   std::unique_ptr<std::thread> t_;
-  std::unique_ptr<GmmModel> &model_ref_;
+  std::shared_ptr<GmmModel> model_ref_;
   std::atomic<uint32_t> act_iter_;
   std::atomic<bool> is_done_;
+
+  /**
+   * @brief setDone Ustawia flagę is_done_ na true.
+   * Jest synchronizowana mutexem
+   */
+  void setDone();
 
 };
 

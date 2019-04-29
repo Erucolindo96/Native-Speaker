@@ -6,29 +6,63 @@
 #include<thread>
 #include<mutex>
 #include<memory>
+#include<list>
 #include"learn-performing/LearningThread.hpp"
+#include<algorithm>
+
+/**
+ * @brief The LearningPerformer class Klasa zarządzająca wątkami uczącymi.
+ * Zleca uczenie modelu na podstawie zadanych parametrów.
+ */
 class LearningPerformer:public QObject
 {
   Q_OBJECT
 public:
   LearningPerformer() = default;
-  LearningPerformer(const LearningPerformer &other);
+  LearningPerformer(const LearningPerformer &other) = default;
+  /**
+   * @brief operator = Operator nie wywołuje żadnej operacji na obiekcie.
+   * Zwraca tylko referencję do obiektu.
+   * Istnieje tylko po to, aby nie zaburzać tworzenia defaultowych operatorów= w klasach go używających
+   * @param other Inny LearningPerformer
+   * @return Referencje do obiektu this
+   */
   LearningPerformer& operator=(const LearningPerformer &other);
 
-  LearningPerformer(LearningPerformer &&other);
+  LearningPerformer(LearningPerformer &&other) = default;
+
+  /**
+   * @brief operator = Operator nie wywołuje żadnej operacji na obiekcie.
+   * Zwraca tylko referencję do obiektu
+   * Istnieje tylko po to, aby nie zaburzać tworzenia defaultowych operatorów= w klasach go używających
+   * @param other Inny LearningPerformer
+   * @return Referencje do obiektu this
+   */
   LearningPerformer& operator=(LearningPerformer &&other);
 
-  const LearningThread& startLearning(std::unique_ptr<GmmModel> &m,
+  /**
+   * @brief startLearning Uruchamia uczenie wskazanego modelu za pomocą zadanych wektorów cech
+   * @param m Uczony model
+   * @param algo Algorytm uczący
+   * @param f_vec Dane uczące
+   * @param iter_cnt Ilośc iteracji algorytmu
+   * @return Referencję do obiektu uczącego dany model. Pozwala zobaczyć stan uczenia.
+   * @throw LearningModelWithoutFeatures jeżeli f_vec nie zawiera żadnych elementów
+   * @throw RerunningLearningThread jeżeli zlecamy uczenie modelu, którego wątek uczący właśnie pracuje.
+   * Powinnismy poczekać, aż zakończy pracę, i dopiero wtedy ją wznawiać
+   *
+   */
+  void startLearning(std::shared_ptr<GmmModel> m,
                                       std::unique_ptr<LearningAlgo> &&algo,
                                       std::vector<alize::Feature> &f_vec,
                                       uint32_t iter_cnt );
 
+  virtual ~LearningPerformer() = default;
+
 
 protected:
-  std::vector<LearningThread> vec_;
-
-
-
+  std::list<LearningThread> list_;
+  void removeDoneThreads();
 
 };
 

@@ -1,12 +1,26 @@
 ﻿#include "LearningThread.hpp"
 
-LearningThread::LearningThread(std::unique_ptr<GmmModel> &m_ref):QObject(),
+LearningThread::LearningThread(std::shared_ptr<GmmModel> m_ref):QObject(),
   model_ref_(m_ref), act_iter_(0), is_done_(false)
 {}
 
 LearningThread::LearningThread(const LearningThread &other):
   LearningThread(other.model_ref_)
 {}
+
+LearningThread& LearningThread::operator=(LearningThread &&other)
+{
+  if(&other == this)
+    return *this;
+
+  std::lock_guard<std::mutex> l(mutex_);
+  t_ = std::move(other.t_);
+  model_ref_ = other.model_ref_;
+  act_iter_.store(other.act_iter_.load());
+  is_done_.store(other.is_done_.load());
+
+  return *this;
+}
 
 
 LearningThread::LearningThread(LearningThread &&other):QObject(),
@@ -22,10 +36,10 @@ void LearningThread::learningOperation(LearningThread &t,std::unique_ptr<Learnin
 {
   while(t.getIter()< iters)
   {
-    algo->learnModel(*t.getModelRef(), f_vec, 1);
+    algo->learnModel(*t.getModelPtr(), f_vec, 1);
     t.incrementIter();
   }
-  t.is_done_ = true;
+  t.setDone();
 }
 
 void LearningThread::run(std::unique_ptr<LearningAlgo> &&algo,
@@ -44,9 +58,10 @@ void LearningThread::run(std::unique_ptr<LearningAlgo> &&algo,
 
   t_ = make_unique<std::thread>(&LearningThread::learningOperation, std::ref(*this),
                                 std::move(algo), f_vec, iters );
+  t_->detach();
 }
 
-std::unique_ptr<GmmModel>& LearningThread::getModelRef()const
+std::shared_ptr<GmmModel> LearningThread::getModelPtr()const
 {
   std::lock_guard<std::mutex> l(mutex_);
   return model_ref_;
@@ -73,5 +88,11 @@ uint32_t LearningThread::getIter()const
 {
   std::lock_guard<std::mutex> l(mutex_);
   return act_iter_;
+}
+
+void LearningThread::setDone()
+{
+  std::lock_guard<std::mutex> l(mutex_);
+  is_done_ = true;
 }
 

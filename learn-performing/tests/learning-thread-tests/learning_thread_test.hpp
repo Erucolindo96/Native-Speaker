@@ -4,7 +4,7 @@
 
 #define BOOST_TEST_DYN_LINK
 #include<boost/test/unit_test.hpp>
-#include"learn-performing/tests/learning-thread-tests/LearningThreadMock.hpp"
+#include"learn-performing/LearningThread.hpp"
 #include"models/diagonal_model.hpp"
 #include <typeinfo>
 #include <random>
