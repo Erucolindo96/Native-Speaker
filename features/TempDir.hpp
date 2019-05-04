@@ -43,7 +43,8 @@ public:
    * @throw UnableToConvertToMfcc Jesli nie jesteśmy w stanie przekonwertować danego pliku
    * @throw DirNotFound jeśli nie istnieje folder reprezentowany przez klasę
    */
-  std::vector<alize::Feature> convertToMfcc(const Record &rec_to_convert);
+  std::vector<alize::Feature> convertToMfcc(const Record &rec_to_convert,
+                                            uint32_t f_vec_size);
 
   /**
    * @brief cleanDir Usuwa wszystkie pliki znajdujące się w folderze

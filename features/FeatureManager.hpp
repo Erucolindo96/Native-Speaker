@@ -41,6 +41,7 @@ public:
    * @throw FileNotFound jeżeli plik reprezentowany przez r nie istnieje
    */
   std::vector<alize::Feature> convertRecord(const Record &r,
+                                            uint32_t f_vec_size,
                                             std::unique_ptr<FeatureReader>&& reader = nullptr);
   /**
    * @brief convertRecord Przetwarza pliki z nagraniami, zawartymi w r_vec, na wektory cech MFCC.
@@ -55,6 +56,7 @@ public:
    * @throw FileNotFound jeżeli plik reprezentowany przez r nie istnieje
    */
   std::vector<alize::Feature> convertRecord(const std::vector<Record> &r_vec,
+                                            uint32_t f_vec_size,
                                             std::unique_ptr<FeatureReader>&& reader = nullptr);
   /**
    * @brief clean Usuwa tworzone przez klasę pliki tymczasowe

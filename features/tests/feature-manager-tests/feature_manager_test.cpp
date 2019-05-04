@@ -38,7 +38,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavFileIfConverterExistsAndFeatureReaderWas
   const QString FEATURE_FOLDER_PATH("feature-folder-feature-manager"),
       RECORD_PATH = "samples-feature-manager/wav/janfigat1_2-01.wav",
       RECORD_NAME = "janfigat1_2-01.wav";
-  const uint32_t F_CNT  = 241;
+  const uint32_t F_CNT  = 241, F_SIZE = 19;
   BOOST_REQUIRE(QDir(FEATURE_FOLDER_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH).exists());
 
@@ -47,8 +47,9 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavFileIfConverterExistsAndFeatureReaderWas
   Record r;
   r.setPath(RECORD_PATH);
   std::vector<alize::Feature> vec;
-  BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(r, make_unique<FeatureReader>()));
+  BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(r,F_SIZE, make_unique<FeatureReader>()));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
 
   //sprzątanie
   TempDirManager temp;
@@ -67,7 +68,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavFileIfConverterExistsAndFeatureReaderWas
   const QString FEATURE_FOLDER_PATH("feature-folder-feature-manager"),
       RECORD_PATH = "samples-feature-manager/wav/janfigat1_2-01.wav",
       RECORD_NAME = "janfigat1_2-01.wav";
-  const uint32_t F_CNT  = 241;
+  const uint32_t F_CNT  = 241, F_SIZE = 9;
   BOOST_REQUIRE(QDir(FEATURE_FOLDER_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH).exists());
 
@@ -77,8 +78,9 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavFileIfConverterExistsAndFeatureReaderWas
   Record r;
   r.setPath(RECORD_PATH);
   std::vector<alize::Feature> vec;
-  BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(r));
+  BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(r, F_SIZE));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
 
   //sprzątanie
   TempDirManager temp;
@@ -104,7 +106,8 @@ BOOST_AUTO_TEST_CASE(throwFeatureFolderNotFoundAtConvertingWavFileIfFeatureFolde
 
   Record r;
   r.setPath(RECORD_PATH);
-  BOOST_REQUIRE_THROW(manager.convertRecord(r), FeatureFolderNotFound);
+  const uint32_t F_SIZE = 8;
+  BOOST_REQUIRE_THROW(manager.convertRecord(r, F_SIZE), FeatureFolderNotFound);
 
 }
 
@@ -118,7 +121,8 @@ BOOST_AUTO_TEST_CASE(throwFileNotFoundAtConvertingWavFileIfFeatureFolderWasSetAn
   BOOST_CHECK_NO_THROW(manager.setFeatureFolder(FEATURE_FOLDER_PATH));
 
   Record r;
-  BOOST_REQUIRE_THROW(manager.convertRecord(r), FileNotFound);
+  const uint32_t F_SIZE = 8;
+  BOOST_REQUIRE_THROW(manager.convertRecord(r, F_SIZE), FileNotFound);
 
 }
 
@@ -137,9 +141,10 @@ BOOST_AUTO_TEST_CASE(throwUnableToConvertToMfccAtConvertingNotSupportedIfFeature
 
   Record r;
   r.setPath(RECORD_PATH);
-  BOOST_REQUIRE_THROW(manager.convertRecord(r), UnableToConvertToMfcc);
+    const uint32_t F_SIZE = 20;
+  BOOST_REQUIRE_THROW(manager.convertRecord(r, F_SIZE), UnableToConvertToMfcc);
   r.setPath(RECORD_PATH2);
-  BOOST_REQUIRE_THROW(manager.convertRecord(r), UnableToConvertToMfcc);
+  BOOST_REQUIRE_THROW(manager.convertRecord(r, F_SIZE), UnableToConvertToMfcc);
 
 }
 
@@ -150,7 +155,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertTwoWavFileIfConverterExistsAndFeatureReader
       RECORD_PATH = "samples-feature-manager/wav/janfigat1_2-01.wav",
       RECORD_PATH2 = "samples-feature-manager/wav/kasprzak10_3-01.wav";
 
-  const uint32_t F_CNT = 523;
+  const uint32_t F_CNT = 523, F_SIZE = 17;
   BOOST_REQUIRE(QDir(FEATURE_FOLDER_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH2).exists());
@@ -162,8 +167,9 @@ BOOST_AUTO_TEST_CASE(correctlyConvertTwoWavFileIfConverterExistsAndFeatureReader
   r2.setPath(RECORD_PATH2);
   std::vector<Record> recs = {r1, r2};
   std::vector<alize::Feature> vec;
-  BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(recs, make_unique<FeatureReader>()));
+  BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(recs,F_SIZE, make_unique<FeatureReader>()));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
   TempDirManager temp;
   //sprzątanie
   QDir temp_dir(FEATURE_FOLDER_PATH + "/" + temp.TEMP_DIR_NAME);
@@ -182,7 +188,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertTwoWavFileIfConverterExistsAndFeatureReader
       RECORD_PATH = "samples-feature-manager/wav/janfigat1_2-01.wav",
       RECORD_PATH2 = "samples-feature-manager/wav/kasprzak10_3-01.wav";
 
-  const uint32_t F_CNT  = 523;
+  const uint32_t F_CNT  = 523, F_SIZE = 5;
   BOOST_REQUIRE(QDir(FEATURE_FOLDER_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH).exists());
   BOOST_REQUIRE(QFileInfo(RECORD_PATH2).exists());
@@ -195,8 +201,9 @@ BOOST_AUTO_TEST_CASE(correctlyConvertTwoWavFileIfConverterExistsAndFeatureReader
   r2.setPath(RECORD_PATH2);
   std::vector<Record> recs = {r1,r2};
   std::vector<alize::Feature> vec;
-  BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(recs));
+  BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(recs, F_SIZE));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
   TempDirManager temp;
   //sprzątanie
   QDir temp_dir(FEATURE_FOLDER_PATH + "/" + temp.TEMP_DIR_NAME);
@@ -225,7 +232,8 @@ BOOST_AUTO_TEST_CASE(throwFeatureFolderNotFoundAtConvertingTwoWavFilesIfFeatureF
   r1.setPath(RECORD_PATH);
   r2.setPath(RECORD_PATH2);
   std::vector<Record> recs = {r1,r2};
-  BOOST_REQUIRE_THROW(manager.convertRecord(recs), FeatureFolderNotFound);
+    const uint32_t F_SIZE = 8;
+  BOOST_REQUIRE_THROW(manager.convertRecord(recs, F_SIZE), FeatureFolderNotFound);
 
 }
 
@@ -243,8 +251,9 @@ BOOST_AUTO_TEST_CASE(throwFileNotFoundAtConvertingTwoWavFilesIfFeatureFolderWasS
 
   Record r1,r2;
   r1.setPath(RECORD_PATH);
-  BOOST_REQUIRE_THROW(manager.convertRecord({r1,r2}), FileNotFound);
-  BOOST_REQUIRE_THROW(manager.convertRecord({r2,r1}), FileNotFound);
+    const uint32_t F_SIZE = 8;
+  BOOST_REQUIRE_THROW(manager.convertRecord({r1,r2}, F_SIZE), FileNotFound);
+  BOOST_REQUIRE_THROW(manager.convertRecord({r2,r1}, F_SIZE), FileNotFound);
 
 }
 
@@ -265,8 +274,9 @@ BOOST_AUTO_TEST_CASE(throwUnableToConvertToMfccAtConvertingTwoFileWhickOneIsNotS
   r1.setPath(RECORD_PATH);
   r2.setPath(RECORD_PATH2);
 
-  BOOST_REQUIRE_THROW(manager.convertRecord({r1,r2}), UnableToConvertToMfcc);
-  BOOST_REQUIRE_THROW(manager.convertRecord({r2,r1}), UnableToConvertToMfcc);
+    const uint32_t F_SIZE = 8;
+  BOOST_REQUIRE_THROW(manager.convertRecord({r1,r2}, F_SIZE), UnableToConvertToMfcc);
+  BOOST_REQUIRE_THROW(manager.convertRecord({r2,r1}, F_SIZE), UnableToConvertToMfcc);
 
 
 }

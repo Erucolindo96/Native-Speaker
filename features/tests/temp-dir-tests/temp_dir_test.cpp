@@ -84,10 +84,12 @@ BOOST_AUTO_TEST_CASE(correctlyConvertRecordIfDirWasSetAndRecordIsWavAndFeatureRe
   Record r;
   r.setPath(RECORD_PATH);
 
-  const uint32_t F_CNT = 241;
+  const uint32_t F_CNT = 241, F_SIZE = 15;
   std::vector<alize::Feature> vec;
-  BOOST_REQUIRE_NO_THROW(vec = dir.convertToMfcc(r));
+  BOOST_REQUIRE_NO_THROW(vec = dir.convertToMfcc(r, F_SIZE));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
+
 
   //sprzątanie
   BOOST_CHECK(temp_dir.remove(RECORD_NAME + ".mfcc"));
@@ -112,10 +114,11 @@ BOOST_AUTO_TEST_CASE(correctlyConvertRecordIfDirWasSetAndRecordIsWavAndFeatureRe
   Record r;
   r.setPath(RECORD_PATH);
 
-  const uint32_t F_CNT = 241;
+  const uint32_t F_CNT = 241, F_SIZE = 19;
   std::vector<alize::Feature> vec;
-  BOOST_REQUIRE_NO_THROW(vec = dir.convertToMfcc(r));
+  BOOST_REQUIRE_NO_THROW(vec = dir.convertToMfcc(r, 19));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
 
   //sprzątanie
   BOOST_CHECK(temp_dir.remove(RECORD_NAME + ".mfcc"));
@@ -135,7 +138,8 @@ BOOST_AUTO_TEST_CASE(throwDirNotFoundAtConvertingToMfccIfDirWasNotSetAndRecordIs
   Record r;
   r.setPath(RECORD_PATH);
 
-  BOOST_REQUIRE_THROW(dir.convertToMfcc(r), DirNotFound);
+  const uint32_t F_SIZE = 18;
+  BOOST_REQUIRE_THROW(dir.convertToMfcc(r, F_SIZE), DirNotFound);
 }
 
 
@@ -150,7 +154,8 @@ BOOST_AUTO_TEST_CASE(throwFileNotFoundAtConvertingToMfccIfDirWasSetAndRecordDoes
   dir.setDir(temp_dir);
 
   Record r;
-  BOOST_REQUIRE_THROW(dir.convertToMfcc(r), FileNotFound);
+  const uint32_t F_SIZE =10;
+  BOOST_REQUIRE_THROW(dir.convertToMfcc(r, F_SIZE), FileNotFound);
 }
 
 BOOST_AUTO_TEST_CASE(throwUnableToConvertToMfccAtConvertingToMfccIfDirWasSetAndRecordIsNotASupportedType)
@@ -168,7 +173,8 @@ BOOST_AUTO_TEST_CASE(throwUnableToConvertToMfccAtConvertingToMfccIfDirWasSetAndR
   Record r;
   r.setPath(RECORD_PATH);
 
-  BOOST_REQUIRE_THROW(dir.convertToMfcc(r), UnableToConvertToMfcc);
+  const uint32_t F_SIZE =10;
+  BOOST_REQUIRE_THROW(dir.convertToMfcc(r, F_SIZE), UnableToConvertToMfcc);
 }
 
 BOOST_AUTO_TEST_CASE(CorrectlyCleanTempDirIfDirWasSetAndContainsSomeFiles)
