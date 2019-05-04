@@ -29,7 +29,9 @@ HEADERS += \
     ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.hpp \
     ../features/tests/feature-manager-tests/feature_manager_test.hpp \
     ../learn-performing/tests/learning-thread-tests/learning_thread_test.hpp \
-    ../learn-performing/tests/learning-performer-tests/learning_performer_test.hpp
+    ../learn-performing/tests/learning-performer-tests/learning_performer_test.hpp \
+    ../learn-performing/tests/learning-thread-widget-tests/learning_thread_widget_test.hpp \
+    ../windows/subcontrollers/tests/learning-controller-tests/learning_controler_test.hpp
 
 
 SOURCES += \
@@ -56,4 +58,6 @@ SOURCES += \
     ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.cpp \
     ../features/tests/feature-manager-tests/feature_manager_test.cpp \
     ../learn-performing/tests/learning-thread-tests/learning_thread_test.cpp \
-    ../learn-performing/tests/learning-performer-tests/learning_performer_test.cpp
+    ../learn-performing/tests/learning-performer-tests/learning_performer_test.cpp \
+    ../learn-performing/tests/learning-thread-widget-tests/learning_thread_widget_test.cpp \
+    ../windows/subcontrollers/tests/learning-controller-tests/learning_controler_test.cpp

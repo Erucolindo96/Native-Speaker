@@ -1,4 +1,5 @@
 ﻿#include "MainWindow.hpp"
+#include"learn-performing/LearningThreadWidget.hpp"
 using namespace alize;
 using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
@@ -13,6 +14,7 @@ void MainWindow::initMainWindow()
   ui_.setupUi(this);
   models_.setToolBoxPtr(ui_.models_list);
   models_.removeToolBoxItems();
+
 }
 
 void MainWindow::on_actionRead_Configuration_File_triggered()

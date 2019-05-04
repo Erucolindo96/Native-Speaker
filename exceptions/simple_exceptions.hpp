@@ -137,10 +137,18 @@ public:
   {}
 };
 
-class RerunningLearningThread: public std::logic_error
+class RerunningThread : public std::logic_error
 {
 public:
-  explicit RerunningLearningThread(const std::string &msg) : std::logic_error(msg)
+  explicit RerunningThread(const std::string &msg) : std::logic_error(msg)
+  {}
+
+};
+
+class RerunningLearningThread: public RerunningThread
+{
+public:
+  explicit RerunningLearningThread(const std::string &msg) : RerunningThread(msg)
   {}
 };
 

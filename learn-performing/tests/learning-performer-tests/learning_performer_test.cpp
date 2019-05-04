@@ -17,7 +17,7 @@ public:
                                       uint32_t iter_cnt )
   {
     LearningPerformer::startLearning(m, std::move(algo), f_vec, iter_cnt);
-    return list_.back();
+    return l_thread_list_.back();
   }
 
   /**
@@ -31,7 +31,7 @@ public:
 
   const std::list<LearningThread>& getList()const
   {
-    return list_;
+    return l_thread_list_;
   }
 
   ~LearningPerformerMock() override = default;

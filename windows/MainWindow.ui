@@ -19,8 +19,8 @@
      <rect>
       <x>10</x>
       <y>440</y>
-      <width>344</width>
-      <height>41</height>
+      <width>428</width>
+      <height>80</height>
      </rect>
     </property>
     <layout class="QHBoxLayout" name="horizontalLayout">
@@ -97,6 +97,38 @@
       <string/>
      </attribute>
     </widget>
+   </widget>
+   <widget class="QWidget" name="gridLayoutWidget">
+    <property name="geometry">
+     <rect>
+      <x>460</x>
+      <y>8</y>
+      <width>321</width>
+      <height>115</height>
+     </rect>
+    </property>
+    <layout class="QGridLayout" name="gridLayout_learning_models">
+     <item row="0" column="0" colspan="4">
+      <widget class="QLabel" name="label_learning_models">
+       <property name="text">
+        <string>Running models learning</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1" colspan="2">
+      <widget class="QComboBox" name="comboBox_learning_models"/>
+     </item>
+     <item row="2" column="1" colspan="2">
+      <widget class="QProgressBar" name="progressBar">
+       <property name="value">
+        <number>24</number>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">

@@ -1,6 +1,6 @@
 QT += core gui
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
 
 LIBS += -L$$PWD/external-libs/lib -lalize -lboost_unit_test_framework
 
@@ -128,7 +128,9 @@ HEADERS += \
     $$PWD/features/SPro4File.hpp \
     $$PWD/features/FeatureManager.hpp \
     $$PWD/learn-performing/LearningThread.hpp \
-    $$PWD/learn-performing/LearningPerformer.hpp
+    $$PWD/learn-performing/LearningPerformer.hpp \
+    $$PWD/learn-performing/LearningThreadWidget.hpp \
+    $$PWD/windows/subcontrollers/LearningController.hpp
 
 
 SOURCES += \
@@ -161,7 +163,9 @@ SOURCES += \
     $$PWD/features/SPro4File.cpp \
     $$PWD/features/FeatureManager.cpp \
     $$PWD/learn-performing/LearningThread.cpp \
-    $$PWD/learn-performing/LearningPerformer.cpp
+    $$PWD/learn-performing/LearningPerformer.cpp \
+    $$PWD/learn-performing/LearningThreadWidget.cpp \
+    $$PWD/windows/subcontrollers/LearningController.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a
@@ -172,7 +176,8 @@ FORMS += \
     $$PWD/windows/CreateModelWindow.ui \
     $$PWD/windows/MainWindow.ui \
     $$PWD/windows/SetParameterWindow.ui \
-    $$PWD/windows/LearningModelWindow.ui
+    $$PWD/windows/LearningModelWindow.ui \
+    $$PWD/learn-performing/LearningThreadWidget.ui
 
 
 HEADERS += \

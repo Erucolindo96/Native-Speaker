@@ -19,7 +19,8 @@ class LearningPerformer:public QObject
   Q_OBJECT
 public:
   LearningPerformer() = default;
-  LearningPerformer(const LearningPerformer &other) = default;
+
+  LearningPerformer(const LearningPerformer &other);
   /**
    * @brief operator = Operator nie wywołuje żadnej operacji na obiekcie.
    * Zwraca tylko referencję do obiektu.
@@ -29,7 +30,7 @@ public:
    */
   LearningPerformer& operator=(const LearningPerformer &other);
 
-  LearningPerformer(LearningPerformer &&other) = default;
+  LearningPerformer(LearningPerformer &&other);
 
   /**
    * @brief operator = Operator nie wywołuje żadnej operacji na obiekcie.
@@ -57,11 +58,12 @@ public:
                                       std::vector<alize::Feature> &f_vec,
                                       uint32_t iter_cnt );
 
-  virtual ~LearningPerformer() = default;
+  ~LearningPerformer() override= default;
 
 
 protected:
-  std::list<LearningThread> list_;
+  std::list<LearningThread> l_thread_list_;
+  mutable std::mutex m_;
   void removeDoneThreads();
 
 };

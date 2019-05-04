@@ -83,6 +83,7 @@ public:
    * Jest synchronizowana mutexem
    */
   void incrementIter();
+
   /**
    * @brief isDone Zwraca informację, czy wątek uczący skonczył pracę
    * Jest synchronizowana mutexem
@@ -97,6 +98,17 @@ public:
    */
   uint32_t getIter()const;
 
+  /**
+   * @brief setIterCnt Ustawia przez ile iteracji wątek uczący ma uczyć model
+   * @param iter_cnt Ilośc iteracji uczenia
+   */
+  void setIterCnt(uint32_t iter_cnt);
+
+  /**
+   * @brief getIterCnt Zwraca ustawioną uprzednio ilość iteracji uczenia
+   * @return Ilośc iteracji uczenia
+   */
+  uint32_t getIterCnt()const;
 
   ~LearningThread() override=default;
 
@@ -105,7 +117,7 @@ protected:
   mutable std::mutex mutex_;
   std::unique_ptr<std::thread> t_;
   std::shared_ptr<GmmModel> model_ref_;
-  std::atomic<uint32_t> act_iter_;
+  std::atomic<uint32_t> act_iter_, iter_cnt_;
   std::atomic<bool> is_done_;
 
   /**

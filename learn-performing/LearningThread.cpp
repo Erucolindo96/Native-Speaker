@@ -1,7 +1,7 @@
 ﻿#include "LearningThread.hpp"
 
 LearningThread::LearningThread(std::shared_ptr<GmmModel> m_ref):QObject(),
-  model_ref_(m_ref), act_iter_(0), is_done_(false)
+  model_ref_(m_ref), act_iter_(0),iter_cnt_(0), is_done_(false)
 {}
 
 LearningThread::LearningThread(const LearningThread &other):
@@ -13,11 +13,13 @@ LearningThread& LearningThread::operator=(LearningThread &&other)
   if(&other == this)
     return *this;
 
+  act_iter_.store(other.act_iter_.load());
+  iter_cnt_.store(other.iter_cnt_.load());
+  is_done_.store(other.is_done_.load());
+
   std::lock_guard<std::mutex> l(mutex_);
   t_ = std::move(other.t_);
   model_ref_ = other.model_ref_;
-  act_iter_.store(other.act_iter_.load());
-  is_done_.store(other.is_done_.load());
 
   return *this;
 }
@@ -25,7 +27,7 @@ LearningThread& LearningThread::operator=(LearningThread &&other)
 
 LearningThread::LearningThread(LearningThread &&other):QObject(),
   t_(std::move(other.t_)),model_ref_(other.model_ref_),
-  act_iter_(other.act_iter_.load())
+  act_iter_(other.act_iter_.load()), iter_cnt_(other.iter_cnt_.load())
 {
   is_done_.store(other.is_done_.load());
 }
@@ -34,7 +36,8 @@ LearningThread::LearningThread(LearningThread &&other):QObject(),
 void LearningThread::learningOperation(LearningThread &t,std::unique_ptr<LearningAlgo> &&algo,
                 std::vector<alize::Feature> f_vec, uint32_t iters)
 {
-  while(t.getIter()< iters)
+  t.setIterCnt(iters);
+  while(t.getIter()< t.getIterCnt())
   {
     algo->learnModel(*t.getModelPtr(), f_vec, 1);
     t.incrementIter();
@@ -69,7 +72,6 @@ std::shared_ptr<GmmModel> LearningThread::getModelPtr()const
 
 void LearningThread::incrementIter()
 {
-  std::lock_guard<std::mutex> l(mutex_);
   ++act_iter_;
 }
 
@@ -88,6 +90,16 @@ uint32_t LearningThread::getIter()const
 {
   std::lock_guard<std::mutex> l(mutex_);
   return act_iter_;
+}
+
+void LearningThread::setIterCnt(uint32_t iter_cnt)
+{
+  iter_cnt_.store(iter_cnt);
+}
+
+uint32_t LearningThread::getIterCnt()const
+{
+  return iter_cnt_.load();
 }
 
 void LearningThread::setDone()

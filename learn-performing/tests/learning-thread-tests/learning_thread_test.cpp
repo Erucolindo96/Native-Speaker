@@ -33,16 +33,27 @@ BOOST_AUTO_TEST_CASE(correctlyIncrementIterCounter)
   BOOST_CHECK_EQUAL(t.getIter(), 2);
 
 }
+BOOST_AUTO_TEST_CASE(correctlySetAndGetIterCnt)
+{
 
+  uint32_t DISTRIB_CNT = 100, F_SIZE = 20, ITERS = 20;
+  std::shared_ptr<GmmModel> model = make_shared<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+
+  LearningThread t(model);
+  BOOST_CHECK_EQUAL(t.getIterCnt(), 0);
+  BOOST_REQUIRE_NO_THROW(t.setIterCnt(ITERS));
+  BOOST_CHECK_EQUAL(t.getIterCnt(), ITERS);
+
+}
 
 BOOST_AUTO_TEST_CASE(correctlyCopyClass_WithoutIterCounterAndThreadSettings)
 {
-  uint32_t DISTRIB_CNT = 100, F_SIZE = 20;
+  uint32_t DISTRIB_CNT = 100, F_SIZE = 20, ITERS = 19;
   std::shared_ptr<GmmModel> model = make_shared<DiagonalModel>(DISTRIB_CNT, F_SIZE);
 
   BOOST_REQUIRE_NO_THROW(LearningThread t(model));
   LearningThread t(model);
-
+  t.setIterCnt(ITERS);
   t.incrementIter();
   t.incrementIter();
 
@@ -51,16 +62,19 @@ BOOST_AUTO_TEST_CASE(correctlyCopyClass_WithoutIterCounterAndThreadSettings)
   BOOST_REQUIRE_EQUAL(t.getIter(), 2);
   BOOST_CHECK_EQUAL(copy.getIter(), 0);
 
+  BOOST_CHECK_EQUAL(t.getIterCnt(), ITERS);
+  BOOST_CHECK_EQUAL(copy.getIterCnt(), 0);
 }
 
 
 BOOST_AUTO_TEST_CASE(correctlyMoveClass_WithIterCounterAndThreadSettings)
 {
-  uint32_t DISTRIB_CNT = 100, F_SIZE = 20;
+  uint32_t DISTRIB_CNT = 100, F_SIZE = 20, ITERS = 29;
   std::shared_ptr<GmmModel> model = make_shared<DiagonalModel>(DISTRIB_CNT, F_SIZE);
 
   BOOST_REQUIRE_NO_THROW(LearningThread t(model));
   LearningThread t(model);
+  t.setIterCnt(ITERS);
 
   t.incrementIter();
   t.incrementIter();
@@ -70,19 +84,22 @@ BOOST_AUTO_TEST_CASE(correctlyMoveClass_WithIterCounterAndThreadSettings)
   LearningThread copy(std::move(t));
   BOOST_CHECK_EQUAL(t_model_ptr.get(), copy.getModelPtr().get());
   BOOST_CHECK_EQUAL(t_iter_cnt, copy.getIter());
+
+  BOOST_CHECK_EQUAL(copy.getIterCnt(), ITERS);
 }
 
 
 BOOST_AUTO_TEST_CASE(correctlyMoveAssingingWithIterCounterAndThreadSettings)
 {
-  uint32_t DISTRIB_CNT = 100, F_SIZE = 20;
+  uint32_t DISTRIB_CNT = 100, F_SIZE = 20, ITERS = 87;
   std::shared_ptr<GmmModel> model = make_shared<DiagonalModel>(DISTRIB_CNT, F_SIZE);
 
   BOOST_REQUIRE_NO_THROW(LearningThread t(model));
   LearningThread t(model);
+  t.setIterCnt(ITERS);
+  t.incrementIter();
+  t.incrementIter();
 
-  t.incrementIter();
-  t.incrementIter();
   uint32_t t_iter_cnt = t.getIter();
   std::shared_ptr<GmmModel> t_model_ptr = t.getModelPtr();
 
@@ -94,7 +111,7 @@ BOOST_AUTO_TEST_CASE(correctlyMoveAssingingWithIterCounterAndThreadSettings)
 
   BOOST_CHECK_EQUAL(t_model_ptr.get(), copy.getModelPtr().get());
   BOOST_CHECK_EQUAL(t_iter_cnt, copy.getIter());
-
+  BOOST_CHECK_EQUAL(copy.getIterCnt(), ITERS);
 
 }
 
@@ -117,6 +134,7 @@ BOOST_AUTO_TEST_CASE(correctlyPerformLearningAndCheckStateMethod)
   BOOST_REQUIRE_NO_THROW(LearningThread::learningOperation(t, make_unique<ExpectationMaximalizationAlgo>(),
                                      f_vec, ITERS));
   BOOST_CHECK_EQUAL(t.getIter(), ITERS);
+  BOOST_CHECK_EQUAL(t.getIterCnt(), ITERS);
   BOOST_CHECK(!t.isDone());//ponieważ nie został uruchomiony drugi wątek
   //sprawdzenie, czy zmieniły się parametry modelu
   BOOST_REQUIRE_EQUAL(t.getModelPtr().get(), model.get());
@@ -169,7 +187,7 @@ BOOST_AUTO_TEST_CASE(correctlyRunLearningInOtherThreadAndCheckStateMethod)
   BOOST_REQUIRE_NO_THROW(t.run(make_unique<ExpectationMaximalizationAlgo>(),
                                      f_vec, ITERS));
   sleep(3);
-
+  BOOST_CHECK_EQUAL(t.getIterCnt(), ITERS);
   BOOST_CHECK_EQUAL(t.getIter(), ITERS);
   BOOST_CHECK(t.isDone());
   //sprawdzenie, czy zmieniły się parametry modelu
