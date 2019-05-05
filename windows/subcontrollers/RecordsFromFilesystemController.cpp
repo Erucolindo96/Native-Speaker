@@ -36,6 +36,18 @@ void RecordsFromFilesystemController::setRecordListPtr(QListWidget *ptr)
   record_list_ = ptr;
 }
 
+std::vector<Record> RecordsFromFilesystemController::getActualRecords()const
+{
+  std::vector<Record> ret;
+  for(uint32_t i = 0; i < record_list_->count(); ++i)
+  {
+    Record rec;
+    rec.setPath(record_list_->item(i)->text());
+    ret.push_back(rec);
+  }
+  return ret;
+}
+
 
 
 //void RecordsFromFilesystemController::bindSlots()

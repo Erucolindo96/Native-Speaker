@@ -5,6 +5,7 @@
 #include<QFileDialog>
 #include<QLabel>
 #include<iostream>
+#include"record-base/Record.hpp"
 class RecordsFromFilesystemController:QObject
 {
   Q_OBJECT
@@ -22,6 +23,7 @@ public:
   void setAddButtonPtr(QAbstractButton *ptr);
   void setRecordListPtr(QListWidget *ptr);
 
+  std::vector<Record> getActualRecords()const;
 
 protected:
   QListWidget *record_list_;
