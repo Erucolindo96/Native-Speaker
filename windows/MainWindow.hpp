@@ -18,6 +18,10 @@
 #include"configuration/ConfigValidator.hpp"
 #include"windows/LearningModelWindow.hpp"
 #include"configuration/ConfigManager.hpp"
+#include"features/FeatureManager.hpp"
+#include"record-base/RecBaseManager.hpp"
+#include"learn-performing/LearningPerformer.hpp"
+
 #include<vector>
 #include<thread>
 #include<mutex>
@@ -49,10 +53,6 @@ private slots:
    */
   void saveParamFromSetParameterWindow();
 
-
-
-
-
   void on_toolButton_refresh_released();
 
   void on_commandLinkButton_next_models_released();
@@ -66,6 +66,9 @@ protected:
   Ui::MainWindow ui_;
   ConfigManager conf_;
   ModelController models_;
+  FeatureManager f_manager_;
+  RecBaseManager r_base_;
+  LearningPerformer learning_p_;
   std::unique_ptr<LearningAlgo> models_learning_algo_;
 
   /**
@@ -78,6 +81,7 @@ protected:
 
   void actualizePage();
 
+  void loadConfigToMembers();
 };
 
 #endif // MAINWINDOW_HPP

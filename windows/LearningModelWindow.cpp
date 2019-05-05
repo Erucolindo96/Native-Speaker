@@ -1,8 +1,11 @@
 ﻿#include "LearningModelWindow.hpp"
 
 LearningModelWindow::LearningModelWindow(ModelManager &models_ref,const ConfigManager &config,
+                                         RecBaseManager &r_base_ref, FeatureManager &f_man_ref,
+                                         LearningPerformer &learining_p_ref,
                                          QWidget *parent ) :
-  QDialog(parent), config_(config), model_man_ref_(models_ref)
+  QDialog(parent), config_(config), model_man_ref_(models_ref), r_base_ref_(r_base_ref),
+  f_man_ref_(f_man_ref), learning_p_ref_(learining_p_ref)
 {
   ui.setupUi(this);
 
@@ -23,7 +26,8 @@ void LearningModelWindow::initModelsInComboBox()
   for(uint32_t i=0; i<model_man_ref_.getModelsCnt(); ++i)
   {
     QString model_name = model_man_ref_[i]->getName().c_str();
-    models_box->insertItem(i,model_name);
+    QObject *model_ptr = model_man_ref_[i].get();
+    models_box->insertItem(i,model_name,QVariant::fromValue<QObject*>(model_ptr) );
   }
 }
 
@@ -42,3 +46,28 @@ void LearningModelWindow::setSubcontrollers()
   from_fsys_controller_.setRecordListPtr(ui.listWidget_fromFilesystem);
 }
 
+
+
+void LearningModelWindow::performLearning()
+{
+  auto model_idx = ui.comboBox_model_2->currentIndex();
+  std::shared_ptr<GmmModel> model_ptr(dynamic_cast<GmmModel*>(
+                          ui.comboBox_model_2->itemData(model_idx).value<QObject*>()
+                          ));
+  auto algo_name = ui.comboBox_algo_2->currentText();
+  auto records_filesystem = from_fsys_controller_.getActualRecords();
+  auto mfcc_vecs = f_man_ref_.convertRecord(records_filesystem, config_.getVectSize());
+  auto iterations = ui.spinBox_iter_2->value();
+  cout<<"Mfcc cnt: "<<mfcc_vecs.size()<<endl;
+  cout<<"Mfcc size: "<<mfcc_vecs[0].getVectSize();
+  cout<<"Model ptr: "<<model_ptr.get()<<endl;
+  learning_p_ref_.startLearning(model_ptr, AlgoManager::getAlgoByName(algo_name),
+                                mfcc_vecs, iterations);
+  cout<<"Learning of model "<<model_ptr->getName()<<"runned! "<<endl;
+}
+
+void LearningModelWindow::on_pushButton_start_released()
+{
+  performLearning();
+  close();
+}

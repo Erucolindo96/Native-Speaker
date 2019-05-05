@@ -28,8 +28,11 @@ void MainWindow::on_actionRead_Configuration_File_triggered()
     //lock_guard<mutex> l(m_);
     try
     {
-      conf_.load(filename.toStdString().c_str());
-      v.validateConfiguration(conf_);
+      ConfigManager temp;
+      temp.load(filename.toStdString().c_str());
+      v.validateConfiguration(temp);
+      conf_ = temp;
+      loadConfigToMembers();
     }
     catch(ParamNotValid e)
     {
@@ -74,13 +77,8 @@ void MainWindow::on_actionAdd_Configuration_Parameter_triggered()
   std::unique_ptr<SetParameterWindow> window = make_unique<SetParameterWindow>(conf_, this);
   connect(window.get(), SIGNAL(accepted()), this, SLOT(saveParamFromSetParameterWindow()));
   window->exec();
+  //disconnect(window.get(), SIGNAL(accepted()), this, SLOT(saveParamFromSetParameterWindow()));
 }
-
-
-
-
-
-
 
 void MainWindow::saveModelFromCreateModelWindow()
 {
@@ -100,6 +98,7 @@ void MainWindow::saveParamFromSetParameterWindow()
     throw std::runtime_error("Sender doesnt known - it must be always CreateModelWindow!");
   }
   conf_.setParam(ptr->getParamName().c_str(), ptr->getParamValue().c_str());
+  loadConfigToMembers();
 }
 
 bool MainWindow::checkConfiguration()const
@@ -160,7 +159,14 @@ void MainWindow::on_action_ModelLearning_triggered()
 {
     if(checkConfiguration())
     {
-      std::unique_ptr<LearningModelWindow> window = std::make_unique<LearningModelWindow>(models_, conf_);
+      std::unique_ptr<LearningModelWindow> window = std::make_unique<LearningModelWindow>
+                                                    (models_, conf_, r_base_, f_manager_, learning_p_);
       window->exec();
     }
+}
+
+void MainWindow::loadConfigToMembers()
+{
+  f_manager_.setFeatureFolder(conf_.getFeatureFolder().c_str());
+  r_base_.setFeatureFolderPath(conf_.getFeatureFolder().c_str());
 }
