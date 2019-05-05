@@ -32,7 +32,7 @@ alize::Mixture& GmmModel::getMixtureRef()const
 /*
  * Public
  */
-GmmModel::GmmModel(uint32_t distrib_cnt,uint32_t feature_size):
+GmmModel::GmmModel(uint32_t distrib_cnt,uint32_t feature_size):QObject(),
   DISTRIB_CNT(distrib_cnt),FEATURE_SIZE(feature_size), features_()
 {
   alize::Config conf = createConfig();

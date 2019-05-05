@@ -6,6 +6,7 @@
 
 class DiagonalModel : public GmmModel
 {
+  Q_OBJECT
 protected:
 
   void initDefaultMixture(uint32_t distrib_cnt) override;
@@ -26,5 +27,6 @@ public:
   ~DiagonalModel() override = default;
 
 };
+
 
 #endif // DIAGONALMODEL_HPP

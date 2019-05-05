@@ -8,10 +8,11 @@
 #include "models/learning_algo.hpp"
 #include"exceptions/simple_exceptions.hpp"
 #include<mutex>
-
-class GmmModel
+#include<QObject>
+#include<QVariant>
+class GmmModel: public QObject
 {
-
+Q_OBJECT
 protected:
 
   const uint32_t DISTRIB_CNT, FEATURE_SIZE;
