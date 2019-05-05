@@ -35,6 +35,7 @@ public:
    * @param r Nagranie dźwięku, które chcemy przetworzyć do postaci wektorów cech MFCC
    * @param reader Klasa wczytującą wektory cech do pamięci programu.
    * Jeżeli jest nullptrem, to zostanie użyty domyslny FeatureReader, który po prostu wczytuje wszystkie utworzone wektory cech do pamięci.
+   * @param f_vec_size Długośc wynikowego wektora cech. Logarytm energii równiez jest wliczany w długość wektora
    * @return Wektory cech, utworzone w wyniku konwersji wskazanego nagrania
    * @throw FeatureFolderNotFound jeżeli nie ustawiono ścieżki do folderu bazy nagrań
    * @throw UnableToConvertToMfcc jeżeli nie ma odpowiedniego konwertera, by przetwarzać wskazane nagranie
@@ -50,6 +51,7 @@ public:
    * @param r_vec Wektor nagrań do przetworzenia
    * @param reader Klasa wczytującą wektory cech do pamięci programu.
    * Jeżeli jest nullptrem, to zostanie użyty domyslny FeatureReader, który po prostu wczytuje wszystkie utworzone wektory cech do pamięci.
+   * @param f_vec_size Długośc wynikowego wektora cech. Logarytm energii równiez jest wliczany w długość wektora
    * @return Wektory cech, utworzone w wyniku konwersji wskazanego nagrania
    * @throw FeatureFolderNotFound jeżeli nie ustawiono ścieżki do folderu bazy nagrań
    * @throw UnableToConvertToMfcc jeżeli nie ma odpowiedniego konwertera, by przetwarzać wskazane nagranie

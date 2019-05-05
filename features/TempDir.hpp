@@ -38,6 +38,7 @@ public:
   /**
    * @brief convertToMfcc Konwertuje wskazane nagranie i wczytuje uzyskane w wyniku konwersji wektory cech
    * @param rec_to_convert Konwertowane nagranie
+   * @param f_vec_size Długośc wynikowego wektora cech. Logarytm energii równiez jest wliczany w długość wektora
    * @return  Wektory cech uzyskane z danego nagrania
    * @throw FileNotFound Jeśli plik wskazywany przez rec_to_convert nie istenieje
    * @throw UnableToConvertToMfcc Jesli nie jesteśmy w stanie przekonwertować danego pliku

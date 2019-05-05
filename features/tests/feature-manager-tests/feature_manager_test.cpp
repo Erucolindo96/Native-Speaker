@@ -49,7 +49,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavFileIfConverterExistsAndFeatureReaderWas
   std::vector<alize::Feature> vec;
   BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(r,F_SIZE, make_unique<FeatureReader>()));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
-  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE);//log energii
 
   //sprzątanie
   TempDirManager temp;
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavFileIfConverterExistsAndFeatureReaderWas
   std::vector<alize::Feature> vec;
   BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(r, F_SIZE));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
-  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE);//log energii
 
   //sprzątanie
   TempDirManager temp;
@@ -169,7 +169,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertTwoWavFileIfConverterExistsAndFeatureReader
   std::vector<alize::Feature> vec;
   BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(recs,F_SIZE, make_unique<FeatureReader>()));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
-  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE);//log energii
   TempDirManager temp;
   //sprzątanie
   QDir temp_dir(FEATURE_FOLDER_PATH + "/" + temp.TEMP_DIR_NAME);
@@ -203,7 +203,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertTwoWavFileIfConverterExistsAndFeatureReader
   std::vector<alize::Feature> vec;
   BOOST_REQUIRE_NO_THROW(vec = manager.convertRecord(recs, F_SIZE));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
-  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE);//log energii
   TempDirManager temp;
   //sprzątanie
   QDir temp_dir(FEATURE_FOLDER_PATH + "/" + temp.TEMP_DIR_NAME);

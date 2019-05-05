@@ -24,7 +24,7 @@ std::vector<alize::Feature> TempDir::convertToMfcc(const Record &rec_to_convert,
                                 + std::string("unable to convert this file: ")
                                 + rec_to_convert.getRecordInfo().fileName().toStdString());
   }
-  converter->setFeatureLenght(f_vec_size);
+  converter->setFeatureLenght(f_vec_size-1);
   auto spro_file = converter->convertToSPro4(rec);
   if(f_reader_ == nullptr)
   {

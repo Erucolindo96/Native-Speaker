@@ -88,7 +88,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertRecordIfDirWasSetAndRecordIsWavAndFeatureRe
   std::vector<alize::Feature> vec;
   BOOST_REQUIRE_NO_THROW(vec = dir.convertToMfcc(r, F_SIZE));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
-  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE);//log energii
 
 
   //sprzątanie
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertRecordIfDirWasSetAndRecordIsWavAndFeatureRe
   std::vector<alize::Feature> vec;
   BOOST_REQUIRE_NO_THROW(vec = dir.convertToMfcc(r, 19));
   BOOST_CHECK_EQUAL(vec.size(), F_CNT);
-  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE + 1);//log energii
+  BOOST_CHECK_EQUAL((vec[0]).getVectSize(), F_SIZE);//log energii
 
   //sprzątanie
   BOOST_CHECK(temp_dir.remove(RECORD_NAME + ".mfcc"));
