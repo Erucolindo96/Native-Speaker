@@ -29,6 +29,8 @@ namespace utils
   bool fileExist(const std::string &path);
   bool dirExist(const std::string &path);
 
+  double avoidNaNInLk(double lk);
+
 }//namespace utils
 
 

@@ -33,6 +33,7 @@ double ExpectationMaximalizationAlgo::avoidZeroDivide(double dividor)const
 {
   if(isinf(1/dividor))//zapobieżenie dzielenia przez zero
     dividor = DBL_EPSILON;
+
   return dividor;
 }
 
@@ -46,7 +47,14 @@ void ExpectationMaximalizationAlgo::avoidZeroInCovariance(alize::RealVector<doub
     }
   }
 }
-
+double avoidInfinityValue(double val)
+{
+  if(std::isinf(val))
+  {
+    val = DBL_MAX;
+  }
+  return val;
+}
 
 
 
@@ -109,20 +117,15 @@ double ExpectationMaximalizationAlgo::countOnePropability(const GmmModel &model,
                                                           double current_f_lk)
 {
   const Feature& current = feature_vec[feature_idx];
-  double ret = 0;
-  ret = model.countLikehoodWithWeight(current, distrib_idx);
-  ret /= current_f_lk;
-  return ret;
+  return model.countLikehoodWithWeight(current, distrib_idx)/current_f_lk;
 }
 
 
 
 double ExpectationMaximalizationAlgo::countWeight(uint32_t distrib_idx)const
 {
-  double new_weight = sum_posteriori_by_features_[distrib_idx];
-
-  new_weight /= avoidZeroDivide(posteriori_sum_);
-  return new_weight;
+  return
+      sum_posteriori_by_features_[distrib_idx]/avoidZeroDivide(posteriori_sum_);
 }
 
 RealVector<double> ExpectationMaximalizationAlgo::countMean(uint32_t distrib_idx,
@@ -146,7 +149,6 @@ RealVector<double> ExpectationMaximalizationAlgo::countMean(uint32_t distrib_idx
   }
 
   //dzielimy sume przez sume p-stw posteriori po wektorach cech
-
   new_mean *= 1/avoidZeroDivide(sum_posteriori_by_features_[distrib_idx]);
   return new_mean;
 
@@ -179,9 +181,9 @@ RealVector<double> ExpectationMaximalizationAlgo::countDiagonalCovariance(uint32
     temp*= act_posteriori;
     ret += utils::diag(temp);
   }
-  avoidZeroInCovariance(ret);
 
   ret *= 1/avoidZeroDivide(sum_posteriori_by_features_[distrib_idx]);
+  avoidZeroInCovariance(ret);
   return ret;
 }
 DoubleSquareMatrix ExpectationMaximalizationAlgo::countFullCovariance(uint32_t distrib_idx,
@@ -209,26 +211,24 @@ void ExpectationMaximalizationAlgo::expectationStep(const GmmModel &model,
     }
   }
 
-
 }
 
 void ExpectationMaximalizationAlgo::maximizationStep(GmmModel &model, const std::vector<alize::Feature> &feature_vec)
 {
 
-
   const uint32_t DISTRIB_CNT = getDistribCount(), FEATURE_CNT = getFeatureCount();
+
   countPosterioriSum(DISTRIB_CNT, FEATURE_CNT);//obliczenie sum posteriori - by nie liczyć ich za każdym razem
+
 
   RealVector<double> prev_mean(FEATURE_CNT);
   for(uint32_t act_d = 0; act_d < DISTRIB_CNT; ++act_d)
   {
 
     prev_mean = model.getDistribMean(act_d);
-
     model.setDistribWeight(act_d, countWeight(act_d));
     model.setDistribMean(act_d,countMean(act_d, feature_vec));
-    model.setDistribCovariance(act_d, countDiagonalCovariance(act_d, feature_vec,
-                                                              prev_mean));
+    model.setDistribCovariance(act_d,countDiagonalCovariance(act_d, feature_vec,prev_mean));
 
   }
 }

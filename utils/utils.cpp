@@ -62,6 +62,14 @@ namespace utils
     return utils::fileExist(path);
   }
 
+  double avoidNaNInLk(double lk)
+  {
+    if(std::isnan(lk))
+    {
+      return 1e-200;//alize::Object::EPS_LK - jest protected, dlatego wklejona sztywna wartośći
+    }
+    return lk;
+  }
 
 
 }//namespace utils

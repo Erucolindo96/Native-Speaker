@@ -108,6 +108,7 @@ double GmmModel::countLikehoodWithWeight(const alize::Feature &feature)const
   return ret;
 }
 
+
 double GmmModel::countLikehoodWithWeight(const alize::Feature &arg, uint32_t distrib_idx)const
 {
   try
@@ -122,7 +123,7 @@ double GmmModel::countLikehoodWithWeight(const alize::Feature &arg, uint32_t dis
     double d_lk = 0;
     {
       std::lock_guard<std::mutex> l(m_);
-      d_lk = getMixtureRef().getDistrib(distrib_idx).computeLK(arg);
+      d_lk = utils::avoidNaNInLk(getMixtureRef().getDistrib(distrib_idx).computeLK(arg));
     }
     return d_lk * getDistribWeight(distrib_idx);//metoda getDistribWeght jest synchronizowana
 
