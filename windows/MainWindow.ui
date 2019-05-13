@@ -166,21 +166,7 @@
     <property name="title">
      <string>Recognition</string>
     </property>
-    <widget class="QMenu" name="menuWeryfikacja">
-     <property name="title">
-      <string>Verification</string>
-     </property>
-     <addaction name="action_RecordFromFileVerification"/>
-     <addaction name="action_RecordFromMicrophoneVerification"/>
-    </widget>
-    <widget class="QMenu" name="menuIdentyfikacja">
-     <property name="title">
-      <string>Identyfication</string>
-     </property>
-     <addaction name="action_RecordFromFileIdentification"/>
-    </widget>
-    <addaction name="menuWeryfikacja"/>
-    <addaction name="menuIdentyfikacja"/>
+    <addaction name="actionVerification"/>
    </widget>
    <widget class="QMenu" name="menuBaza_pr_bek">
     <property name="title">
@@ -203,16 +189,6 @@
     <string>Model Learning</string>
    </property>
   </action>
-  <action name="action_RecordFromFileVerification">
-   <property name="text">
-    <string>Record from file</string>
-   </property>
-  </action>
-  <action name="action_RecordFromMicrophoneVerification">
-   <property name="text">
-    <string>Record from microphone</string>
-   </property>
-  </action>
   <action name="action_RecordFromFileIdentification">
    <property name="text">
     <string>Record from file</string>
@@ -231,6 +207,11 @@
   <action name="actionAdd_Configuration_Parameter">
    <property name="text">
     <string>Add Configuration Parameter</string>
+   </property>
+  </action>
+  <action name="actionVerification">
+   <property name="text">
+    <string>Verification</string>
    </property>
   </action>
  </widget>

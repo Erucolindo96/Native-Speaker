@@ -36,12 +36,12 @@ public:
    * Wątek przechodzi po liście LearningThreadów, i na jej podstawie aktualizuje
    * pasek postępu w widgetach, oraz usuwa te widgety, których wątki uczące się już zakonczyły
    */
-  void displayThreadLoop();
+  //void displayThreadLoop();
   /**
    * @brief runDisplayThread Uruchamia wątek aktualizujący widgety
    * @throw RerunningThread jeśli wątek już został uruchomiony
    */
-  void runDisplayThread();
+//  void runDisplayThread();
 
 
   void setComboBoxPtr(QComboBox *ptr);
@@ -70,11 +70,11 @@ protected:
   shared_ptr<GmmModel> act_displayed_learning_;
 
 
-  void actualizeComboBox();
-  void actualizeProgressBar();
   void connectSignalsAndSlots();
 
-public slots:
+protected slots:
+  void actualizeComboBox();
+  void actualizeProgressBar();
   void updateDisplayedLearning();
 };
 

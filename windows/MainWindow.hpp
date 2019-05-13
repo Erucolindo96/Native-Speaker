@@ -21,6 +21,7 @@
 #include"features/FeatureManager.hpp"
 #include"record-base/RecBaseManager.hpp"
 #include"learn-performing/LearningPerformer.hpp"
+#include"windows/ModelVerificationWindow.hpp"
 
 #include<vector>
 #include<thread>
@@ -60,6 +61,9 @@ private slots:
   void on_commandLinkButton_prev_models_released();
 
   void on_action_ModelLearning_triggered();
+
+
+  void on_actionVerification_triggered();
 
 protected:
   const int32_t MODELS_ON_PAGE =5 ;

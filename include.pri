@@ -118,7 +118,6 @@ HEADERS += \
     $$PWD/windows/subcontrollers/ModelController.hpp \
     $$PWD/windows/LearningModelWindow.hpp \
     $$PWD/models/AlgoManager.hpp \
-    $$PWD/windows/subcontrollers/RecordsFromFilesystemController.hpp \
     $$PWD/features/TempDirManager.hpp \
     $$PWD/record-base/Record.hpp \
     $$PWD/record-base/RecBaseManager.hpp \
@@ -130,7 +129,11 @@ HEADERS += \
     $$PWD/learn-performing/LearningThread.hpp \
     $$PWD/learn-performing/LearningPerformer.hpp \
     $$PWD/learn-performing/LearningThreadWidget.hpp \
-    $$PWD/windows/subcontrollers/LearningController.hpp
+    $$PWD/windows/subcontrollers/LearningController.hpp \
+    $$PWD/windows/ModelVerificationWindow.hpp \
+    $$PWD/windows/subcontrollers/VerificationResultController.hpp \
+    $$PWD/windows/subcontrollers/RecordsFromFilesystemVerificationController.hpp \
+    $$PWD/windows/subcontrollers/RecordsFromFilesystemController.hpp
 
 
 SOURCES += \
@@ -165,7 +168,10 @@ SOURCES += \
     $$PWD/learn-performing/LearningThread.cpp \
     $$PWD/learn-performing/LearningPerformer.cpp \
     $$PWD/learn-performing/LearningThreadWidget.cpp \
-    $$PWD/windows/subcontrollers/LearningController.cpp
+    $$PWD/windows/subcontrollers/LearningController.cpp \
+    $$PWD/windows/ModelVerificationWindow.cpp \
+    $$PWD/windows/subcontrollers/VerificationResultController.cpp \
+    $$PWD/windows/subcontrollers/RecordsFromFilesystemVerificationController.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a
@@ -177,7 +183,8 @@ FORMS += \
     $$PWD/windows/MainWindow.ui \
     $$PWD/windows/SetParameterWindow.ui \
     $$PWD/windows/LearningModelWindow.ui \
-    $$PWD/learn-performing/LearningThreadWidget.ui
+    $$PWD/learn-performing/LearningThreadWidget.ui \
+    $$PWD/windows/ModelVerificationWindow.ui
 
 
 HEADERS += \

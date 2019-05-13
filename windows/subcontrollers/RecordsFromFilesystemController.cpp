@@ -1,9 +1,7 @@
 ﻿#include "RecordsFromFilesystemController.hpp"
 
-RecordsFromFilesystemController::RecordsFromFilesystemController(
-    QListWidget *record_list, QAbstractButton* add_button,
-    QAbstractButton *remove_button)
-  :record_list_(record_list), add_button_(add_button), remove_button_(remove_button)
+RecordsFromFilesystemController::RecordsFromFilesystemController()
+  :record_list_(nullptr), add_button_(nullptr), remove_button_(nullptr)
 {
 
 }
@@ -39,7 +37,7 @@ void RecordsFromFilesystemController::setRecordListPtr(QListWidget *ptr)
 std::vector<Record> RecordsFromFilesystemController::getActualRecords()const
 {
   std::vector<Record> ret;
-  for(uint32_t i = 0; i < record_list_->count(); ++i)
+  for(int32_t i = 0; i < record_list_->count(); ++i)
   {
     Record rec;
     rec.setPath(record_list_->item(i)->text());

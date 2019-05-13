@@ -170,3 +170,16 @@ void MainWindow::loadConfigToMembers()
   f_manager_.setFeatureFolder(conf_.getFeatureFolder().c_str());
   r_base_.setFeatureFolderPath(conf_.getFeatureFolder().c_str());
 }
+
+
+
+void MainWindow::on_actionVerification_triggered()
+{
+    if(checkConfiguration())
+    {
+      std::unique_ptr<ModelVerificationWindow> window = make_unique<ModelVerificationWindow>
+                                                        (models_,f_manager_,
+                                                         conf_.getVectSize());
+      window->exec();
+    }
+}

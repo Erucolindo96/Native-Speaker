@@ -6,13 +6,13 @@
 #include<QLabel>
 #include<iostream>
 #include"record-base/Record.hpp"
-class RecordsFromFilesystemController:QObject
+class RecordsFromFilesystemController:public QObject
 {
   Q_OBJECT
 public:
-  RecordsFromFilesystemController(QListWidget *record_list = nullptr,
+  RecordsFromFilesystemController(/*QListWidget *record_list = nullptr,
                                   QAbstractButton* add_button= nullptr,
-                                  QAbstractButton *remove_button= nullptr);
+                                  QAbstractButton *remove_button= nullptr*/);
   RecordsFromFilesystemController(const RecordsFromFilesystemController &other) = default;
   RecordsFromFilesystemController& operator=(const RecordsFromFilesystemController &other) = default;
   RecordsFromFilesystemController(RecordsFromFilesystemController &&other) = default;
