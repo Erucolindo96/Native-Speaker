@@ -11,134 +11,147 @@
 #include"windows/MainWindow.hpp"
 #include<QtCore/QDir>
 
+#include"features/FeatureManager.hpp"
+#include"record-base/RecBaseManager.hpp"
+#include"models/ModelManager.hpp"
 using namespace std;
 using namespace alize;
 using namespace utils;
 
+
+void printFeature(const alize::Feature f)
+{
+  cout<<"Wektor cech: "<<endl;
+  for(uint32_t i=0; i< f.getVectSize();++i)
+  {
+    cout<<f[i]<<endl;
+  }
+}
+
+std::vector<Record> getWavRecordsFromDir(const std::string &dir_path)
+{
+  std::vector<Record> recs;
+  QDir records(dir_path.c_str());
+  records.setFilter(QDir::NoDotAndDotDot| QDir::Files);
+  records.setNameFilters({"*.wav"});
+  Record r;
+  for(auto file: records.entryInfoList())
+  {
+    r.setPath(file.absoluteFilePath());
+    recs.push_back(r);
+  }
+  return recs;
+}
+
+void LLKDifference(char *argv[])
+{
+  const string MODEL_DIR = argv[2], MODEL_NAME = argv[3], UBM_NAME = argv[4];
+  const double THRESHOLD = stod(argv[5]);
+  const uint32_t F_SIZE = stoi(argv[6]);
+  const string R_PATH = argv[7], FEATURE_FOLDER = ".";
+
+  FeatureManager f_man;
+  f_man.setFeatureFolder(FEATURE_FOLDER.c_str());
+
+  Record rec;
+  rec.setPath(R_PATH.c_str());
+  auto mfcc = f_man.convertRecord(rec, F_SIZE);
+
+  FileModelDao dao;
+  dao.setModelsDir(MODEL_DIR);
+  dao.setVectSize(F_SIZE);
+
+  auto ubm = dao.readModel(UBM_NAME);
+  auto model = dao.readModel(MODEL_NAME);
+
+  Verificator v(THRESHOLD);
+  double diff = v.countLogLikehood(*model, mfcc) - v.countLogLikehood(*ubm, mfcc);
+  cout<<diff<<endl;
+}
 /**
  * @brief verification Funkcja przeprowadzająca weryfikację modelu na podstawie przekazanych do main() parametrów
  * @param argc argc otrzymywany przez funkcję main()
  * @param argv argv otrzymywany przez funkcję main()
  * @return Zwraca zmienną logiczną, mówiąca, czy weryfikacja była pozytywna
  */
-int verification(uint32_t argc, char *argv[])
+bool verification(char *argv[])
 {
-  throw std::runtime_error("TODO");
-  //  string model_dir = argv[2], model_name =argv[3], ubm_name = argv[4];
-//  double threshold = stod(argv[5]);
-//  string f_path = argv[6], ext = "";
+  const string MODEL_DIR = argv[2], MODEL_NAME = argv[3], UBM_NAME = argv[4];
+  const double THRESHOLD = stod(argv[5]);
+  const uint32_t F_SIZE = stoi(argv[6]);
+  const string R_PATH = argv[7], FEATURE_FOLDER = ".";
 
-//  FeatureReader f_reader;
-//  f_reader.setFeatureDir("");
-//  auto f_vec = f_reader.readFile(f_path, ext);
+  FeatureManager f_man;
+  f_man.setFeatureFolder(FEATURE_FOLDER.c_str());
 
-//  FileModelDao dao;
-//  dao.setModelsDir(model_dir);
-//  dao.setVectSize(f_vec[0].getVectSize());
+  Record rec;
+  rec.setPath(R_PATH.c_str());
+  auto mfcc = f_man.convertRecord(rec, F_SIZE);
 
-//  auto ubm = dao.readModel(ubm_name);
-////  cout<<"UBM "<<ubm->getName()<<" readed"<<endl<<endl;
+  FileModelDao dao;
+  dao.setModelsDir(MODEL_DIR);
+  dao.setVectSize(F_SIZE);
 
-//  auto model = dao.readModel(model_name);
-////  cout<<"Model "<<model->getName()<<" readed"<<endl<<endl;
+  auto ubm = dao.readModel(UBM_NAME);
+  auto model = dao.readModel(MODEL_NAME);
 
-//  Verificator v(threshold);
-////  cout<<"Feature Vec size: "<<f_vec.size()<<endl<<endl;
+  Verificator v(THRESHOLD);
 
-//  cout<<"Log Likehood for model "<<model->getName() <<":"<<v.countLogLikehood(*model, f_vec)<<endl;
-//  cout<<"Log Likehood for ubm "<<ubm->getName() <<":"<<v.countLogLikehood(*ubm, f_vec)<<endl;
-
-//  bool is_speaker_voice = v.verifyModel(*model, f_vec, *ubm);
-//  cout<<"Verificator return: "<<is_speaker_voice<<endl;
-//  if(is_speaker_voice)
-//  {
-////    cout<<"This is speaker voice"<<endl;
-//  }
-//  else
-//  {
-////    cout<<"No, this is not a speaker voice"<<endl;
-//  }
-//  return is_speaker_voice;
+  bool is_speaker_voice = v.verifyModel(*model, mfcc, *ubm);
+  cout<<is_speaker_voice<<endl;
+  return is_speaker_voice;
 }
 
-void learnExistModel(uint32_t  argc,char *argv[],  const string &model_dir)
+void learnExistModel(uint32_t  argc,char *argv[])
 {
      throw std::runtime_error("TODO");
-//  string dir_with_mfcc = argv[2], model_name = argv[3];
-//  vector<Feature> training_features;
-//  FeatureReader reader(dir_with_mfcc);
-//  vector<Feature> features_vec;
-//  for(uint32_t i = 4; i < argc; ++i)
-//  {
-//    cout<<"Load file: "<<argv[i]<<endl;
-//    features_vec = reader.readFile(argv[i], "");
-//    training_features.insert(training_features.end(), features_vec.begin(), features_vec.end());
-//    cout<<"Training features in "<<argv[i]<<" : "<<features_vec.size()<<endl<<endl;
-//  }
-//  cout<<"All training features: "<<training_features.size()<<endl<<endl;
-
-//  FileModelDao dao;
-//  dao.setModelsDir(model_dir);
-//  dao.setVectSize(features_vec[0].getVectSize());
-//  auto model = dao.readModel(model_name);
-//  //DiagonalModel model(D_CNT ,training_features[0].getVectSize());
-//  //model.setName(model_name);
-
-//  ExpectationMaximalizationAlgo algo;
-//  const uint32_t ITERATIONS = 5;
-//  algo.learnModel(*model,training_features, ITERATIONS );
-//  cout<<"Model "<<model->getName() <<" have learned"<<endl;
-
-//  dao.writeModel(*model);
-//  cout<<"Model "<<model->getName()<<" saved to file"<<endl<<endl;
-
-//  cout<<"Likehood for last of training feature vec: "<<model->countLikehoodWithWeight(features_vec)<<endl;
-
 }
 
-void createModel(uint32_t  argc,char *argv[],  const string &model_dir)
+void createModel(char *argv[])
 {
-     throw std::runtime_error("TODO");
-//  const uint32_t D_CNT = 512;
-//  string dir_with_mfcc = argv[2], model_name = argv[3];
-//  vector<Feature> training_features;
-//  FeatureReader reader(dir_with_mfcc);
-//  vector<Feature> features_vec;
-//  for(uint32_t i = 4; i < argc; ++i)
-//  {
-//    cout<<"Load file: "<<argv[i]<<endl;
-//    features_vec = reader.readFile(argv[i], "");
-//    training_features.insert(training_features.end(), features_vec.begin(), features_vec.end());
-//    cout<<"Training features in "<<argv[i]<<" : "<<features_vec.size()<<endl<<endl;
-//  }
-//  cout<<"All training features: "<<training_features.size()<<endl<<endl;
+  const string MODELS_DIR = argv[2], MODEL_NAME = argv[3];
+  const uint32_t D_CNT = std::stoi(argv[4]), F_SIZE = std::stoi(argv[5]),
+      ITERS = std::stoi(argv[6]);
+  const string REC_DIR = argv[7], FEATURE_FOLDER = ".";
 
-//  DiagonalModel model(D_CNT ,training_features[0].getVectSize());
-//  model.setName(model_name);
+  FeatureManager f_man;
+  f_man.setFeatureFolder(FEATURE_FOLDER.c_str());
 
-//  ExpectationMaximalizationAlgo algo;
-//  const uint32_t ITERATIONS = 5;
-//  algo.learnModel(model,training_features, ITERATIONS );
-//  cout<<"Model "<<model.getName() <<" have learned"<<endl;
+  auto records = getWavRecordsFromDir(REC_DIR);
+  auto mfcc_vecs = f_man.convertRecord(records, F_SIZE);
+  cout<<"Ilośc wektorów cech: "<<mfcc_vecs.size()<<endl;
+  DiagonalModel model(D_CNT ,F_SIZE);
+  model.setName(MODEL_NAME);
 
-//  FileModelDao dao;
-//  dao.setModelsDir(model_dir);
-//  dao.setVectSize(training_features[0].getVectSize());
-//  dao.writeModel(model);
-//  cout<<"Model "<<model.getName()<<" saved to file"<<endl<<endl;
+  ExpectationMaximalizationAlgo algo;
+  for(uint32_t i = 0; i< ITERS; ++i)
+  {
+    algo.learnModel(model, mfcc_vecs, 1);
+    cout<<"Iteracja nr "<<i<<" uczenia modelu ukonczona"<<endl;
+  }
+  cout<<"Uczenie modelu zakończone"<<endl;
 
-//  cout<<"Likehood for last of training feature vec: "<<model.countLikehoodWithWeight(features_vec)<<endl;
+  FileModelDao dao;
+  dao.setModelsDir(MODELS_DIR);
+  dao.setVectSize(F_SIZE);
+  dao.writeModel(model);
+
+  cout<<"Model "<<model.getName()<<" saved to file"<<endl<<endl;
+  cout<<"Likehood for first of training feature vec: "<<model.countLikehoodWithWeight(mfcc_vecs[0])<<endl;
+  printFeature(mfcc_vecs[100]);
 }
 
 /**
  *
  * Mozliwe formaty komend:
  *
- * 1. Uczenie modeli - main -l [folder próbek] [nazwa modelu] [pliki z probkami]
- * 2. Weryfikacja - main -r [folder modeli] [nazwa modelu] [nazwa ubm'a] [próg] [sciezka próbki do rozpoznania]
- * 3. Douczenie - main -ll  [folder próbek] [nazwa modelu] [pliki z probkami]
- * Nazwy plików podajemy bez rozszerzeń.
- * Rozszerzenia plików z próbkami - .mfcc
+ * 1. Uczenie modeli - main -l [folder modeli] [nazwa modelu] [ilość rozkładów normalnych] [dł wektora cech] [iteracje uczenia] [folder z próbkami]
+ * 2. Weryfikacja - main -r [folder modeli] [nazwa modelu] [nazwa ubm'a] [próg] [dł wektora cech] [sciezka nagrania weryfikowanego]
+ * 3. Różnica LLK - main -rr [folder modeli] [nazwa modelu] [nazwa ubm'a] [próg] [dł wektora cech] [sciezka nagrania weryfikowanego]
+ * //// 3. Douczenie - main -ll  [folder próbek] [nazwa modelu] [pliki z probkami]
+ * //Nazwy plików podajemy bez rozszerzeń.
+ *
+ * //Rozszerzenia plików z próbkami - .mfcc
  * Rozszerzenia plików  z modelami - .xml
  *
 */
@@ -146,31 +159,28 @@ int main(int argc, char *argv[])
 {
   try
   {
-    const std::string model_dir = "models/";
     if(argc > 1)
     {
       if(string(argv[1]) == string("-l"))
       {
-        createModel(argc, argv, model_dir);
-        return 0;
-      }
-      if(string(argv[1]) == string("-ll"))
-      {
-        learnExistModel(argc, argv, model_dir);
+        createModel(argv);
         return 0;
       }
       if(string(argv[1]) == string("-r"))
       {
-        return verification(argc, argv);
-
+        return !verification(argv);//negacja, aby poprawna weryfikacja dała 0
       }
+      if(string(argv[1]) == string("-rr"))
+      {
+        LLKDifference(argv);
+        return 0;
+      }
+
     }
     QApplication app(argc, argv);
     MainWindow window;
     window.show();
     return app.exec();
-
-
   }
   catch(alize::Exception &e)
   {
@@ -181,47 +191,5 @@ int main(int argc, char *argv[])
     cout<<e.what()<<endl;
   }
   return 0;
-/*
-  try{
-  if(argc < 7)
-    return 0;
-  verification(argc, argv);
-  }
-  catch(alize::Exception &e)
-  {
-    cout<<e.toString().c_str()<<endl;
-  }
-  catch(alize::Object &e)
-  {
-    cout<<"alize object"<<endl;
-  }
-  catch(std::exception &e)
-  {
-    cout<<e.what()<<endl;
-  }
-*/
-/*
-  alize::Config conf, conf_server;
-  conf.setParam("saveMixtureFileFormat", "XML");
-  conf.setParam("saveMixtureFileExtension", ".xml");
-  conf.setParam("saveMixtureServerFileFormat", "XML");
-  conf.setParam("saveMixtureServerFileExtension", ".xml");
-  conf.setParam("loadMixtureFileFormat", "XML");
-  conf.setParam("loadMixtureFileExtension", ".xml");
-  conf.setParam("mixtureFilesPath", "./");
 
-  try
-  {
-  conf_server.setParam("vectSize", to_string(12).c_str());
-  MixtureServer s(conf_server);
-  s.createMixtureGD(10);
-  MixtureServerFileWriter writer("model1", conf);
-  writer.writeMixtureServer(s);
-  }
-  catch(alize::ParamNotFoundInConfigException &e)
-  {
-    cout<<e.toString().c_str()<<endl;
-  }
-
-*/
 }

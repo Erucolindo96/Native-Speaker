@@ -4,7 +4,7 @@
 #include "ui_CreateModelWindow.h"
 #include"models/gmmmodel.hpp"
 #include"models/diagonal_model.hpp"
-#include<utils/Runnable.hpp>
+
 #include<QTextBlock>
 #include<map>
 #include<alize.h>

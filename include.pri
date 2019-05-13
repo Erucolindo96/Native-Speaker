@@ -110,7 +110,6 @@ HEADERS += \
     $$PWD/configuration/ConfigManager.hpp \
     $$PWD/features/FeatureReaderSilenceCutter.hpp \
     $$PWD/models/ModelManager.hpp \
-    $$PWD/utils/Runnable.hpp \
     $$PWD/configuration/ConfigValidator.hpp \
     $$PWD/windows/CreateModelWindow.hpp \
     $$PWD/windows/MainWindow.hpp \
@@ -148,7 +147,6 @@ SOURCES += \
     $$PWD/configuration/ConfigManager.cpp \
     $$PWD/features/FeatureReaderSilenceCutter.cpp \
     $$PWD/models/ModelManager.cpp \
-    $$PWD/utils/Runnable.cpp \
     $$PWD/configuration/ConfigValidator.cpp \
     $$PWD/windows/CreateModelWindow.cpp \
     $$PWD/windows/MainWindow.cpp \
