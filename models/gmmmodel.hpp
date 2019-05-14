@@ -9,16 +9,17 @@
 #include"exceptions/simple_exceptions.hpp"
 #include<mutex>
 #include<QObject>
+#include<atomic>
 #include<QVariant>
 class GmmModel: public QObject
 {
 Q_OBJECT
 protected:
 
-  const uint32_t DISTRIB_CNT, FEATURE_SIZE;
+  const std::atomic<uint32_t> DISTRIB_CNT, FEATURE_SIZE;
   const double MAX_LLK = 100.0, MIN_LLK = -100.0;
   std::unique_ptr<alize::MixtureServer> s_;
-  alize::DistribType type_;
+  std::atomic<alize::DistribType> type_;
   std::vector<alize::Feature> features_;
   mutable std::mutex m_;
 

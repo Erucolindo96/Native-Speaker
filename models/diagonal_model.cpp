@@ -31,7 +31,6 @@ void DiagonalModel::setDistribCovariance(uint32_t distrib, const alize::RealVect
   }
   try
   {
-    std::lock_guard<std::mutex> l(m_);
     alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( getMixtureRef().getDistrib(distrib));
     distrib_ref.getCovVect() = diagonal_covariance;
     distrib_ref.computeAll();
@@ -50,7 +49,6 @@ alize::RealVector<double> DiagonalModel::getDistribCovariance(uint32_t distrib)c
 {
   try
   {
-    std::lock_guard<std::mutex> l(m_);
     alize::DistribGD &distrib_ref = dynamic_cast<alize::DistribGD&>( getMixtureRef().getDistrib(distrib));
     return distrib_ref.getCovVect();
   }

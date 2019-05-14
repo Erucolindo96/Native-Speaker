@@ -18,8 +18,7 @@ alize::Config GmmModel::createConfig()const
 
 void GmmModel::initDefaultMixture(uint32_t distrib_cnt)
 {
-  s_->createMixture(distrib_cnt, type_);
-
+  s_->createMixture(distrib_cnt, type_.load());
 }
 
 alize::Mixture& GmmModel::getMixtureRef()const
@@ -48,19 +47,16 @@ GmmModel::GmmModel(GmmModel &&other):GmmModel(other.DISTRIB_CNT, other.FEATURE_S
 
 void GmmModel::addTrainingFeature(const alize::Feature &feature)
 {
-  std::lock_guard<std::mutex> l(m_);
   features_.push_back(feature);
 }
 
 void GmmModel::addTrainingFeature(const std::vector<alize::Feature> &vec)
 {
-  std::lock_guard<std::mutex> l(m_);
   features_ = vec;
 }
 
 std::vector<alize::Feature> GmmModel::getTrainingFeatures()const
 {
-  std::lock_guard<std::mutex> l(m_);
   return features_;
 }
 
@@ -78,16 +74,12 @@ std::string GmmModel::getName()const
 
 alize::DistribType GmmModel::getType()const
 {
-  std::lock_guard<std::mutex> l(m_);
-  return type_;
+  return type_.load();
 }
 const std::unique_ptr<alize::MixtureServer>& GmmModel::getMixtureServerRef()const
 {
-  std::lock_guard<std::mutex> l(m_);
   return s_;
 }
-
-
 
 double GmmModel::countLikehoodWithWeight(const alize::Feature &feature)const
 {
@@ -122,7 +114,6 @@ double GmmModel::countLikehoodWithWeight(const alize::Feature &arg, uint32_t dis
 
     double d_lk = 0;
     {
-      std::lock_guard<std::mutex> l(m_);
       d_lk = utils::avoidNaNInLk(getMixtureRef().getDistrib(distrib_idx).computeLK(arg));
     }
     return d_lk * getDistribWeight(distrib_idx);//metoda getDistribWeght jest synchronizowana
@@ -147,15 +138,15 @@ double GmmModel::countLikehoodWithWeight(const std::vector<alize::Feature> &arg)
 
 uint32_t GmmModel::getDistribCount()const
 {
-  std::lock_guard<std::mutex> l(m_);
-  return getMixtureRef().getDistribCount();
+//  std::lock_guard<std::mutex> l(m_);
+//  return getMixtureRef().getDistribCount();
+  return DISTRIB_CNT.load();
 }
 
 double GmmModel::getDistribWeight(uint32_t distrib_idx)const
 {
   try
   {
-    std::lock_guard<std::mutex> l(m_);
     return getMixtureRef().weight(distrib_idx);
   }
   catch(alize::IndexOutOfBoundsException e)
@@ -167,7 +158,6 @@ void GmmModel::setDistribWeight(uint32_t distrib, double new_weight)
 {
   try
   {
-    std::lock_guard<std::mutex> l(m_);
     getMixtureRef().weight(distrib) = new_weight;
   }
   catch(alize::IndexOutOfBoundsException e)
@@ -188,7 +178,6 @@ void GmmModel::setDistribMean(uint32_t distrib, const alize::RealVector<double> 
   }
   try
   {
-    std::lock_guard<std::mutex> l(m_);
     alize::Distrib& distrib_ref = getMixtureRef().getDistrib(distrib);
     distrib_ref.setMeanVect(new_mean);
     distrib_ref.computeAll();
@@ -202,7 +191,6 @@ alize::RealVector<double> GmmModel::getDistribMean(uint32_t distrib)const
 {
   try
   {
-    std::lock_guard<std::mutex> l(m_);
     return getMixtureRef().getDistrib(distrib).getMeanVect();
   }
   catch(alize::IndexOutOfBoundsException e)
@@ -213,8 +201,9 @@ alize::RealVector<double> GmmModel::getDistribMean(uint32_t distrib)const
 
 uint32_t GmmModel::getFeatureVectorSize()const
 {
-  std::lock_guard<std::mutex> l(m_);
-  return s_->getVectSize();
+//  std::lock_guard<std::mutex> l(m_);
+//  return s_->getVectSize();
+  return FEATURE_SIZE.load();
 }
 
 std::vector<alize::Feature> GmmModel::extractAllFeatures(alize::FeatureServer &s)
