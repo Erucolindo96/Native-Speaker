@@ -56,15 +56,42 @@ void LearningModelWindow::performLearning()
 
   auto algo_name = ui.comboBox_algo_2->currentText();
   auto records_filesystem = from_fsys_controller_.getActualRecords();
-  auto mfcc_vecs = f_man_ref_.convertRecord(records_filesystem, config_.getVectSize());
+
+  saveRecordsToRecordBase(model_ptr->getName(), records_filesystem,
+                          std::vector<Record>());
+
+  auto mfcc_vecs = f_man_ref_.convertRecord(records_filesystem,
+                                            config_.getVectSize());
   auto iterations = ui.spinBox_iter_2->value();
+
   cout<<"Mfcc cnt: "<<mfcc_vecs.size()<<endl;
   cout<<"Mfcc size: "<<mfcc_vecs[0].getVectSize();
   cout<<"Model ptr: "<<model_ptr.get()<<endl;
   learning_p_ref_.startLearning(model_ptr, AlgoManager::getAlgoByName(algo_name),
                                 mfcc_vecs, iterations);
+
   cout<<"Learning of model "<<model_ptr->getName()<<"runned! "<<endl;
 }
+
+void LearningModelWindow::saveRecordsToRecordBase(const std::string &model,
+                                                  const std::vector<Record> &from_filesystem,
+                                                  const std::vector<Record> &from_microphone
+                                                  )
+{
+
+  for(auto rec : from_filesystem)
+  {
+    r_base_ref_.setRecordToBase(rec, model);
+  }
+
+  for(auto rec: from_microphone)
+  {
+    r_base_ref_.setRecordToBase(rec, model);
+  }
+
+}
+
+
 
 void LearningModelWindow::on_pushButton_start_released()
 {

@@ -42,6 +42,9 @@ private:
   void setSubcontrollers();
 
   void performLearning();
+  void saveRecordsToRecordBase(const std::string &model,
+                               const std::vector<Record> &from_filesystem,
+                               const std::vector<Record> &from_microphone);
 
 
 };
