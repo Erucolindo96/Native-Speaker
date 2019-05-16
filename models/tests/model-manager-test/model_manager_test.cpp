@@ -65,6 +65,69 @@ BOOST_AUTO_TEST_CASE( addCorrectlyNewModelToBaseIfModelDirExistInConfig )
 }
 
 
+BOOST_AUTO_TEST_CASE( correctlyGetNamesListOfModelsIfThereAre4ModelsFromDatabase )
+{
+  QDir models_dir("models");
+  BOOST_REQUIRE(models_dir.exists());
+  const uint32_t FEATURE_SIZE = 12,
+      MODELS_CNT = 4;
+  ConfigManager config;
+  config.setVectSize(FEATURE_SIZE);
+  config.setModelFolder(models_dir.dirName().toStdString() + "/");
+  ModelManager manager;
 
+  manager.loadModels(config);
+  BOOST_REQUIRE_EQUAL(manager[0]->getName(), "ferus");
+  BOOST_REQUIRE_EQUAL(manager[1]->getName(), "janFigat");
+  BOOST_REQUIRE_EQUAL(manager[2]->getName(), "kasprzak");
+  BOOST_REQUIRE_EQUAL(manager[3]->getName(), "maksymFigat");
+  auto models_list = manager.getModelsNames();
+  BOOST_CHECK_EQUAL(models_list.size(), MODELS_CNT );
+  BOOST_CHECK_EQUAL(models_list[0], "ferus");
+  BOOST_CHECK_EQUAL(models_list[1], "janFigat");
+  BOOST_CHECK_EQUAL(models_list[2], "kasprzak");
+  BOOST_CHECK_EQUAL(models_list[3], "maksymFigat");
+
+}
+
+BOOST_AUTO_TEST_CASE( correctlyGetModelByNameIfModelExists )
+{
+  QDir models_dir("models");
+  BOOST_REQUIRE(models_dir.exists());
+  const uint32_t FEATURE_SIZE = 12;
+  ConfigManager config;
+  config.setVectSize(FEATURE_SIZE);
+  config.setModelFolder(models_dir.dirName().toStdString() + "/");
+  ModelManager manager;
+
+  manager.loadModels(config);
+  BOOST_REQUIRE_EQUAL(manager[0]->getName(), "ferus");
+  BOOST_REQUIRE_EQUAL(manager[1]->getName(), "janFigat");
+  BOOST_REQUIRE_EQUAL(manager[2]->getName(), "kasprzak");
+  BOOST_REQUIRE_EQUAL(manager[3]->getName(), "maksymFigat");
+
+  BOOST_CHECK_NO_THROW(manager["ferus"]);
+  BOOST_CHECK_EQUAL(manager["ferus"]->getName(), "ferus");
+  BOOST_CHECK_EQUAL(manager["janFigat"]->getName(), "janFigat");
+  BOOST_CHECK_EQUAL(manager["kasprzak"]->getName(), "kasprzak");
+  BOOST_CHECK_EQUAL(manager["maksymFigat"]->getName(), "maksymFigat");
+}
+
+BOOST_AUTO_TEST_CASE( throwOutOfRangeAnGettingModelByNameIfModelDoesNotExists )
+{
+  QDir models_dir("models");
+  BOOST_REQUIRE(models_dir.exists());
+  const uint32_t FEATURE_SIZE = 12;
+  ConfigManager config;
+  config.setVectSize(FEATURE_SIZE);
+  config.setModelFolder(models_dir.dirName().toStdString() + "/");
+  ModelManager manager;
+
+  manager.loadModels(config);
+
+  BOOST_CHECK_THROW(manager["fake-model"], out_of_range);
+  BOOST_CHECK_THROW(manager["fake-model2"], out_of_range);
+
+}
 
 BOOST_AUTO_TEST_SUITE_END()

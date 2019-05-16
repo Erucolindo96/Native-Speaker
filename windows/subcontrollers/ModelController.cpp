@@ -33,12 +33,14 @@ void ModelController::refreshDisplayedModels()
 
   uint32_t first_m = (act_page_)*MODELS_ON_PAGE;
   uint32_t last_m = (act_page_+1)*MODELS_ON_PAGE-1;
-  for(auto i = first_m; (i <= last_m)&&(i<models_.size()); ++i)
+  auto models_names = getModelsNames();
+  for(auto i = first_m; (i <= last_m)&&(i<models_names.size()); ++i)
   {
-    GmmModel& model = *models_.at(i);
-    toolbox_ptr_->addItem(new GmmModelWidget(nullptr, model.getName().c_str(),
-                                             model.getDistribCount(),
-                                             model.getType(), ""),model.getName().c_str() );
+    auto act_model_name = models_names[i];
+    toolbox_ptr_->addItem(new GmmModelWidget(nullptr, act_model_name.c_str(),
+                                             models_[act_model_name]->getDistribCount(),
+                                             models_[act_model_name]->getType(), ""),
+                          act_model_name.c_str() );
   }
 
 }
