@@ -147,6 +147,25 @@ BOOST_AUTO_TEST_CASE(throwOutOfRangeIfInResultMapArentOneRecordInRecordList)
   BOOST_CHECK_THROW(controller.setResults(result_map2), out_of_range);
 }
 
+
+BOOST_AUTO_TEST_CASE(cleanResultListIfThereAreElemsInThem)
+{
+  QListWidget records, results;
+  QPushButton add, remove;
+  RecordsFromFilesystemVerificationControllerMock controller;
+  controller.setAddButtonPtr(&add);
+  controller.setRemoveButtonPtr(&remove);
+  controller.setRecordListPtr(&records);
+  controller.setResultListPtr(&results);
+
+  const QString elem1 = "false", elem2 = "true";
+  results.addItems({elem1, elem2});
+  BOOST_REQUIRE_NO_THROW(controller.clearResultList());
+  BOOST_CHECK_EQUAL(results.count(), 0);
+}
+
+
+
 /**
   ten test jest bez sensu, bo zmiana jest powodowana sygnałem puszczenia przycisków dodawania i usuwania nagrań z listy
   a nie samym faktem usunięcia

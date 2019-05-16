@@ -43,6 +43,11 @@ public:
    */
   void setResults(const std::map<QString, bool> &results);
 
+  /**
+   * @brief clearResultList Usuwa zawartość listy wyników weryfikacji
+   */
+  void clearResultList();
+
 protected:
   QListWidget *result_list_;
   /**

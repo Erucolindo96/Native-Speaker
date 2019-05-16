@@ -15,32 +15,31 @@ ModelVerificationWindow::ModelVerificationWindow(ModelManager &models_man_ref,
 
 void ModelVerificationWindow::initModelsInComboBox(QComboBox *box)
 {
- // QComboBox* models_box = ui.comboBox_model;
-  for(uint32_t i=0; i<models_man_ref_.getModelsCnt(); ++i)
+  box->clear();
+  auto models_names = models_man_ref_.getModelsNames();
+  std::for_each(models_names.begin(), models_names.end(),
+                [box](auto name)->
+  void
   {
-    QString model_name = models_man_ref_[i]->getName().c_str();
-    QObject *model_ptr = models_man_ref_[i].get();
-    box->insertItem(i,model_name,QVariant::fromValue<QObject*>(model_ptr) );
-  }
+    box->addItem(name.c_str());
+  });
 }
 
 std::shared_ptr<GmmModel> ModelVerificationWindow::getModel(QComboBox *box)
 {
-  return std::shared_ptr<GmmModel>(dynamic_cast<GmmModel*>(
-        box->itemData(box->currentIndex()).value<QObject*>()
-        ));
+  return models_man_ref_[box->currentText().toStdString()];
 }
 
 std::map<QString, bool> ModelVerificationWindow::testRecords
 (const std::vector<Record> &recs )
 {
   std::map<QString, bool> ret;
+  std::shared_ptr<GmmModel> model = getModel(ui.comboBox_model),
+      ubm = getModel(ui.comboBox_ubm);
   std::vector<std::vector<alize::Feature>> records_mfcc = convertRecords(recs);
   Verificator v;
   v.setThreshold(ui.doubleSpinBox_threshold->value());
 
-  std::shared_ptr<GmmModel> model = getModel(ui.comboBox_model),
-      ubm = getModel(ui.comboBox_ubm);
 
   for(uint32_t i=0; i<recs.size(); ++i)
   {
@@ -83,6 +82,7 @@ void ModelVerificationWindow::verifyRecords()
 
 void ModelVerificationWindow::on_pushButton_verify_released()
 {
+  from_fsys_controller_.clearResultList();
   verifyRecords();
 }
 

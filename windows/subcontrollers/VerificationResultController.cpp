@@ -17,3 +17,8 @@ void VerificationResultController::setResults(const std::map<QString, bool> &res
     result_list_->addItem(result_str);
   }
 }
+
+void VerificationResultController::clearResultList()
+{
+  result_list_->clear();
+}

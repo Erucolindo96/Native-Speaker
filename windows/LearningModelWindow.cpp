@@ -23,12 +23,13 @@ void LearningModelWindow::on_pushButton_cancell_released()
 void LearningModelWindow::initModelsInComboBox()
 {
   QComboBox* models_box = ui.comboBox_model_2;
-  for(uint32_t i=0; i<model_man_ref_.getModelsCnt(); ++i)
+  auto models_name_list =model_man_ref_.getModelsNames();
+  std::for_each(models_name_list.begin(), models_name_list.end(),
+                [models_box](auto name)->
+  void
   {
-    QString model_name = model_man_ref_[i]->getName().c_str();
-    QObject *model_ptr = model_man_ref_[i].get();
-    models_box->insertItem(i,model_name,QVariant::fromValue<QObject*>(model_ptr) );
-  }
+    models_box->addItem(name.c_str());
+  });
 }
 
 void LearningModelWindow::initAlgosInComboBox()
@@ -50,10 +51,9 @@ void LearningModelWindow::setSubcontrollers()
 
 void LearningModelWindow::performLearning()
 {
-  auto model_idx = ui.comboBox_model_2->currentIndex();
-  std::shared_ptr<GmmModel> model_ptr(dynamic_cast<GmmModel*>(
-                          ui.comboBox_model_2->itemData(model_idx).value<QObject*>()
-                          ));
+  auto model_ptr = model_man_ref_[
+                   ui.comboBox_model_2->currentText().toStdString()];
+
   auto algo_name = ui.comboBox_algo_2->currentText();
   auto records_filesystem = from_fsys_controller_.getActualRecords();
   auto mfcc_vecs = f_man_ref_.convertRecord(records_filesystem, config_.getVectSize());
