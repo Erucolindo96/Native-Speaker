@@ -183,3 +183,10 @@ void MainWindow::on_actionVerification_triggered()
       window->exec();
     }
 }
+
+void MainWindow::on_actionView_sample_base_triggered()
+{
+  RecordBaseDisplayingWindow window(r_base_);
+  window.setModelsList(models_.getModelsNames());
+  window.exec();
+}

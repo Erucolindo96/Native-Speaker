@@ -172,6 +172,7 @@
     <property name="title">
      <string>Sample Base</string>
     </property>
+    <addaction name="actionView_sample_base"/>
    </widget>
    <addaction name="menuPlik"/>
    <addaction name="menuModele"/>
@@ -212,6 +213,11 @@
   <action name="actionVerification">
    <property name="text">
     <string>Verification</string>
+   </property>
+  </action>
+  <action name="actionView_sample_base">
+   <property name="text">
+    <string>View sample base</string>
    </property>
   </action>
  </widget>

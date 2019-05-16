@@ -22,7 +22,7 @@
 #include"record-base/RecBaseManager.hpp"
 #include"learn-performing/LearningPerformer.hpp"
 #include"windows/ModelVerificationWindow.hpp"
-
+#include"windows/RecordBaseDisplayingWindow.hpp"
 #include<vector>
 #include<thread>
 #include<mutex>
@@ -64,6 +64,8 @@ private slots:
 
 
   void on_actionVerification_triggered();
+
+  void on_actionView_sample_base_triggered();
 
 protected:
   const int32_t MODELS_ON_PAGE =5 ;
