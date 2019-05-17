@@ -31,8 +31,8 @@ protected:
 //  void bindSlots();
 
 protected slots:
-  void addingRecord();
-  void removingRecord();
+  virtual void addingRecord();
+  virtual void removingRecord();
 
 
 };

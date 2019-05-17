@@ -56,7 +56,7 @@ std::vector<Record> RecordsFromFilesystemController::getActualRecords()const
 
 void RecordsFromFilesystemController::addingRecord()
 {
-  const QString title = "Add record", def_dir, filters=
+  const QString title = "Add record", def_dir , filters=
       "Records (*.wav *.mp3);;All Files (*)";
   QStringList record_files = QFileDialog::getOpenFileNames(nullptr,title,def_dir, filters);
   if(record_files.empty())

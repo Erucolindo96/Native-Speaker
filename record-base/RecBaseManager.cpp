@@ -35,3 +35,9 @@ bool RecBaseManager::isRecordExists(const Record &r, const std::string &model_na
   return dir_manager_.getModelDir(model_name).haveRecord(r);
 
 }
+
+QString RecBaseManager::getModelPath(const QString &model_name, const QString &feature_folder_path)
+{
+  return feature_folder_path + "/" + model_name;
+}
+

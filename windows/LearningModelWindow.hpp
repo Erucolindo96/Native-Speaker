@@ -9,6 +9,7 @@
 #include"features/FeatureManager.hpp"
 #include"learn-performing/LearningPerformer.hpp"
 #include"record-base/RecBaseManager.hpp"
+#include"windows/subcontrollers/RecordsFromSampleBaseController.hpp"
 class LearningModelWindow : public QDialog
 {
   Q_OBJECT
@@ -36,6 +37,7 @@ private:
   FeatureManager &f_man_ref_;
   LearningPerformer &learning_p_ref_;
   RecordsFromFilesystemController from_fsys_controller_;
+  RecordsFromSampleBaseController from_sample_base_controller_;
 
   void initModelsInComboBox();
   void initAlgosInComboBox();
@@ -44,7 +46,9 @@ private:
   void performLearning();
   void saveRecordsToRecordBase(const std::string &model,
                                const std::vector<Record> &from_filesystem,
-                               const std::vector<Record> &from_microphone);
+                               const std::vector<Record> &from_microphone,
+                               const std::vector<Record> &from_sample_base);
+
 
 
 };

@@ -59,6 +59,14 @@ public:
    */
   bool isRecordExists(const Record &r, const std::string &model_name)const;
 
+  /**
+   * @brief getModelPath Zwraca ścieżkę do folderu z nagraniami modelu, który istnieje w bazie próbek
+   * Folder nie musi istnieć. Oznacza wtedy ścieżkę folderu, który byłby utworzony w bazie w przypadku zapisu doń nagrań
+   * @param model_name Nazwa modelu, którego ścieżkę chcemy uzyskać
+   * @return ścieżka do hipotetycznego folderu bazy próbek danego modelu
+   */
+  static QString getModelPath(const QString &model_name, const QString &feature_folder_path);
+
 protected:
   RecordDirManager dir_manager_;
 };

@@ -106,7 +106,28 @@ BOOST_AUTO_TEST_CASE(returnFalseIfDirNotExist)
   BOOST_CHECK(!utils::dirExist(fake_dir));
 }
 
-
+BOOST_AUTO_TEST_CASE(addTwoFeatureVectors)
+{
+  std::vector<alize::Feature> v1 = {
+    utils::toFeature({0.2, 0.3, -0.1}),
+    utils::toFeature({3.3, 0.9, 0.1}),
+    utils::toFeature({28, -0.3, 0})
+  },
+      v2 =  {
+    utils::toFeature({0.2, 0.3, -0.1}),
+    utils::toFeature({3.3, 0.9, 0.1}),
+    utils::toFeature({28, -0.3, 0}),
+    utils::toFeature({43.3, 0.9, 0.1}),
+    utils::toFeature({-28, -0.3, 0}),
+  },
+      sum;
+  const uint32_t SUM_SIZE = 8;
+ using namespace utils;
+  sum = v1 + v2;
+  BOOST_CHECK_EQUAL(sum.size(), SUM_SIZE);
+  BOOST_CHECK_EQUAL(sum[0][0], 0.2);
+  BOOST_CHECK_EQUAL(sum[3][2],-0.1);
+}
 
 
 

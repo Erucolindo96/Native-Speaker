@@ -30,7 +30,8 @@ namespace utils
   bool dirExist(const std::string &path);
 
   double avoidNaNInLk(double lk);
-
+  std::vector<alize::Feature> operator+(const std::vector<alize::Feature> &f1,
+                                        const std::vector<alize::Feature> &f2);
 }//namespace utils
 
 

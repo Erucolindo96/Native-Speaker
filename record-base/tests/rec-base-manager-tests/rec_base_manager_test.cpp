@@ -283,6 +283,14 @@ BOOST_AUTO_TEST_CASE(throwFeatureFolderNotFoundAtCheckingExistanceOfRecordIfFeat
   BOOST_CHECK_THROW(manager.isRecordExists(r, MODEL_NAME), FeatureFolderNotFound);
 }
 
+BOOST_AUTO_TEST_CASE(correctlyGetModelDirPath)
+{
+  const QString FEATURE_FOLDER_PATH = "feature-folder-rec-base-manager",
+      MODEL_NAME = "model1";
+  BOOST_CHECK_EQUAL(RecBaseManager::getModelPath(MODEL_NAME, FEATURE_FOLDER_PATH).toStdString(),
+                    (FEATURE_FOLDER_PATH + "/" + MODEL_NAME).toStdString());
+
+}
 
 
 BOOST_AUTO_TEST_SUITE_END()

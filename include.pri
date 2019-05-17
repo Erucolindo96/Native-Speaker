@@ -133,7 +133,8 @@ HEADERS += \
     $$PWD/windows/subcontrollers/VerificationResultController.hpp \
     $$PWD/windows/subcontrollers/RecordsFromFilesystemVerificationController.hpp \
     $$PWD/windows/subcontrollers/RecordsFromFilesystemController.hpp \
-    $$PWD/windows/RecordBaseDisplayingWindow.hpp
+    $$PWD/windows/RecordBaseDisplayingWindow.hpp \
+    $$PWD/windows/subcontrollers/RecordsFromSampleBaseController.hpp
 
 
 SOURCES += \
@@ -171,7 +172,8 @@ SOURCES += \
     $$PWD/windows/ModelVerificationWindow.cpp \
     $$PWD/windows/subcontrollers/VerificationResultController.cpp \
     $$PWD/windows/subcontrollers/RecordsFromFilesystemVerificationController.cpp \
-    $$PWD/windows/RecordBaseDisplayingWindow.cpp
+    $$PWD/windows/RecordBaseDisplayingWindow.cpp \
+    $$PWD/windows/subcontrollers/RecordsFromSampleBaseController.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a

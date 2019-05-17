@@ -45,37 +45,52 @@ void LearningModelWindow::setSubcontrollers()
   from_fsys_controller_.setAddButtonPtr(ui.pushButton_add_fromFilesystem);
   from_fsys_controller_.setRemoveButtonPtr(ui.pushButton_remove_fromFilesystem);
   from_fsys_controller_.setRecordListPtr(ui.listWidget_fromFilesystem);
+
+  from_sample_base_controller_.setAddButtonPtr(ui.pushButton_add_fromSampleBase);
+  from_sample_base_controller_.setRemoveButtonPtr(ui.pushButton_remove_fromSampleBase);
+  from_sample_base_controller_.setRecordListPtr(ui.listWidget_fromSampleBase);
+  from_sample_base_controller_.setDisplayedModelComboBox(ui.comboBox_from_sample_base_which_model);
+  from_sample_base_controller_.setFeatureFolderPath(f_man_ref_.getFeatureFolder());
+  from_sample_base_controller_.initComboBox(model_man_ref_.getModelsNames());
+
 }
 
 
 
 void LearningModelWindow::performLearning()
 {
+  using namespace utils;
   auto model_ptr = model_man_ref_[
                    ui.comboBox_model_2->currentText().toStdString()];
 
   auto algo_name = ui.comboBox_algo_2->currentText();
-  auto records_filesystem = from_fsys_controller_.getActualRecords();
+  auto records_filesystem = from_fsys_controller_.getActualRecords(),
+      records_sample_base = from_sample_base_controller_.getActualRecords();
 
   saveRecordsToRecordBase(model_ptr->getName(), records_filesystem,
-                          std::vector<Record>());
+                          std::vector<Record>(), records_sample_base);
 
-  auto mfcc_vecs = f_man_ref_.convertRecord(records_filesystem,
-                                            config_.getVectSize());
+  auto mfcc_vecs_fs = f_man_ref_.convertRecord(records_filesystem,
+                                            config_.getVectSize()),
+      mfcc_vecs_base = f_man_ref_.convertRecord(records_sample_base,
+                                                config_.getVectSize());
+  auto all_mfcc = mfcc_vecs_base + mfcc_vecs_fs;
   auto iterations = ui.spinBox_iter_2->value();
 
-  cout<<"Mfcc cnt: "<<mfcc_vecs.size()<<endl;
-  cout<<"Mfcc size: "<<mfcc_vecs[0].getVectSize();
+  cout<<"Mfcc cnt: "<<all_mfcc.size()<<endl;
+  cout<<"Mfcc size: "<<all_mfcc[0].getVectSize();
   cout<<"Model ptr: "<<model_ptr.get()<<endl;
+
   learning_p_ref_.startLearning(model_ptr, AlgoManager::getAlgoByName(algo_name),
-                                mfcc_vecs, iterations);
+                                all_mfcc, iterations);
 
   cout<<"Learning of model "<<model_ptr->getName()<<"runned! "<<endl;
 }
 
 void LearningModelWindow::saveRecordsToRecordBase(const std::string &model,
                                                   const std::vector<Record> &from_filesystem,
-                                                  const std::vector<Record> &from_microphone
+                                                  const std::vector<Record> &from_microphone,
+                                                  const std::vector<Record> &from_sample_base
                                                   )
 {
 
@@ -88,6 +103,11 @@ void LearningModelWindow::saveRecordsToRecordBase(const std::string &model,
   {
     r_base_ref_.setRecordToBase(rec, model);
   }
+  for(auto rec: from_sample_base)
+  {
+    r_base_ref_.setRecordToBase(rec, model);
+  }
+
 
 }
 

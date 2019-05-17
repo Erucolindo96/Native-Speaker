@@ -70,6 +70,21 @@ namespace utils
     }
     return lk;
   }
-
+  std::vector<alize::Feature> operator+(const std::vector<alize::Feature> &f1,
+                                        const std::vector<alize::Feature> &f2)
+  {
+    const uint32_t RET_L = f1.size() + f2.size();
+    std::vector<alize::Feature> ret;
+    ret.reserve(RET_L);
+    for(auto f: f1)
+    {
+      ret.push_back(f);
+    }
+    for(auto f: f2)
+    {
+      ret.push_back(f);
+    }
+    return ret;
+  }
 
 }//namespace utils
