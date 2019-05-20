@@ -11,7 +11,7 @@ public:
   LearningPerformerMock() :LearningPerformer()
   {}
 
-  const LearningThread& startLearning(std::shared_ptr<GmmModel> m,
+  const LearningThread& startLearningMock(std::shared_ptr<GmmModel> m,
                                       std::unique_ptr<LearningAlgo> &&algo,
                                       std::vector<alize::Feature> &f_vec,
                                       uint32_t iter_cnt )
@@ -63,9 +63,9 @@ BOOST_AUTO_TEST_CASE(correctlyRunLearningOfTwoModelsAndCheckStateMethod)
   models.push_back(model2);
 
   uint32_t ITERS = 4;
-  auto thread1 = performer.startLearning(models[0],make_unique<ExpectationMaximalizationAlgo>(),
+  auto thread1 = performer.startLearningMock(models[0],make_unique<ExpectationMaximalizationAlgo>(),
       f_vec, ITERS );
-  auto thread2 = performer.startLearning(models[1],make_unique<ExpectationMaximalizationAlgo>(),
+  auto thread2 = performer.startLearningMock(models[1],make_unique<ExpectationMaximalizationAlgo>(),
       f_vec, ITERS );
   sleep(3);//po takim czasie uczenie powinno sie zakonczyc
 

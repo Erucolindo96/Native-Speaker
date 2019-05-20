@@ -20,8 +20,6 @@ class LearningController: public LearningPerformer
 {
   Q_OBJECT
 public:
-  using thread_tuple = std::tuple<std::shared_ptr<GmmModel>, uint32_t, uint32_t>;//model_ptr, act_iter, iter_cnt
-  using thread_tuple_vec = std::vector<thread_tuple>;
 
   LearningController() = default;
   LearningController(const LearningController & other) = default;
@@ -29,56 +27,72 @@ public:
   LearningController(LearningController && other) = default;
   LearningController& operator=(LearningController && other) = default;
 
-
-
   /**
-   * @brief displayThreadLoop Pętla, w której wykonuje się wątek aktualizujący widgety
-   * Wątek przechodzi po liście LearningThreadów, i na jej podstawie aktualizuje
-   * pasek postępu w widgetach, oraz usuwa te widgety, których wątki uczące się już zakonczyły
+   * @brief setComboBoxPtr Ustawia wskazanie do obsługiwanego przez klasę comboBoxa
+   * Po przypisaniu wskazania łączone są sygnały od comboBoxa ze slotami klasy
+   * @param ptr Wskazanie do obsługiwanego comboBoxa
    */
-  //void displayThreadLoop();
-  /**
-   * @brief runDisplayThread Uruchamia wątek aktualizujący widgety
-   * @throw RerunningThread jeśli wątek już został uruchomiony
-   */
-//  void runDisplayThread();
-
-
   void setComboBoxPtr(QComboBox *ptr);
+  /**
+   * @brief setProgressBarPtr Ustawia wskazanie do obsługiwanego przezz klasę progressBara
+   * @param ptr Wskazanie do osbługiwanego przez klasę progressBara
+   */
   void setProgressBarPtr(QProgressBar *ptr);
 
-
-
   /**
-   * @brief setListWidgetPtr Ustawia wskazanie do tabeli, w której maja być wyświetlanie widgety opisujące postęp uczenia modeli
-   * @param ptr Wskaźnik do tabelki
+   * @brief startLearning Uruchamia uczenie modelu
+   * Wykonuje to, co LearningPerformer, ale dodatkowo wstawia nazwę uczonego modelu do comboBoxa
+   * oraz łączy sygnał ukończenia iteracji pochodzący od uczącego wątku, z odpowiednim slotem klasy
+   * @param m Uczony Model
+   * @param algo Algorytm którym będzie uczony model
+   * @param f_vec Wektory cech, którymi będziemy uczyc model
+   * @param iter_cnt Ilośc iteracji uczenia
    */
-  //void setListWidgetPtr(QListWidget *ptr);
-  /**
-   * @brief getListWidgetPtr Zwraca wskazanie do tabelki, w której maja być wyświetlanie widgety opisujące postęp uczenia modeli
-   * @return Wskaźnik do tabelki
-   */
-  //QListWidget* getListWidgetPtr()const;
+  void startLearning(std::shared_ptr<GmmModel> m,
+                                        std::unique_ptr<LearningAlgo> &&algo,
+                                        std::vector<alize::Feature> &f_vec,
+                                        uint32_t iter_cnt );
 
 
   ~LearningController() override = default;
 protected:
-  //QListWidget* l_thread_list_widget_ptr_;
+
   QComboBox *l_thread_combo_box_;
   QProgressBar *l_thread_prog_bar_;
-  std::unique_ptr<std::thread> t_;
-  shared_ptr<GmmModel> act_displayed_learning_;
 
-
+  /**
+   * @brief removeDoneThreads Usuwa ukończone wątki z listy wątków uczących.
+   * Dodatkowo usuwa z comboBoxa wątki ukończone(aby nie mogly być już wyświetlane)
+   */
+  void removeDoneThreads();
+  /**
+   * @brief findAndRemoveFromComboBox Usuwa z comboBoxa element o danej nazwie
+   * @param model_name Nazwa modelu, którego element chcemy usunąć z comboBoxa
+   */
+  void findAndRemoveFromComboBox(const QString &model_name);
+  /**
+   * @brief connectSignalsAndSlots Podłącza sygnały, pochodzące od comboBoxa, z odpowiednimi slotami klasy
+   */
   void connectSignalsAndSlots();
 
 protected slots:
-  void actualizeComboBox();
-  void actualizeProgressBar();
-  void updateDisplayedLearning();
+  /**
+   * @brief actualizeProgressBarByLearningThread Obsługa sygnały iterationComplete, pochodząca od wątku uczącego
+   * Sprawdza, czy w combo boxie jest aktualnie wyświetlany model, którego uczy dany wątek uczący.
+   * Jeśli tak, to aktualizuje iterację uczenia w progressBarze
+   * @param model_name Nazwa modelu, którego iteracja uczenia się właśnie zakończyła
+   * @param act_iter Iteracja uczenia modelu, która się właśnie zakończyła
+   * @param iter_cnt Ilość wszystkich iteracji uczenia danego modelu
+   */
+  void actualizeProgressBarByLearningThread(const QString model_name,
+                                            const qint32 act_iter,
+                                            const qint32 iter_cnt);
+  /**
+   * @brief actualizeProgressBarByMainThread Aktualizuje progressBar po zmianie wybranego modelu w comboBoxie.
+   * Wyświetla w progress barze iterację uczenia modelu, wskazanego w comboBoxie
+  */
+  void actualizeProgressBarByMainThread();
 };
 
-//Q_DECLARE_METATYPE(std::shared_ptr<GmmModel>)
-//Q_DECLARE_METATYPE(GmmModel*)
 
 #endif // LEARNINGCONTROLLER_HPP

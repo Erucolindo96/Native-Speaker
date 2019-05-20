@@ -63,8 +63,14 @@ public:
 
 protected:
   std::list<LearningThread> l_thread_list_;
-  mutable std::mutex m_;
+  //mutable std::mutex m_;
   void removeDoneThreads();
+  /**
+   * @brief checkForRunningThread Sprawdza, czy nie uruchomiono uczenia aktualnie uczonego modelu
+   * @param m Model weryfikowany
+   * @throw RerunningLearningThread jeśli właśnie trwa uczenie danego modelu w innym wątku
+   */
+  void checkForRunningThread(std::shared_ptr<GmmModel> m);
 
 };
 

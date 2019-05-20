@@ -245,6 +245,31 @@ BOOST_AUTO_TEST_CASE(throwRerunningLearningThreadAtRunningLearningIfThreadWasRun
   BOOST_CHECK(t.isDone());
 }
 
+//BOOST_AUTO_TEST_CASE(emitSignalIterationCompleteIfEverythingIsOkWithLearning)
+//{
+//  uint32_t DISTRIB_CNT = 10, F_SIZE = 3;
+//  std::shared_ptr<GmmModel> model = make_shared<DiagonalModel>(DISTRIB_CNT, F_SIZE);
+//  LearningThread* t = new LearningThread(model);
+//  QProgressBar *bar = new QProgressBar();
+//  bar->setValue(0);
+//  QObject::connect(t, SIGNAL(iterationComplete(int)), bar, SLOT(setValue(int)),
+//                   Qt::DirectConnection);
+
+//  std::vector<Feature> f_vec = {
+//    toFeature({0, 1.2, -0.3}),
+//     toFeature({0, 1.2, -0.3}),
+//     toFeature({-2.4, 1.2, -0.3})
+//  };
+
+//  uint32_t ITERS = 10;
+//  BOOST_CHECK(!t->isDone());
+//  BOOST_REQUIRE_NO_THROW(t->run(make_unique<ExpectationMaximalizationAlgo>(),
+//                                     f_vec, ITERS));
+//  sleep(3);
+//  BOOST_CHECK(t->isDone());
+//  BOOST_CHECK_EQUAL(bar->value(), ITERS);
+//}
+
 
 
 

@@ -15,6 +15,9 @@ void MainWindow::initMainWindow()
   models_.setToolBoxPtr(ui_.models_list);
   models_.removeToolBoxItems();
 
+  learning_c_.setComboBoxPtr(ui_.comboBox_learning_models);
+  learning_c_.setProgressBarPtr(ui_.progressBar);
+
 }
 
 void MainWindow::on_actionRead_Configuration_File_triggered()
@@ -25,7 +28,6 @@ void MainWindow::on_actionRead_Configuration_File_triggered()
   if(!filename.isEmpty())
   {
     ConfigValidator v;
-    //lock_guard<mutex> l(m_);
     try
     {
       ConfigManager temp;
@@ -55,7 +57,6 @@ void MainWindow::on_actionSave_Configuration_File_triggered()
   QString filename = QFileDialog::getSaveFileName(this, "", DEF_SAVE_FILE, FILTER_TYPE);
   if(!filename.isEmpty())
   {
-    //lock_guard<mutex> l(m_);
     conf_.save(filename.toStdString().c_str());
   }
 }
@@ -77,7 +78,6 @@ void MainWindow::on_actionAdd_Configuration_Parameter_triggered()
   std::unique_ptr<SetParameterWindow> window = make_unique<SetParameterWindow>(conf_, this);
   connect(window.get(), SIGNAL(accepted()), this, SLOT(saveParamFromSetParameterWindow()));
   window->exec();
-  //disconnect(window.get(), SIGNAL(accepted()), this, SLOT(saveParamFromSetParameterWindow()));
 }
 
 void MainWindow::saveModelFromCreateModelWindow()
@@ -160,7 +160,7 @@ void MainWindow::on_action_ModelLearning_triggered()
     if(checkConfiguration())
     {
       std::unique_ptr<LearningModelWindow> window = std::make_unique<LearningModelWindow>
-                                                    (models_, conf_, r_base_, f_manager_, learning_p_);
+                                                    (models_, conf_, r_base_, f_manager_, learning_c_);
       window->exec();
     }
 }

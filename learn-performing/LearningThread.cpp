@@ -27,10 +27,9 @@ LearningThread& LearningThread::operator=(LearningThread &&other)
 
 LearningThread::LearningThread(LearningThread &&other):QObject(),
   t_(std::move(other.t_)),model_ref_(other.model_ref_),
-  act_iter_(other.act_iter_.load()), iter_cnt_(other.iter_cnt_.load())
-{
-  is_done_.store(other.is_done_.load());
-}
+  act_iter_(other.act_iter_.load()), iter_cnt_(other.iter_cnt_.load()),
+  is_done_(other.is_done_.load())
+{}
 
 
 void LearningThread::learningOperation(LearningThread &t,std::unique_ptr<LearningAlgo> &&algo,
@@ -41,6 +40,8 @@ void LearningThread::learningOperation(LearningThread &t,std::unique_ptr<Learnin
   {
     algo->learnModel(*t.getModelPtr(), f_vec, 1);
     t.incrementIter();
+    emit t.iterationComplete(t.getModelPtr()->getName().c_str(),
+                             t.getIter(), t.getIterCnt());
   }
   t.setDone();
 }

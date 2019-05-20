@@ -20,7 +20,7 @@
 #include"configuration/ConfigManager.hpp"
 #include"features/FeatureManager.hpp"
 #include"record-base/RecBaseManager.hpp"
-#include"learn-performing/LearningPerformer.hpp"
+#include"windows/subcontrollers/LearningController.hpp"
 #include"windows/ModelVerificationWindow.hpp"
 #include"windows/RecordBaseDisplayingWindow.hpp"
 #include<vector>
@@ -74,7 +74,7 @@ protected:
   ModelController models_;
   FeatureManager f_manager_;
   RecBaseManager r_base_;
-  LearningPerformer learning_p_;
+  LearningController learning_c_;
   std::unique_ptr<LearningAlgo> models_learning_algo_;
 
   /**

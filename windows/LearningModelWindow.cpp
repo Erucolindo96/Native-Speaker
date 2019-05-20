@@ -2,10 +2,10 @@
 
 LearningModelWindow::LearningModelWindow(ModelManager &models_ref,const ConfigManager &config,
                                          RecBaseManager &r_base_ref, FeatureManager &f_man_ref,
-                                         LearningPerformer &learining_p_ref,
+                                         LearningController &learining_c_ref,
                                          QWidget *parent ) :
   QDialog(parent), config_(config), model_man_ref_(models_ref), r_base_ref_(r_base_ref),
-  f_man_ref_(f_man_ref), learning_p_ref_(learining_p_ref)
+  f_man_ref_(f_man_ref), learning_c_ref_(learining_c_ref)
 {
   ui.setupUi(this);
 
@@ -81,7 +81,7 @@ void LearningModelWindow::performLearning()
   cout<<"Mfcc size: "<<all_mfcc[0].getVectSize();
   cout<<"Model ptr: "<<model_ptr.get()<<endl;
 
-  learning_p_ref_.startLearning(model_ptr, AlgoManager::getAlgoByName(algo_name),
+  learning_c_ref_.startLearning(model_ptr, AlgoManager::getAlgoByName(algo_name),
                                 all_mfcc, iterations);
 
   cout<<"Learning of model "<<model_ptr->getName()<<"runned! "<<endl;

@@ -10,6 +10,7 @@
 #include"learn-performing/LearningPerformer.hpp"
 #include"record-base/RecBaseManager.hpp"
 #include"windows/subcontrollers/RecordsFromSampleBaseController.hpp"
+#include"windows/subcontrollers/LearningController.hpp"
 class LearningModelWindow : public QDialog
 {
   Q_OBJECT
@@ -17,7 +18,7 @@ class LearningModelWindow : public QDialog
 public:
   explicit LearningModelWindow(ModelManager &models_ref,const ConfigManager &config,
                                RecBaseManager &r_base_ref, FeatureManager &f_man_ref,
-                               LearningPerformer &learining_p_ref,
+                               LearningController &learining_c_ref,
                                QWidget *parent = 0 );
   void setConfig(ConfigManager conf);
   ConfigManager getConfig()const;
@@ -35,7 +36,7 @@ private:
   ModelManager &model_man_ref_;
   RecBaseManager &r_base_ref_;
   FeatureManager &f_man_ref_;
-  LearningPerformer &learning_p_ref_;
+  LearningController &learning_c_ref_;
   RecordsFromFilesystemController from_fsys_controller_;
   RecordsFromSampleBaseController from_sample_base_controller_;
 

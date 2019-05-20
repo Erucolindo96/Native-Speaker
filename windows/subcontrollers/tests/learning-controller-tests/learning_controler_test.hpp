@@ -11,5 +11,6 @@
 #include"utils/utils.hpp"
 #include<memory>
 #include<fstream>
+#include<QProgressBar>
 
 #endif // LEARNING_CONTROLER_TEST_HPP

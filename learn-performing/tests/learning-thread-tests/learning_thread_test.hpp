@@ -12,7 +12,9 @@
 #include"utils/utils.hpp"
 #include<memory>
 #include<fstream>
-
+#include<QProgressBar>
+#include<QObject>
+#include<QMetaObject>
 
 
 #endif // LEARNING_THREAD_TEST_HPP

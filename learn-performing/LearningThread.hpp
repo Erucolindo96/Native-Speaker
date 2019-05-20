@@ -18,6 +18,7 @@
 class LearningThread: public QObject
 {
   Q_OBJECT
+
 public:
   /**
    * @brief LearningThread Tworzy klasę, dodając shared_ptra zawierającego GmmModel
@@ -52,6 +53,7 @@ public:
 
   /**
    * @brief learningOperation Wykonywany przez wątek algorytm uczenia
+   * Po każdej wykonanej iteracji uczenia emitowany jest sygnał iterationComplete(const LearningThread&)
    * @param t Referencja do obiektu wykonującego uczenie
    * @param algo Algorytm uczący
    * @param f_vec Uczące wektory cech
@@ -126,6 +128,12 @@ protected:
    */
   void setDone();
 
+  signals:
+  void iterationComplete(const QString model_name, const qint32 act_iter, const qint32 iter_cnt);
+
+
+
 };
+
 
 #endif // LEARNINGTHREAD_HPP
