@@ -1,13 +1,14 @@
-QT += core gui
+QT += core gui  multimedia
 
-greaterThan(QT_MAJOR_VERSION, 5): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-LIBS += -L$$PWD/external-libs/lib -lalize -lboost_unit_test_framework
+LIBS += -L$$PWD/external-libs/lib -lalize -lboost_unit_test_framework \
+#        -L/home/erucolindo/Programy/Qt/5.5/gcc/lib/QtMultimedia
 
 CONFIG += qt
 INCLUDEPATH += $$PWD \
                $$PWD/external-libs/include \
-               /home/erucolindo/Programy/Qt/5.5/gcc/include \
+#               /home/erucolindo/Programy/Qt/5.5/gcc/include \
 
 QMAKE_CXXFLAGS += -std=c++14
 QMAKE_CXXFLAGS += -Werror=return-type

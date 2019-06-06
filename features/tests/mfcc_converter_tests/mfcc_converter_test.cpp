@@ -117,16 +117,16 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavRecordToMfccIfRecordExists)
       RECORD_NAME = "janfigat1_2-01",
       record_path = RECORD_DIR + RECORD_NAME + ".wav",
       DEST_FILE_PATH = RECORD_DIR + RECORD_NAME + SPro4File::VALID_EXT;
-  const int32_t SAMPLE_RATE = 48000;
-  const uint32_t F_CNT = 483;
+  const uint32_t F_CNT = 241;
 
   std::unique_ptr<MfccConverter> conv = make_unique<MfccConverterWav>();
-  BOOST_REQUIRE_NO_THROW(conv->setSampleRate(SAMPLE_RATE));
   BOOST_REQUIRE(QFileInfo(record_path).exists());
   BOOST_REQUIRE(!QFileInfo(DEST_FILE_PATH).exists());
 
   Record r;
   r.setPath(record_path);
+
+  BOOST_CHECK(false);//bo test nie działa - linijka ponizej wywala null ptr exception
   auto converted_file = conv->convertToSPro4(r);
   BOOST_REQUIRE(converted_file.exists());
 
@@ -138,10 +138,7 @@ BOOST_AUTO_TEST_CASE(correctlyConvertWavRecordToMfccIfRecordExists)
 
 BOOST_AUTO_TEST_CASE(throwFileNotFoundAtConvertingRecordIfRecordDoesNotExists)
 {
-
-  const int32_t SAMPLE_RATE = 48000;
   std::unique_ptr<MfccConverter> conv = make_unique<MfccConverterWav>();
-  BOOST_REQUIRE_NO_THROW(conv->setSampleRate(SAMPLE_RATE));
 
   Record r;
   BOOST_CHECK_THROW(auto converted_file = conv->convertToSPro4(r), FileNotFound);
@@ -154,9 +151,7 @@ BOOST_AUTO_TEST_CASE(throwUnableToConvertToMfccAtConvertingIfRecordIsNotAWavFile
       record_path = RECORD_DIR + RECORD_NAME + ".mp3",
       DEST_FILE_PATH = RECORD_DIR + RECORD_NAME + SPro4File::VALID_EXT;
 
-  const int32_t SAMPLE_RATE = 48000;
   std::unique_ptr<MfccConverter> conv = make_unique<MfccConverterWav>();
-  BOOST_REQUIRE_NO_THROW(conv->setSampleRate(SAMPLE_RATE));
   BOOST_REQUIRE(QFileInfo(record_path).exists());
 
   Record r;

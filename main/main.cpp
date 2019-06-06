@@ -1,6 +1,4 @@
-﻿//#include "mainwindow.hpp"
-//#include <QApplication>
-#include<alize/alize.h>
+﻿#include<alize/alize.h>
 
 #include"models/diagonal_model.hpp"
 #include"models/verificator.hpp"
@@ -10,10 +8,11 @@
 #include"dao/FileModelDao.hpp"
 #include"windows/MainWindow.hpp"
 #include<QtCore/QDir>
-
+#include<QAudioRecorder>
 #include"features/FeatureManager.hpp"
 #include"record-base/RecBaseManager.hpp"
 #include"models/ModelManager.hpp"
+#include<QMetaType>
 using namespace std;
 using namespace alize;
 using namespace utils;
@@ -87,6 +86,13 @@ bool verification(char *argv[])
   Record rec;
   rec.setPath(R_PATH.c_str());
   auto mfcc = f_man.convertRecord(rec, F_SIZE);
+  cout<<"First f: "<<endl;
+  printFeature(mfcc[0]);
+  cout<<"Middle f: "<<endl;
+  printFeature(mfcc[mfcc.size()/2]);
+  cout<<"Last f: "<<endl;
+  printFeature(mfcc[mfcc.size()-1]);
+
 
   FileModelDao dao;
   dao.setModelsDir(MODEL_DIR);
@@ -96,7 +102,8 @@ bool verification(char *argv[])
   auto model = dao.readModel(MODEL_NAME);
 
   Verificator v(THRESHOLD);
-
+  cout<<"Model llk: "<<v.countLogLikehood(*model, mfcc)<<endl;
+  cout<<"UBM llk: "<<v.countLogLikehood(*ubm, mfcc)<<endl;
   bool is_speaker_voice = v.verifyModel(*model, mfcc, *ubm);
   cout<<is_speaker_voice<<endl;
   return is_speaker_voice;
@@ -157,6 +164,7 @@ void createModel(char *argv[])
 */
 int main(int argc, char *argv[])
 {
+
   try
   {
     if(argc > 1)

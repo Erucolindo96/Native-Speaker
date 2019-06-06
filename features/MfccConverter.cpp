@@ -94,8 +94,8 @@ uint32_t MfccConverter::getFeatureLenght()const
 
 MfccConverterWav::MfccConverterWav():MfccConverter()
 {
-  const uint32_t SAMPLE_RATE_WAV = 48000, F_LENGHT = 24;
-  setSampleRate(SAMPLE_RATE_WAV*2);
+  const uint32_t SAMPLE_RATE_WAV = 44100, F_LENGHT = 18;
+  setSampleRate(SAMPLE_RATE_WAV);
   setFeatureLenght(F_LENGHT);
   setLogEnergy(true);
 }
@@ -108,18 +108,30 @@ SPro4File MfccConverterWav::convertToSPro4(const Record &source_record)const
                                 + std::string(" source record is not a wav file"));
   }
 
-  const QString COMMAND = "sfbcep",
+  const QString COMMAND_SFBCEP = "sfbcep",COMMAND_SOX = "sox",
       SOURCE_FILE = source_record.getRecordInfo().absoluteFilePath(),
       DEST_FILE = source_record.getRecordInfo().absolutePath() + "/" +
                   source_record.getRecordInfo().baseName() + SPro4File::VALID_EXT;
 
-  auto args = setArguments(SOURCE_FILE, DEST_FILE);
+  auto args_sox = setArgumentsToSox(SOURCE_FILE, "-"),
+      args_sfbcep = setArgumentsToSfbcep("-", DEST_FILE);
 
-  QProcess proc;
-  proc.start(COMMAND, args);
-  proc.waitForFinished();
-  const int32_t EXIT_GOOD = 0;
-  if(proc.exitCode() != EXIT_GOOD)
+  QProcess *proc_sox = new QProcess, *proc_sfbcep = new QProcess;
+  proc_sox->setStandardOutputProcess(proc_sfbcep);
+  proc_sox->setProcessChannelMode(QProcess::ForwardedErrorChannel);
+  proc_sfbcep->setProcessChannelMode(QProcess::ForwardedErrorChannel);
+
+  proc_sox->start(COMMAND_SOX, args_sox);
+  proc_sfbcep->start(COMMAND_SFBCEP, args_sfbcep);
+
+  proc_sox->waitForStarted();
+  proc_sfbcep->waitForStarted();
+
+  proc_sox->waitForFinished();
+  proc_sfbcep->waitForFinished();
+
+  if(proc_sox->exitCode() != QProcess::NormalExit
+     || proc_sfbcep->exitCode() != QProcess::NormalExit)
   {
     throw UnableToConvertToMfcc(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
                                 + std::string(" sfbcep process crashed"));
@@ -129,7 +141,7 @@ SPro4File MfccConverterWav::convertToSPro4(const Record &source_record)const
   return dest_file;
 }
 
-QStringList MfccConverterWav::setArguments(const QString &source_file, const QString &dest_file)const
+QStringList MfccConverterWav::setArgumentsToSfbcep(const QString &source_file, const QString &dest_file)const
 {
   QStringList args;
   args.append(QString("--sample-rate=") + to_string(sample_rate_).c_str());
@@ -137,15 +149,36 @@ QStringList MfccConverterWav::setArguments(const QString &source_file, const QSt
   args.append(QString("--shift=") + to_string(interval_).c_str());
   args.append(QString("-p ") + to_string(f_lenght_).c_str());
   args.append(QString("--pre-emphasis=") + QString().setNum(pre_emphasis_));
+  args.append(QString("--cms"));
+  args.append(QString("--normalize"));
   if(with_log_energy_)
   {
     args.append("--energy");
+    //args.append(QString("--scale-energy=")+QString().setNum(log_energy_scale_factor_));
   }
   args.append(source_file);
   args.append(dest_file);
   return args;
 }
 
+QStringList MfccConverterWav::setArgumentsToSox(const QString &source_file, const QString &dest_file)const
+{
+  QStringList args;
+  args.append("-V1");
+  args.append(source_file);
+  //Spro przymuje 16 bitowy, signed-integer PCM
+  args.append("-b");
+  args.append("16");
+  args.append("-t");
+  args.append("raw");
+  args.append("-e");
+  args.append("signed-integer");
 
+  args.append("-r");//wyjsciowa cz.probkowania
+  args.append(to_string(sample_rate_).c_str());
+  args.append(dest_file);
+  return args;
+}
+//sox 001m/kasprzak11_1-01.wav -b 16 -t raw -e signed-integer -r 48000 -
 
 

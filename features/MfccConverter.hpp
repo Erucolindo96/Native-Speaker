@@ -90,6 +90,14 @@ public:
    */
   void setLogEnergy(bool yes);
 
+//  /**
+//   * @brief setFirstOrderDerivative Określa, czy do wektora cech powinien być dodany wektor różnicowy
+//   * będący różnicą wartości wektorów poprzedniego i następnego(chyba)
+//   * @param yes True jeśli wektor różnicowy ma być dodany, false w przeciwnym razie
+//   */
+//  void setFirstOrderDerivative(bool yes);
+
+
   /**
    * @brief getFeatureLenght Zwraca długość wynikowego wektora cech, po konwersji.
    * Przy obliczaniu długości brany jest pod uwagę logarytm energii w wektorze cech
@@ -101,7 +109,7 @@ protected:
   uint32_t sample_rate_, frame_lenght_, interval_, f_lenght_;
   double pre_emphasis_;
   bool with_log_energy_;
-
+  const uint32_t log_energy_scale_factor_ = 1;
 
 
 };
@@ -134,7 +142,8 @@ public:
    */
   SPro4File convertToSPro4(const Record &source_record)const override;
 protected:
-  QStringList setArguments(const QString &source_file, const QString &dest_file)const;
+  QStringList setArgumentsToSfbcep(const QString &source_file, const QString &dest_file)const;
+  QStringList setArgumentsToSox(const QString &source_file, const QString &dest_file)const;
 
 
 };
