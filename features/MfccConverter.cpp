@@ -4,7 +4,8 @@ using namespace utils;
 MfccConverter::MfccConverter():sample_rate_(DEF_SAMPLE_RATE_),
   frame_lenght_(DEF_FRAME_LENGHT_),interval_(DEF_INTERVAL_),
   f_lenght_(DEF_FEATURE_LENGHT_),pre_emphasis_(DEF_PRE_EMPHASIS_),
-  with_log_energy_(DEF_WITH_LOG_ENERGY_)
+  with_log_energy_(DEF_WITH_LOG_ENERGY_),
+  with_diff_vec_(DEF_WITH_DIFF_VEC_)
 {}
 void MfccConverter::setSampleRate(int32_t sample_rate)
 {
@@ -85,9 +86,18 @@ void MfccConverter::setLogEnergy(bool yes)
   with_log_energy_ = yes;
 }
 
+void MfccConverter::setFirstOrderDerivative(bool yes)
+{
+  with_diff_vec_ = yes;
+}
+
+
 uint32_t MfccConverter::getFeatureLenght()const
 {
-  return f_lenght_ + (with_log_energy_?1:0);
+  uint32_t ret = with_diff_vec_?2*f_lenght_:f_lenght_;
+  ret += with_log_energy_?1:0;//dodaje log energii
+  ret += (with_log_energy_ && with_diff_vec_)?1:0;//dodaje roznicowy log energii
+  return ret;
 }
 
 
@@ -98,6 +108,7 @@ MfccConverterWav::MfccConverterWav():MfccConverter()
   setSampleRate(SAMPLE_RATE_WAV);
   setFeatureLenght(F_LENGHT);
   setLogEnergy(true);
+  setFirstOrderDerivative(true);
 }
 
 SPro4File MfccConverterWav::convertToSPro4(const Record &source_record)const
@@ -155,6 +166,10 @@ QStringList MfccConverterWav::setArgumentsToSfbcep(const QString &source_file, c
   {
     args.append("--energy");
     //args.append(QString("--scale-energy=")+QString().setNum(log_energy_scale_factor_));
+  }
+  if(with_diff_vec_)
+  {
+    args.append("--delta");
   }
   args.append(source_file);
   args.append(dest_file);

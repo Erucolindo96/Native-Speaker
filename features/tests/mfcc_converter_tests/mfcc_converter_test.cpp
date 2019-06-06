@@ -98,9 +98,9 @@ BOOST_AUTO_TEST_CASE(throwInvalidArgumentAtSettingFeatureLenghtMoreThan24)
   BOOST_CHECK_THROW(conv->setFeatureLenght(100), invalid_argument);
 }
 
-BOOST_AUTO_TEST_CASE(returnCorrectFeatureLenghtAfterSettingCorrectValOfFeatureLenghtAndAddingLogEnergy)
+BOOST_AUTO_TEST_CASE(returnCorrectFeatureLenghtAfterSettingCorrectValOfFeatureLenghtAndAddingLogEnergyAndFirstOrderDerivative)
 {
-  const int32_t FEATURES = 15, ALL_LENGHT = 16;
+  const int32_t FEATURES = 15, ALL_LENGHT = FEATURES*2 + 2;//+2 , bo log energii plus log_energii róznicowy
   std::unique_ptr<MfccConverter> conv = make_unique<MfccConverterWav>();
   BOOST_CHECK_NO_THROW(conv->setFeatureLenght(FEATURES));
   BOOST_CHECK_NO_THROW(conv->setLogEnergy(true));

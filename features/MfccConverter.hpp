@@ -24,7 +24,8 @@ public:
   const uint32_t DEF_SAMPLE_RATE_= 8000, DEF_FRAME_LENGHT_ = 20, DEF_INTERVAL_ = 10,
   DEF_FEATURE_LENGHT_ = 12;
   const double DEF_PRE_EMPHASIS_ = 0.95;
-  const bool DEF_WITH_LOG_ENERGY_ = true;
+  const bool DEF_WITH_LOG_ENERGY_ = true,
+  DEF_WITH_DIFF_VEC_ = true;
 
   MfccConverter();
   MfccConverter(const MfccConverter &other) = default;
@@ -90,17 +91,20 @@ public:
    */
   void setLogEnergy(bool yes);
 
-//  /**
-//   * @brief setFirstOrderDerivative Określa, czy do wektora cech powinien być dodany wektor różnicowy
-//   * będący różnicą wartości wektorów poprzedniego i następnego(chyba)
-//   * @param yes True jeśli wektor różnicowy ma być dodany, false w przeciwnym razie
-//   */
-//  void setFirstOrderDerivative(bool yes);
+  /**
+   * @brief setFirstOrderDerivative Określa, czy do wektora cech powinien być dodany wektor różnicowy
+   * będący różnicą wartości wektorów poprzedniego i następnego(chyba).
+   * Jeżeli do wektora cech dodawany jest logarytm energii, to, w przypadku dodawania wektora róznicowego
+   * również na końcu wektora różnicowego będzie dodawana różnica energii
+   * @param yes True jeśli wektor różnicowy ma być dodany, false w przeciwnym razie
+   */
+  void setFirstOrderDerivative(bool yes);
 
 
   /**
    * @brief getFeatureLenght Zwraca długość wynikowego wektora cech, po konwersji.
-   * Przy obliczaniu długości brany jest pod uwagę logarytm energii w wektorze cech
+   * Przy obliczaniu długości brany jest pod uwagę logarytm energii w wektorze cech,
+   * oraz obecność lub brak wektora różnicowego
    * @return Całkowita długość wynikowego wektora cech
    */
   uint32_t getFeatureLenght()const;
@@ -108,7 +112,7 @@ public:
 protected:
   uint32_t sample_rate_, frame_lenght_, interval_, f_lenght_;
   double pre_emphasis_;
-  bool with_log_energy_;
+  bool with_log_energy_, with_diff_vec_;
   const uint32_t log_energy_scale_factor_ = 1;
 
 

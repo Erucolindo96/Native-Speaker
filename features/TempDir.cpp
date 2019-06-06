@@ -24,7 +24,9 @@ std::vector<alize::Feature> TempDir::convertToMfcc(const Record &rec_to_convert,
                                 + std::string("unable to convert this file: ")
                                 + rec_to_convert.getRecordInfo().fileName().toStdString());
   }
-  converter->setFeatureLenght(f_vec_size-1);
+  uint32_t c_coef_cnt = (f_vec_size-2)/2; //najpierw odejmujemy log energii i roznicowy log energii
+  //a nastepnie bierzemy dlugosc wektora bez elementow roznicowych
+  converter->setFeatureLenght(c_coef_cnt);
   auto spro_file = converter->convertToSPro4(rec);
   if(f_reader_ == nullptr)
   {

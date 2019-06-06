@@ -144,7 +144,7 @@ void createModel(char *argv[])
   dao.writeModel(model);
 
   cout<<"Model "<<model.getName()<<" saved to file"<<endl<<endl;
-  cout<<"Likehood for first of training feature vec: "<<model.countLikehoodWithWeight(mfcc_vecs[0])<<endl;
+  cout<<"Likehood for middle of training feature vec: "<<model.countLikehoodWithWeight(mfcc_vecs[mfcc_vecs.size()/2])<<endl;
   printFeature(mfcc_vecs[100]);
 }
 
