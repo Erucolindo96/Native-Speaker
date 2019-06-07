@@ -6,9 +6,8 @@ class FeatureReaderSilenceCutter : public FeatureReader
 {
 public:
 
-  const double MIN_ENERGY = -1;
+  const double MIN_ENERGY = 0;
   FeatureReaderSilenceCutter() = default;
-  explicit FeatureReaderSilenceCutter(const std::string &feature_dir);
   FeatureReaderSilenceCutter(const FeatureReaderSilenceCutter &other) = default;
   FeatureReaderSilenceCutter& operator=(const FeatureReaderSilenceCutter &other) = default;
   FeatureReaderSilenceCutter(FeatureReaderSilenceCutter &&other) = default;
@@ -19,6 +18,7 @@ public:
 
   std::vector<alize::Feature> cutSilenceFeatures(const std::vector<alize::Feature> &f)const;
 
+  uint32_t countIndexOfLogEnergy(uint32_t f_lenght, bool with_diff_vec)const;
 };
 
 #endif // FEATUREREADERSILENCECUTTER_HPP

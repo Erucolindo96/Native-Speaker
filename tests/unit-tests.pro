@@ -7,6 +7,7 @@ CONFIG += testcase
 TARGET = unit-tests
 
 HEADERS += \
+    ../features/tests/mfcc_converter_tests/mfcc_converter_test.hpp \
     ../windows/subcontrollers/tests/learning-controller-tests/learning_controler_test.hpp \
     ../learn-performing/tests/learning-thread-tests/learning_thread_test.hpp \
     ../models/tests/diagonal-model-test/diagonal_model_test.hpp \
@@ -25,7 +26,6 @@ HEADERS += \
     ../record-base/tests/record-dir-manager-tests/record_dir_manager_test.hpp \
     ../record-base/tests/rec-base-manager-tests/rec_base_manager_test.hpp \
     ../features/tests/spro4-file-tests/spro4_file_test.hpp \
-    ../features/tests/mfcc_converter_tests/mfcc_converter_test.hpp \
     ../features/tests/temp-dir-tests/temp_dir_test.hpp \
     ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.hpp \
     ../features/tests/feature-manager-tests/feature_manager_test.hpp \
@@ -36,6 +36,7 @@ HEADERS += \
 
 SOURCES += \
     main_test.cpp \
+    ../features/tests/mfcc_converter_tests/mfcc_converter_test.cpp \
     ../windows/subcontrollers/tests/learning-controller-tests/learning_controler_test.cpp \
   ../learn-performing/tests/learning-thread-tests/learning_thread_test.cpp \
     ../models/tests/diagonal-model-test/diagonal_model_test.cpp \
@@ -54,7 +55,6 @@ SOURCES += \
     ../record-base/tests/record-dir-manager-tests/record_dir_manager_test.cpp \
     ../record-base/tests/rec-base-manager-tests/rec_base_manager_test.cpp \
     ../features/tests/spro4-file-tests/spro4_file_test.cpp \
-    ../features/tests/mfcc_converter_tests/mfcc_converter_test.cpp \
     ../features/tests/temp-dir-tests/temp_dir_test.cpp \
     ../features/tests/temp-dir-manager-tests/temp_dir_manager_tests.cpp \
     ../features/tests/feature-manager-tests/feature_manager_test.cpp \

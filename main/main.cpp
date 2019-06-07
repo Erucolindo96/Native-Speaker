@@ -54,7 +54,7 @@ void LLKDifference(char *argv[])
 
   Record rec;
   rec.setPath(R_PATH.c_str());
-  auto mfcc = f_man.convertRecord(rec, F_SIZE);
+  auto mfcc = f_man.convertRecord(rec, F_SIZE, make_unique<FeatureReaderSilenceCutter>());
 
   FileModelDao dao;
   dao.setModelsDir(MODEL_DIR);
@@ -85,7 +85,7 @@ bool verification(char *argv[])
 
   Record rec;
   rec.setPath(R_PATH.c_str());
-  auto mfcc = f_man.convertRecord(rec, F_SIZE);
+  auto mfcc = f_man.convertRecord(rec, F_SIZE, make_unique<FeatureReaderSilenceCutter>());
   cout<<"First f: "<<endl;
   printFeature(mfcc[0]);
   cout<<"Middle f: "<<endl;
@@ -125,7 +125,7 @@ void createModel(char *argv[])
   f_man.setFeatureFolder(FEATURE_FOLDER.c_str());
 
   auto records = getWavRecordsFromDir(REC_DIR);
-  auto mfcc_vecs = f_man.convertRecord(records, F_SIZE);
+  auto mfcc_vecs = f_man.convertRecord(records, F_SIZE, make_unique<FeatureReaderSilenceCutter>());
   cout<<"Ilośc wektorów cech: "<<mfcc_vecs.size()<<endl;
   DiagonalModel model(D_CNT ,F_SIZE);
   model.setName(MODEL_NAME);
