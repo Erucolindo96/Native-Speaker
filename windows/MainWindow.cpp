@@ -7,6 +7,21 @@ MainWindow::MainWindow(QWidget *parent) :
 {
   initMainWindow();
 
+//  rec.setAudioInput(rec.defaultAudioInput());
+
+//  QAudioEncoderSettings settings;
+//  settings.setCodec("audio/pcm");
+//  settings.setSampleRate(44100);
+//  settings.setBitRate(32000);
+//  settings.setQuality(QMultimedia::NormalQuality);
+//  settings.setChannelCount(1);
+//  settings.setEncodingMode(QMultimedia::ConstantQualityEncoding);
+
+//  rec.setEncodingSettings(settings, QVideoEncoderSettings(), "audio/x-wav" );
+//  rec.setOutputLocation(QUrl("/home/erucolindo/nagranie.wav"));
+//  rec.record();
+//  QTimer::singleShot(3000, this, SLOT(on_actionRead_Configuration_File_triggered()));
+
 }
 
 void MainWindow::initMainWindow()
@@ -22,7 +37,7 @@ void MainWindow::initMainWindow()
 
 void MainWindow::on_actionRead_Configuration_File_triggered()
 {
-
+//    rec.stop();
   const QString DEF_DIR = "/home/erucolindo",FILTER_TYPE = "Config Files (*.alize *.conf)";
   QString filename = QFileDialog::getOpenFileName(this, "", DEF_DIR, FILTER_TYPE);
   if(!filename.isEmpty())
@@ -186,7 +201,10 @@ void MainWindow::on_actionVerification_triggered()
 
 void MainWindow::on_actionView_sample_base_triggered()
 {
-  RecordBaseDisplayingWindow window(r_base_);
-  window.setModelsList(models_.getModelsNames());
-  window.exec();
+  if(checkConfiguration())
+  {
+    auto window = make_unique<RecordBaseDisplayingWindow>(r_base_);
+    window->setModelsList(models_.getModelsNames());
+    window->exec();
+  }
 }

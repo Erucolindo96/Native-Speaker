@@ -152,5 +152,13 @@ public:
   {}
 };
 
+class FormatDoesNotExists: public std::invalid_argument
+{
+public :
+  explicit FormatDoesNotExists(const std::string &msg) :
+    std::invalid_argument(msg)
+  {}
+};
+
 #endif // SIMPLE_EXCEPTIONS_HPP
 

@@ -118,3 +118,14 @@ void LearningModelWindow::on_pushButton_start_released()
   performLearning();
   close();
 }
+
+void LearningModelWindow::on_pushButton_add_fromMicrophone_released()
+{
+  std::unique_ptr<AudioRecorderWindow> w = make_unique<AudioRecorderWindow>();
+  w->exec();
+  for(auto r: w->getRegisteredRecords())
+  {
+    ui.listWidget_fromMicrophone->addItem(r.getRecordInfo().absoluteFilePath());
+  }
+
+}

@@ -26,6 +26,9 @@
 #include<vector>
 #include<thread>
 #include<mutex>
+#include<QAudioInput>
+#include<QAudioRecorder>
+#include<QTimer>
 
 class MainWindow : public QMainWindow
 {
@@ -76,6 +79,7 @@ protected:
   RecBaseManager r_base_;
   LearningController learning_c_;
   std::unique_ptr<LearningAlgo> models_learning_algo_;
+  QAudioRecorder rec;
 
   /**
    * @brief checkConfiguration Sprawdza, czy w programie znajduje się

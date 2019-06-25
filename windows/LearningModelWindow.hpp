@@ -11,6 +11,7 @@
 #include"record-base/RecBaseManager.hpp"
 #include"windows/subcontrollers/RecordsFromSampleBaseController.hpp"
 #include"windows/subcontrollers/LearningController.hpp"
+#include"windows/AudioRecorderWindow.hpp"
 class LearningModelWindow : public QDialog
 {
   Q_OBJECT
@@ -29,6 +30,8 @@ private slots:
   void on_pushButton_cancell_released();
 
   void on_pushButton_start_released();
+
+  void on_pushButton_add_fromMicrophone_released();
 
 private:
   Ui::LearningModelWindow ui;
