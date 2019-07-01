@@ -3,9 +3,12 @@
 
 #include "ui_ModelVerificationWindow.h"
 #include"windows/subcontrollers/RecordsFromFilesystemVerificationController.hpp"
+#include"windows/subcontrollers/RecordsFromMicrophoneVerificationController.hpp"
 #include"models/ModelManager.hpp"
 #include"features/FeatureManager.hpp"
 #include"models/verificator.hpp"
+
+
 
 class ModelVerificationWindow : public QDialog
 {
@@ -20,6 +23,7 @@ public:
 protected:
   Ui::ModelVerificationWindow ui;
   RecordsFromFilesystemVerificationController from_fsys_controller_;
+  RecordsFromMicrophoneVerificationController from_micro_controller_;
   ModelManager &models_man_ref_;
   FeatureManager &f_man_;
   const uint32_t F_SIZE_;

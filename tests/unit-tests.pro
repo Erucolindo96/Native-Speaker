@@ -31,7 +31,8 @@ HEADERS += \
     ../features/tests/feature-manager-tests/feature_manager_test.hpp \
     ../learn-performing/tests/learning-performer-tests/learning_performer_test.hpp \
     ../learn-performing/tests/learning-thread-widget-tests/learning_thread_widget_test.hpp \
-    ../windows/subcontrollers/tests/records_from_filesystem_verification_controller_test/records_from_filesystem_verification_controller_test.hpp
+    ../windows/subcontrollers/tests/records_from_filesystem_verification_controller_test/records_from_filesystem_verification_controller_test.hpp \
+    ../windows/subcontrollers/tests/records_from_microphone_verification_controller_test/records_from_microphone_verification_controller_test.hpp
 
 
 SOURCES += \
@@ -60,4 +61,5 @@ SOURCES += \
     ../features/tests/feature-manager-tests/feature_manager_test.cpp \
     ../learn-performing/tests/learning-performer-tests/learning_performer_test.cpp \
     ../learn-performing/tests/learning-thread-widget-tests/learning_thread_widget_test.cpp \
-    ../windows/subcontrollers/tests/records_from_filesystem_verification_controller_test/records_from_filesystem_verification_controller_test.cpp
+    ../windows/subcontrollers/tests/records_from_filesystem_verification_controller_test/records_from_filesystem_verification_controller_test.cpp \
+    ../windows/subcontrollers/tests/records_from_microphone_verification_controller_test/records_from_microphone_verification_controller_test.cpp

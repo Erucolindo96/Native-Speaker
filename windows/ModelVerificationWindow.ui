@@ -86,7 +86,7 @@
     </rect>
    </property>
    <property name="currentIndex">
-    <number>0</number>
+    <number>1</number>
    </property>
    <widget class="QWidget" name="tab_fromFilesystem">
     <attribute name="title">
@@ -209,20 +209,38 @@
     <attribute name="title">
      <string>From Microphone</string>
     </attribute>
-    <widget class="QWidget" name="verticalLayoutWidget_4">
+    <widget class="QWidget" name="verticalLayoutWidget_6">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>571</width>
-       <height>191</height>
+       <width>509</width>
+       <height>165</height>
       </rect>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_fromMicrophone">
+     <layout class="QVBoxLayout" name="verticalLayout_4">
       <item>
-       <widget class="QLabel" name="label_fromMicrophone">
+       <widget class="QLabel" name="label_filesystem_3">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="minimumSize">
+         <size>
+          <width>0</width>
+          <height>20</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>30</height>
+         </size>
+        </property>
         <property name="text">
-         <string>From Microphone</string>
+         <string>Choose records to verifiing</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignCenter</set>
@@ -230,21 +248,72 @@
        </widget>
       </item>
       <item>
-       <widget class="QListWidget" name="listWidget_fromMicrophone"/>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_fromMicrophone">
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
-         <widget class="QPushButton" name="pushButton_add_fromMicrophone">
-          <property name="text">
-           <string>Add</string>
+         <widget class="QListWidget" name="listWidget_records_microphone">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>450</width>
+            <height>100</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>200</width>
+            <height>200</height>
+           </size>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_remove_fromMicrophone">
+         <widget class="QListWidget" name="listWidget_results_microphone">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>60</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>40</width>
+            <height>100</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
+        <item>
+         <widget class="QPushButton" name="pushButton_remove_microphone">
           <property name="text">
-           <string>Remove</string>
+           <string>Remove Record</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButton_add_rec_microphone">
+          <property name="text">
+           <string>Add Record</string>
           </property>
          </widget>
         </item>

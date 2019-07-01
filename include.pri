@@ -138,7 +138,8 @@ HEADERS += \
     $$PWD/windows/subcontrollers/RecordsFromSampleBaseController.hpp \
     $$PWD/windows/AudioRecorderWindow.hpp \
     $$PWD/record-base/RecordFormatFactory.hpp \
-    $$PWD/windows/subcontrollers/RecordsFromMicrophoneController.hpp
+    $$PWD/windows/subcontrollers/RecordsFromMicrophoneController.hpp \
+    $$PWD/windows/subcontrollers/RecordsFromMicrophoneVerificationController.hpp
 
 
 SOURCES += \
@@ -180,7 +181,8 @@ SOURCES += \
     $$PWD/windows/subcontrollers/RecordsFromSampleBaseController.cpp \
     $$PWD/windows/AudioRecorderWindow.cpp \
     $$PWD/record-base/RecordFormatFactory.cpp \
-    $$PWD/windows/subcontrollers/RecordsFromMicrophoneController.cpp
+    $$PWD/windows/subcontrollers/RecordsFromMicrophoneController.cpp \
+    $$PWD/windows/subcontrollers/RecordsFromMicrophoneVerificationController.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a

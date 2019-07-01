@@ -57,7 +57,7 @@ protected:
    */
   virtual int32_t getRecordsCnt()const = 0;
   /**
-   * @brief getRecordElem Zwraca nazwę i-tego nagrania weryfikowanego(zawartego w liście nagrań weryfikowanych)
+   * @brief getRecordElem Zwraca ścieżkę i-tego nagrania weryfikowanego(zawartego w liście nagrań weryfikowanych)
    * Implementowane w podklasach
    * @param i Indeks w zbiorze nagrań weryfikowanych
    * @return I-te nagranie weryfikowane(zawarte w liście nagrań weryfikowanych)

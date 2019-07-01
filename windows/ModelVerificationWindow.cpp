@@ -69,20 +69,34 @@ void ModelVerificationWindow::setSubcontrollers()
   from_fsys_controller_.setRemoveButtonPtr(ui.pushButton_remove_filesystem_2);
   from_fsys_controller_.setRecordListPtr(ui.listWidget_records_filesystem_2);
   from_fsys_controller_.setResultListPtr(ui.listWidget_results_filesystem_2);
+
+  from_micro_controller_.setAddButtonPtr(ui.pushButton_add_rec_microphone);
+  from_micro_controller_.setRemoveButtonPtr(ui.pushButton_remove_microphone);
+  from_micro_controller_.setRecordListPtr(ui.listWidget_records_microphone);
+  from_micro_controller_.setResultListPtr(ui.listWidget_results_microphone);
+
 }
 void ModelVerificationWindow::verifyRecords()
 {
-  auto recs = from_fsys_controller_.getActualRecords();
-  if(!recs.empty())
+  auto recs_fs = from_fsys_controller_.getActualRecords(),
+      recs_micro = from_micro_controller_.getActualRecords();
+  if(!recs_fs.empty())
   {
-    auto results = testRecords(recs);
+    auto results = testRecords(recs_fs);
     from_fsys_controller_.setResults(results);
+  }
+
+  if(!recs_micro.empty())
+  {
+    auto results = testRecords(recs_micro);
+    from_micro_controller_.setResults(results);
   }
 }
 
 void ModelVerificationWindow::on_pushButton_verify_released()
 {
   from_fsys_controller_.clearResultList();
+  from_micro_controller_.clearResultList();
   verifyRecords();
 }
 
