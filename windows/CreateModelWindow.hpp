@@ -33,6 +33,7 @@ public:
       bool isModelValid(const QString &model_name)const;
       bool isDescriptionValid(const QString &desc)const;
       bool isDistribCntValid(const QString &distrib_cnt)const;
+      virtual ~CreateModelValidator() = default;
     // brak walidacji typu, jeśli wystąpi wyjątek to znaczy, ze cos jest nie tak w kodzie -
     //taka sytuacja nie powinna wystąpic, bo tam mamy liste z której user wybiera elementy
     //bool isTypeValid(const QString &type, std::map<string, alize::DistribType> &mapping)const;

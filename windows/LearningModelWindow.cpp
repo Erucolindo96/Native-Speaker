@@ -46,6 +46,10 @@ void LearningModelWindow::setSubcontrollers()
   from_fsys_controller_.setRemoveButtonPtr(ui.pushButton_remove_fromFilesystem);
   from_fsys_controller_.setRecordListPtr(ui.listWidget_fromFilesystem);
 
+  from_microphone_controller_.setAddButtonPtr(ui.pushButton_add_fromMicrophone);
+  from_microphone_controller_.setRemoveButtonPtr(ui.pushButton_remove_fromMicrophone);
+  from_microphone_controller_.setRecordListPtr(ui.listWidget_fromMicrophone);
+
   from_sample_base_controller_.setAddButtonPtr(ui.pushButton_add_fromSampleBase);
   from_sample_base_controller_.setRemoveButtonPtr(ui.pushButton_remove_fromSampleBase);
   from_sample_base_controller_.setRecordListPtr(ui.listWidget_fromSampleBase);
@@ -65,16 +69,19 @@ void LearningModelWindow::performLearning()
 
   auto algo_name = ui.comboBox_algo_2->currentText();
   auto records_filesystem = from_fsys_controller_.getActualRecords(),
-      records_sample_base = from_sample_base_controller_.getActualRecords();
+      records_sample_base = from_sample_base_controller_.getActualRecords(),
+      records_microphone = from_microphone_controller_.getActualRecords();
 
   saveRecordsToRecordBase(model_ptr->getName(), records_filesystem,
-                          std::vector<Record>(), records_sample_base);
+                          records_microphone, records_sample_base);
 
   auto mfcc_vecs_fs = f_man_ref_.convertRecord(records_filesystem,
                                             config_.getVectSize()),
+      mfcc_vecs_micro = f_man_ref_.convertRecord(records_microphone,
+                                                 config_.getVectSize()),
       mfcc_vecs_base = f_man_ref_.convertRecord(records_sample_base,
                                                 config_.getVectSize());
-  auto all_mfcc = mfcc_vecs_base + mfcc_vecs_fs;
+  auto all_mfcc =  mfcc_vecs_fs + mfcc_vecs_micro + mfcc_vecs_base   ;
   auto iterations = ui.spinBox_iter_2->value();
 
   cout<<"Mfcc cnt: "<<all_mfcc.size()<<endl;
@@ -119,13 +126,13 @@ void LearningModelWindow::on_pushButton_start_released()
   close();
 }
 
-void LearningModelWindow::on_pushButton_add_fromMicrophone_released()
-{
-  std::unique_ptr<AudioRecorderWindow> w = make_unique<AudioRecorderWindow>();
-  w->exec();
-  for(auto r: w->getRegisteredRecords())
-  {
-    ui.listWidget_fromMicrophone->addItem(r.getRecordInfo().absoluteFilePath());
-  }
+//void LearningModelWindow::on_pushButton_add_fromMicrophone_released()
+//{
+//  std::unique_ptr<AudioRecorderWindow> w = make_unique<AudioRecorderWindow>();
+//  w->exec();
+//  for(auto r: w->getRegisteredRecords())
+//  {
+//    ui.listWidget_fromMicrophone->addItem(r.getRecordInfo().absoluteFilePath());
+//  }
 
-}
+//}

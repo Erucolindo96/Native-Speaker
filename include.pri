@@ -135,7 +135,10 @@ HEADERS += \
     $$PWD/windows/subcontrollers/RecordsFromFilesystemVerificationController.hpp \
     $$PWD/windows/subcontrollers/RecordsFromFilesystemController.hpp \
     $$PWD/windows/RecordBaseDisplayingWindow.hpp \
-    $$PWD/windows/subcontrollers/RecordsFromSampleBaseController.hpp
+    $$PWD/windows/subcontrollers/RecordsFromSampleBaseController.hpp \
+    $$PWD/windows/AudioRecorderWindow.hpp \
+    $$PWD/record-base/RecordFormatFactory.hpp \
+    $$PWD/windows/subcontrollers/RecordsFromMicrophoneController.hpp
 
 
 SOURCES += \
@@ -174,7 +177,10 @@ SOURCES += \
     $$PWD/windows/subcontrollers/VerificationResultController.cpp \
     $$PWD/windows/subcontrollers/RecordsFromFilesystemVerificationController.cpp \
     $$PWD/windows/RecordBaseDisplayingWindow.cpp \
-    $$PWD/windows/subcontrollers/RecordsFromSampleBaseController.cpp
+    $$PWD/windows/subcontrollers/RecordsFromSampleBaseController.cpp \
+    $$PWD/windows/AudioRecorderWindow.cpp \
+    $$PWD/record-base/RecordFormatFactory.cpp \
+    $$PWD/windows/subcontrollers/RecordsFromMicrophoneController.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a
@@ -188,7 +194,8 @@ FORMS += \
     $$PWD/windows/LearningModelWindow.ui \
     $$PWD/learn-performing/LearningThreadWidget.ui \
     $$PWD/windows/ModelVerificationWindow.ui \
-    $$PWD/windows/RecordBaseDisplayingWindow.ui
+    $$PWD/windows/RecordBaseDisplayingWindow.ui \
+    $$PWD/windows/AudioRecorderWindow.ui
 
 
 HEADERS += \

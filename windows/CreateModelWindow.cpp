@@ -51,8 +51,7 @@ void CreateModelWindow::on_create_button_released()
   }
 
   createModel(model_name, type, description, distrib_cnt_str.toInt(), config_.getVectSize());
-  emit accepted();
-  close();
+  accept();
 }
 
 
@@ -62,7 +61,8 @@ void CreateModelWindow::createModel(QString model_name,alize::DistribType type,
   if(type == alize::DistribType_GD)
   {
     created_model_ = make_unique<DiagonalModel>(
-                       distrib_cnt,vect_size, model_name.toStdString());
+                       distrib_cnt,vect_size);
+    created_model_->setName(model_name.toStdString());
   }
   else
   {

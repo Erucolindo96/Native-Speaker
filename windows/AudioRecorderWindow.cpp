@@ -79,7 +79,6 @@ void AudioRecorderWindow::onStateChange(const QMediaRecorder::State s)
       ui_.pushButton_pause->setEnabled(true);
       ui_.pushButton_pause->setText(PAUSE_TEXT_BUTTON);
       rec_timer_->start();
-      //ui_.lineEdit_rec_path->setText(recorder_->actualLocation().toLocalFile());
       break;
     case QAudioRecorder::PausedState:
       ui_.pushButton_record->setText(STOP_TEXT_BUTTON);
@@ -158,6 +157,6 @@ void AudioRecorderWindow::addRecordToRegistered()
     return;
   }
   ui_.listWidget_rec_list->addItem(r.getRecordInfo().absoluteFilePath());
-  //registered_records_.push_back(r);
+
 }
 

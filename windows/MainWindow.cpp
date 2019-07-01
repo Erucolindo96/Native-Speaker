@@ -6,22 +6,6 @@ MainWindow::MainWindow(QWidget *parent) :
   QMainWindow(parent),models_(nullptr, MODELS_ON_PAGE)
 {
   initMainWindow();
-
-//  rec.setAudioInput(rec.defaultAudioInput());
-
-//  QAudioEncoderSettings settings;
-//  settings.setCodec("audio/pcm");
-//  settings.setSampleRate(44100);
-//  settings.setBitRate(32000);
-//  settings.setQuality(QMultimedia::NormalQuality);
-//  settings.setChannelCount(1);
-//  settings.setEncodingMode(QMultimedia::ConstantQualityEncoding);
-
-//  rec.setEncodingSettings(settings, QVideoEncoderSettings(), "audio/x-wav" );
-//  rec.setOutputLocation(QUrl("/home/erucolindo/nagranie.wav"));
-//  rec.record();
-//  QTimer::singleShot(3000, this, SLOT(on_actionRead_Configuration_File_triggered()));
-
 }
 
 void MainWindow::initMainWindow()
@@ -37,7 +21,6 @@ void MainWindow::initMainWindow()
 
 void MainWindow::on_actionRead_Configuration_File_triggered()
 {
-//    rec.stop();
   const QString DEF_DIR = "/home/erucolindo",FILTER_TYPE = "Config Files (*.alize *.conf)";
   QString filename = QFileDialog::getOpenFileName(this, "", DEF_DIR, FILTER_TYPE);
   if(!filename.isEmpty())
@@ -82,10 +65,10 @@ void MainWindow::on_action_CreateModel_triggered()
   {
     return;
   }
-  std::unique_ptr<CreateModelWindow> window = make_unique<CreateModelWindow>(this);
-  window->setConfig(conf_);
-  connect(window.get(), SIGNAL(accepted()), this, SLOT(saveModelFromCreateModelWindow()));
-  window->exec();
+  CreateModelWindow window(this);// = make_unique<CreateModelWindow>(this);
+  window.setConfig(conf_);
+  connect(&window, SIGNAL(accepted()), this, SLOT(saveModelFromCreateModelWindow()));
+  window.exec();
 }
 
 void MainWindow::on_actionAdd_Configuration_Parameter_triggered()
@@ -93,6 +76,7 @@ void MainWindow::on_actionAdd_Configuration_Parameter_triggered()
   std::unique_ptr<SetParameterWindow> window = make_unique<SetParameterWindow>(conf_, this);
   connect(window.get(), SIGNAL(accepted()), this, SLOT(saveParamFromSetParameterWindow()));
   window->exec();
+
 }
 
 void MainWindow::saveModelFromCreateModelWindow()
