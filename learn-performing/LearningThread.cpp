@@ -35,6 +35,7 @@ LearningThread::LearningThread(LearningThread &&other):QObject(),
 void LearningThread::learningOperation(LearningThread &t,std::unique_ptr<LearningAlgo> &&algo,
                 std::vector<alize::Feature> f_vec, uint32_t iters)
 {
+  try{
   t.setIterCnt(iters);
   while(t.getIter()< t.getIterCnt())
   {
@@ -42,8 +43,16 @@ void LearningThread::learningOperation(LearningThread &t,std::unique_ptr<Learnin
     t.incrementIter();
     emit t.iterationComplete(t.getModelPtr()->getName().c_str(),
                              t.getIter(), t.getIterCnt());
+
   }
   t.setDone();
+  emit t.learningComplete(t.getModelPtr().get());
+  }
+  catch(alize::Exception e)
+  {
+    cout<<e.toString().c_str()<<endl;
+    throw e;
+  }
 }
 
 void LearningThread::run(std::unique_ptr<LearningAlgo> &&algo,

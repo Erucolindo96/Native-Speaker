@@ -33,9 +33,7 @@ public:
   ModelManager& operator=(ModelManager &&other) = default;
   virtual ~ModelManager() = default;
 
-  void loadModels(const ConfigManager &config_m);
-  void addModel(const ConfigManager &config_m,
-                std::unique_ptr<GmmModel> &&model_to_add);
+
 
   uint32_t getModelsCnt()const;
 
@@ -55,6 +53,12 @@ public:
    */
   std::vector<std::string> getModelsNames()const;
 
+
+  void loadModels(const ConfigManager &config_m);
+  void addModel(const ConfigManager &config_m,
+                std::unique_ptr<GmmModel> &&model_to_add);
+  void addModel(const ConfigManager &config_m,
+                std::shared_ptr<GmmModel> model_to_add);
 
 };
 

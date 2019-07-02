@@ -94,4 +94,6 @@ public:
   static void copyDataFromMixtureServer(const alize::MixtureServer &s, GmmModel &model);
 };
 
+
+
 #endif // GMMMODEL_HPP

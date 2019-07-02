@@ -24,19 +24,7 @@ void ModelManager::loadModelsFromDatabase(const ConfigManager &config_m)
 }
 
 
-void ModelManager::loadModels(const ConfigManager &config_m)
-{
-  loadModelsFromDatabase(config_m);
-}
 
-void ModelManager::addModel(const ConfigManager &config_m,
-                            std::unique_ptr<GmmModel> &&model_to_add)
-{
-  std::string model_name = model_to_add->getName();
-  models_[model_name] = std::move(model_to_add);
-  saveModelToDatabase(config_m,models_[model_name] );
-  loadModels(config_m);
-}
 
 uint32_t ModelManager::getModelsCnt()const
 {
@@ -78,6 +66,29 @@ std::vector<std::string> ModelManager::getModelsNames()const
     ret.push_back(map_elem.second->getName());
   });
   return ret;
+}
+
+void ModelManager::loadModels(const ConfigManager &config_m)
+{
+  loadModelsFromDatabase(config_m);
+}
+
+void ModelManager::addModel(const ConfigManager &config_m,
+                            std::unique_ptr<GmmModel> &&model_to_add)
+{
+  std::string model_name = model_to_add->getName();
+  models_[model_name] = std::move(model_to_add);
+  saveModelToDatabase(config_m,models_[model_name] );
+  loadModels(config_m);
+}
+
+void ModelManager::addModel(const ConfigManager &config_m,
+                            std::shared_ptr<GmmModel> model_to_add)
+{
+  std::string model_name = model_to_add->getName();
+  models_[model_name] = model_to_add;
+  saveModelToDatabase(config_m,models_[model_name] );
+  loadModels(config_m);
 }
 
 

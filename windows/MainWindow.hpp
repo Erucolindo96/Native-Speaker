@@ -73,8 +73,8 @@ private slots:
 protected:
   const int32_t MODELS_ON_PAGE =5 ;
   Ui::MainWindow ui_;
-  ConfigManager conf_;
-  ModelController models_;
+  std::unique_ptr<ConfigManager> conf_;
+  std::unique_ptr<ModelController> models_;
   FeatureManager f_manager_;
   RecBaseManager r_base_;
   LearningController learning_c_;

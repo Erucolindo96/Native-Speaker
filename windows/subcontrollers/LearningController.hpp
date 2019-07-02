@@ -3,6 +3,8 @@
 
 #include"learn-performing/LearningPerformer.hpp"
 #include"learn-performing/LearningThreadWidget.hpp"
+#include"models/ModelManager.hpp"
+#include"configuration/ConfigManager.hpp"
 #include<QComboBox>
 #include<QVBoxLayout>
 #include<thread>
@@ -16,9 +18,11 @@
  * Dodaje widgety opisujące nowe wątki uczące
  * Oraz usuwa widgety nieaktualne(których wątki uczące się zakonczyły)
  */
+
 class LearningController: public LearningPerformer
 {
   Q_OBJECT
+
 public:
 
   LearningController() = default;
@@ -40,6 +44,22 @@ public:
   void setProgressBarPtr(QProgressBar *ptr);
 
   /**
+   * @brief setModelManagerPtr Ustawia wskazanie do ModelManagera.
+   * Konieczne, aby zapisywać każdorazowo model po ukonczeniu uczenia - ModelManager kieruje zapisem modeli do pliku
+   * @param ptr Wskazanie do MainWindow
+   */
+  void setModelManagerPtr(ModelManager *ptr);
+
+  /**
+   * @brief setConfigManagerPtr Ustawia wskazanie do Konfiguracji.
+   * Konieczne, aby zapisywać każdorazowo model po ukończeniu uczenia - ModelManager pobiera z konfiguracji ściezkę do bazy modeli
+   * @param ptr Wskazanie do konfiguracji
+   */
+  void setConfigManagerPtr(ConfigManager *ptr);
+
+
+
+  /**
    * @brief startLearning Uruchamia uczenie modelu
    * Wykonuje to, co LearningPerformer, ale dodatkowo wstawia nazwę uczonego modelu do comboBoxa
    * oraz łączy sygnał ukończenia iteracji pochodzący od uczącego wątku, z odpowiednim slotem klasy
@@ -59,6 +79,8 @@ protected:
 
   QComboBox *l_thread_combo_box_;
   QProgressBar *l_thread_prog_bar_;
+  ModelManager *model_man_;
+  ConfigManager *conf_man_;
 
   /**
    * @brief removeDoneThreads Usuwa ukończone wątki z listy wątków uczących.
@@ -92,6 +114,13 @@ protected slots:
    * Wyświetla w progress barze iterację uczenia modelu, wskazanego w comboBoxie
   */
   void actualizeProgressBarByMainThread();
+
+  /**
+   * @brief saveModelLearnedFromLearningThread Zapisuje model, którego uczenie zostało właśnie ukończone
+   * @param m Model, którego uczenie zostało ukonczone
+   */
+  void saveModelLearnedFromLearningThread(QObject *m);
+
 };
 
 

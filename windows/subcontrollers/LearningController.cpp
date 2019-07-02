@@ -1,7 +1,6 @@
 ﻿#include "LearningController.hpp"
 
 
-
 void LearningController::startLearning(std::shared_ptr<GmmModel> m,
                                       std::unique_ptr<LearningAlgo> &&algo,
                                       std::vector<alize::Feature> &f_vec,
@@ -15,6 +14,10 @@ void LearningController::startLearning(std::shared_ptr<GmmModel> m,
   connect(&(l_thread_list_.back()), SIGNAL(iterationComplete(const QString, const qint32,const qint32)),
           this,SLOT(actualizeProgressBarByLearningThread(const QString,const qint32,const qint32)),
           Qt::QueuedConnection );
+  connect(&(l_thread_list_.back()), SIGNAL(learningComplete(QObject*)),
+          this,SLOT(saveModelLearnedFromLearningThread(QObject*)),
+          Qt::QueuedConnection );
+
   }
   l_thread_combo_box_->addItem(m->getName().c_str());
   l_thread_list_.back().run(std::move(algo), f_vec, iter_cnt);//wątek uruchomiony
@@ -33,6 +36,17 @@ void LearningController::setProgressBarPtr(QProgressBar *ptr)
 {
   l_thread_prog_bar_ = ptr;
 }
+
+void LearningController::setModelManagerPtr(ModelManager *ptr)
+{
+  model_man_ = ptr;
+}
+
+void LearningController::setConfigManagerPtr(ConfigManager *ptr)
+{
+  conf_man_ = ptr;
+}
+
 
 void LearningController::connectSignalsAndSlots()
 {
@@ -95,4 +109,10 @@ void LearningController::actualizeProgressBarByMainThread()//const QString &disp
   }
   l_thread_prog_bar_->setMaximum(th_iter->getIterCnt());
   l_thread_prog_bar_->setValue(th_iter->getIter());
+}
+
+void LearningController::saveModelLearnedFromLearningThread(QObject *m)
+{
+  model_man_->addModel(*conf_man_,
+                       std::shared_ptr<GmmModel>(dynamic_cast<GmmModel*>(m)));
 }

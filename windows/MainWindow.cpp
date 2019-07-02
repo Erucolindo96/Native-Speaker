@@ -3,7 +3,9 @@
 using namespace alize;
 using namespace std;
 MainWindow::MainWindow(QWidget *parent) :
-  QMainWindow(parent),models_(nullptr, MODELS_ON_PAGE)
+  QMainWindow(parent),
+  conf_(std::make_unique<ConfigManager>()),
+  models_(std::make_unique<ModelController>(nullptr, MODELS_ON_PAGE))
 {
   initMainWindow();
 }
@@ -11,11 +13,13 @@ MainWindow::MainWindow(QWidget *parent) :
 void MainWindow::initMainWindow()
 {
   ui_.setupUi(this);
-  models_.setToolBoxPtr(ui_.models_list);
-  models_.removeToolBoxItems();
+  models_->setToolBoxPtr(ui_.models_list);
+  models_->removeToolBoxItems();
 
   learning_c_.setComboBoxPtr(ui_.comboBox_learning_models);
   learning_c_.setProgressBarPtr(ui_.progressBar);
+  learning_c_.setModelManagerPtr(models_.get());
+  learning_c_.setConfigManagerPtr(conf_.get());
 
 }
 
@@ -31,7 +35,7 @@ void MainWindow::on_actionRead_Configuration_File_triggered()
       ConfigManager temp;
       temp.load(filename.toStdString().c_str());
       v.validateConfiguration(temp);
-      conf_ = temp;
+      *conf_ = temp;
       loadConfigToMembers();
     }
     catch(ParamNotValid e)
@@ -55,7 +59,7 @@ void MainWindow::on_actionSave_Configuration_File_triggered()
   QString filename = QFileDialog::getSaveFileName(this, "", DEF_SAVE_FILE, FILTER_TYPE);
   if(!filename.isEmpty())
   {
-    conf_.save(filename.toStdString().c_str());
+    conf_->save(filename.toStdString().c_str());
   }
 }
 
@@ -66,14 +70,14 @@ void MainWindow::on_action_CreateModel_triggered()
     return;
   }
   CreateModelWindow window(this);// = make_unique<CreateModelWindow>(this);
-  window.setConfig(conf_);
+  window.setConfig(*conf_);
   connect(&window, SIGNAL(accepted()), this, SLOT(saveModelFromCreateModelWindow()));
   window.exec();
 }
 
 void MainWindow::on_actionAdd_Configuration_Parameter_triggered()
 {
-  std::unique_ptr<SetParameterWindow> window = make_unique<SetParameterWindow>(conf_, this);
+  std::unique_ptr<SetParameterWindow> window = make_unique<SetParameterWindow>(*conf_, this);
   connect(window.get(), SIGNAL(accepted()), this, SLOT(saveParamFromSetParameterWindow()));
   window->exec();
 
@@ -86,7 +90,7 @@ void MainWindow::saveModelFromCreateModelWindow()
   {
     throw std::runtime_error("Sender doesnt known - it must be always CreateModelWindow!");
   }
-  models_.addModel(conf_, ptr->getCreatedGmmModel());
+  models_->addModel(*conf_, ptr->getCreatedGmmModel());
 }
 
 void MainWindow::saveParamFromSetParameterWindow()
@@ -96,14 +100,16 @@ void MainWindow::saveParamFromSetParameterWindow()
   {
     throw std::runtime_error("Sender doesnt known - it must be always CreateModelWindow!");
   }
-  conf_.setParam(ptr->getParamName().c_str(), ptr->getParamValue().c_str());
+  conf_->setParam(ptr->getParamName().c_str(), ptr->getParamValue().c_str());
   loadConfigToMembers();
 }
+
+
 
 bool MainWindow::checkConfiguration()const
 {
 
-  if(!conf_.haveAllParams())
+  if(!conf_->haveAllParams())
   {
     const std::string msg = std::string("Please insert required parametrs to configuration: ") +
                       ConfigManager::PARAM_MODEL_DIR().c_str() + ", " +
@@ -124,15 +130,15 @@ void MainWindow::on_toolButton_refresh_released()
 {
     if(checkConfiguration())
     {
-      models_.loadModels(conf_);
-      models_.refreshDisplayedModels();
+      models_->loadModels(*conf_);
+      models_->refreshDisplayedModels();
       actualizePage();
     }
 }
 
 void MainWindow::actualizePage()
 {
-  QString page = QString::number(models_.getActPage());
+  QString page = QString::number(models_->getActPage());
   ui_.lineEdit_act_page->setText(page);
 }
 
@@ -140,7 +146,7 @@ void MainWindow::on_commandLinkButton_next_models_released()
 {
   if(checkConfiguration())
   {
-    models_.nextPage();
+    models_->nextPage();
     actualizePage();
   }
 }
@@ -149,7 +155,7 @@ void MainWindow::on_commandLinkButton_prev_models_released()
 {
   if(checkConfiguration())
   {
-    models_.prevPage();
+    models_->prevPage();
     actualizePage();
   }
 }
@@ -159,15 +165,15 @@ void MainWindow::on_action_ModelLearning_triggered()
     if(checkConfiguration())
     {
       std::unique_ptr<LearningModelWindow> window = std::make_unique<LearningModelWindow>
-                                                    (models_, conf_, r_base_, f_manager_, learning_c_);
+                                                    (*models_, *conf_, r_base_, f_manager_, learning_c_);
       window->exec();
     }
 }
 
 void MainWindow::loadConfigToMembers()
 {
-  f_manager_.setFeatureFolder(conf_.getFeatureFolder().c_str());
-  r_base_.setFeatureFolderPath(conf_.getFeatureFolder().c_str());
+  f_manager_.setFeatureFolder(conf_->getFeatureFolder().c_str());
+  r_base_.setFeatureFolderPath(conf_->getFeatureFolder().c_str());
 }
 
 
@@ -177,8 +183,8 @@ void MainWindow::on_actionVerification_triggered()
     if(checkConfiguration())
     {
       std::unique_ptr<ModelVerificationWindow> window = make_unique<ModelVerificationWindow>
-                                                        (models_,f_manager_,
-                                                         conf_.getVectSize());
+                                                        (*models_,f_manager_,
+                                                         conf_->getVectSize());
       window->exec();
     }
 }
@@ -188,7 +194,7 @@ void MainWindow::on_actionView_sample_base_triggered()
   if(checkConfiguration())
   {
     auto window = make_unique<RecordBaseDisplayingWindow>(r_base_);
-    window->setModelsList(models_.getModelsNames());
+    window->setModelsList(models_->getModelsNames());
     window->exec();
   }
 }

@@ -29,4 +29,5 @@ public:
 };
 
 
+
 #endif // DIAGONALMODEL_HPP

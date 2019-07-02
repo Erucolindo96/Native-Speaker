@@ -130,7 +130,7 @@ protected:
 
   signals:
   void iterationComplete(const QString model_name, const qint32 act_iter, const qint32 iter_cnt);
-
+  void learningComplete(QObject *model_ptr);
 
 
 };
