@@ -11,7 +11,6 @@
 #include"utils/utils.hpp"
 
 #include"features/SPro4File.hpp"
-
 /**
  * @brief The MfccConverter Klasa, która przetwarza plik dźwiękowy
  * na wektory cech w formacie SPro4

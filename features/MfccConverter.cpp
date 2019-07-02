@@ -127,6 +127,7 @@ SPro4File MfccConverterWav::convertToSPro4(const Record &source_record)const
   auto args_sox = setArgumentsToSox(SOURCE_FILE, "-"),
       args_sfbcep = setArgumentsToSfbcep("-", DEST_FILE);
 
+
   QProcess *proc_sox = new QProcess, *proc_sfbcep = new QProcess;
   proc_sox->setStandardOutputProcess(proc_sfbcep);
   proc_sox->setProcessChannelMode(QProcess::ForwardedErrorChannel);
@@ -180,6 +181,7 @@ QStringList MfccConverterWav::setArgumentsToSox(const QString &source_file, cons
 {
   QStringList args;
   args.append("-V1");
+  args.append("-D"); //wyłącza dithering - zmienia on losowo nagranie
   args.append(source_file);
   //Spro przymuje 16 bitowy, signed-integer PCM
   args.append("-b");
