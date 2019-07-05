@@ -146,7 +146,8 @@ HEADERS += \
     $$PWD/cmd-main/CmdCreateModel.hpp \
     $$PWD/cmd-main/CmdLearnModel.hpp \
     $$PWD/cmd-main/CmdVerifyModel.hpp \
-    $$PWD/cmd-main/CmdListModels.hpp
+    $$PWD/cmd-main/CmdListModels.hpp \
+    $$PWD/cmd-main/CommandParamContainer.hpp
 
 
 SOURCES += \
@@ -196,7 +197,8 @@ SOURCES += \
     $$PWD/cmd-main/CmdCreateModel.cpp \
     $$PWD/cmd-main/CmdLearnModel.cpp \
     $$PWD/cmd-main/CmdVerifyModel.cpp \
-    $$PWD/cmd-main/CmdListModels.cpp
+    $$PWD/cmd-main/CmdListModels.cpp \
+    $$PWD/cmd-main/CommandParamContainer.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a

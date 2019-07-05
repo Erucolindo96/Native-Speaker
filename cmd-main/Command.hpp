@@ -10,14 +10,15 @@
 #include<stdexcept>
 #include<QCommandLineParser>
 #include"cmd-main/CommandExecutor.hpp"
-
+#include"cmd-main/CommandParamContainer.hpp"
+#include<QDebug>
 class ErrorCodeException : public std::logic_error
 {
 
 public:
-  uint8_t error_code_;
+  int8_t error_code_;
 
-  ErrorCodeException(const std::string &msg, uint8_t error_code):
+  ErrorCodeException(const std::string &msg, int8_t error_code):
     std::logic_error(msg), error_code_(error_code)
   {}
 };

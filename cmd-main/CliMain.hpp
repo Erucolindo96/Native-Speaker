@@ -10,7 +10,9 @@
 #include"models/ModelManager.hpp"
 #include"configuration/ConfigManager.hpp"
 #include"record-base/RecBaseManager.hpp"
-
+#include"cmd-main/CmdCreateModel.hpp"
+#include<vector>
+#include<QDebug>
 class CliMain: public QCoreApplication
 {
   Q_OBJECT
@@ -21,7 +23,7 @@ public:
    * @param argc argc przekazany do fcji main
    * @param argv argv przekazane do fcji main
    */
-  CliMain(int &argc, char ** argv);
+  CliMain(int &argc, char * argv[]);
 
   /**
    * @brief execute Uruchamia kod, wykonujący zleconą przez użytkownika komendę
@@ -29,7 +31,7 @@ public:
    */
   void execute();
 
-  ~CliMain() override =default;
+  ~CliMain() override = default;
 protected:
   std::unique_ptr<QCommandLineParser> parser_ptr_;
   std::unique_ptr<ModelManager> model_man_ptr_;
@@ -37,7 +39,9 @@ protected:
   std::unique_ptr<RecBaseManager> r_base_man_ptr_;
   std::unique_ptr<ConfigManager> config_ptr_;
 
-  QVector<std::unique_ptr<Command>> commands_;
+  std::vector<std::unique_ptr<Command>> commands_;
+
+  void prepareParser();
 };
 
 #endif // CLIMAIN_HPP

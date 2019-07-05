@@ -44,8 +44,7 @@ public:
 
 protected:
   QString model_name_;
-  QDir models_dir_;
-  uint32_t d_cnt_;
+  int32_t d_cnt_;
 };
 
 #endif // CMDCREATEMODEL_HPP

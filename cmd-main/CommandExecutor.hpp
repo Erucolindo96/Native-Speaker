@@ -2,7 +2,8 @@
 #define COMMANDEXECUTOR_HPP
 
 #include<memory>
-
+#include<QCommandLineParser>
+#include"cmd-main/CommandParamContainer.hpp"
 class CmdCreateModel;
 
 class CommandExecutor
@@ -18,6 +19,9 @@ public:
 
   void execIfRequired(CmdCreateModel &cmd)const;
 
+  void setCommandLineParserPtr(QCommandLineParser *ptr);
+protected:
+  QCommandLineParser *parser_ptr_;
 };
 
 #endif // COMMANDEXECUTOR_HPP

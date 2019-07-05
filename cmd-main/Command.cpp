@@ -2,45 +2,73 @@
 
 void Command::execute()
 {
-  throw std::runtime_error("TODO");
+  checkConfigExistance();
+  readConfig();
+  reactOnMistakesInConfig();
+  checkSyntax();
+  readArgs();
+  performCommand();
+  throw NormallyExitException("");
 }
 
 void Command::setFeatureManagerPtr(FeatureManager *ptr)
 {
-  throw std::runtime_error("TODO");
+  f_manager_ptr_  = ptr;
 }
 
 void Command::setModelManagerPtr(ModelManager *ptr)
 {
-  throw std::runtime_error("TODO");
+  model_man_ptr_=ptr;
 }
 
 void Command::setConfigManagerPtr(ConfigManager *ptr)
 {
-  throw std::runtime_error("TODO");
+  config_ptr_ = ptr;
 }
 
 void Command::setRecBaseManagerPtr(RecBaseManager *ptr)
 {
-  throw std::runtime_error("TODO");
+  r_base_man_ptr_ = ptr;
 }
 
-void setCommandLineParserPtr(QCommandLineParser *ptr)
+void Command::setCommandLineParserPtr(QCommandLineParser *ptr)
 {
-  throw std::runtime_error("TODO");
+  parser_ptr_ = ptr;
 }
 
 void Command::checkConfigExistance()
 {
-  throw std::runtime_error("TODO");
+  if(!parser_ptr_->isSet(CommandParamContainer::getOptionConfigPath()))
+  {
+    QString msg("Path to valid configuration file was not set.");
+    qWarning() <<msg;
+    throw ErrorCodeException(msg.toStdString(), -1);
+  }
+  QFileInfo config_path(parser_ptr_->value(CommandParamContainer::getOptionConfigPath()));
+  if(!config_path.exists())
+  {
+    QString msg("Path of configuration is invalid");
+    qWarning() <<msg;
+    throw ErrorCodeException(msg.toStdString(), -1);
+  }
 }
 
 void Command::readConfig()
 {
-  throw std::runtime_error("TODO");
+  config_ptr_->load(parser_ptr_->value(
+                      CommandParamContainer::getOptionConfigPath()).
+                    toStdString().c_str());
 }
 
 void Command::reactOnMistakesInConfig()
 {
-  throw std::runtime_error("TODO");
+  ConfigValidator v;
+  try
+  {
+    v.validateConfiguration(*config_ptr_);
+  }catch(ParamNotValid &e)
+  {
+    qWarning()<<e.what();
+    throw ErrorCodeException(e.what(), -1);
+  }
 }

@@ -7,10 +7,55 @@ CliMain::CliMain(int &argc, char ** argv):QCoreApplication(argc, argv),
   r_base_man_ptr_(make_unique<RecBaseManager>()),
   config_ptr_(make_unique<ConfigManager>())
 {
-  throw std::runtime_error("TODO");
+  commands_.push_back(make_unique<CmdCreateModel>());
+
+  for(unique_ptr<Command> &cmd: commands_)
+  {
+    cmd->setCommandLineParserPtr(parser_ptr_.get());
+    cmd->setConfigManagerPtr(config_ptr_.get());
+    cmd->setFeatureManagerPtr(f_man_ptr_.get());
+    cmd->setModelManagerPtr(model_man_ptr_.get());
+    cmd->setRecBaseManagerPtr(r_base_man_ptr_.get());
+  }
+
 }
 
 void CliMain::execute()
 {
-  throw std::runtime_error("TODO");
+  try
+  {
+    prepareParser();
+    CommandExecutor executor;
+    executor.setCommandLineParserPtr(parser_ptr_.get());
+    for(auto &cmd: commands_)
+    {
+      cmd->acceptExecutor(executor);
+    }
+  }catch(NormallyExitException &e)
+  {
+    exit(0);
+  }
+  catch(ErrorCodeException &e)
+  {
+    exit(e.error_code_);
+  }
+  catch(alize::Exception &e)
+  {
+    qCritical()<<e.toString().c_str();
+    exit(-1);
+  }
+  catch(std::exception &e)
+  {
+    qCritical()<<e.what();
+    exit(-1);
+  }
+
+}
+
+void CliMain::prepareParser()
+{
+  parser_ptr_->addOptions(CommandParamContainer::getAllValidParams());
+  parser_ptr_->addHelpOption();
+//  parser_ptr_->addVersionOption();
+  parser_ptr_->process(*this);
 }

@@ -3,5 +3,14 @@
 
 void CommandExecutor::execIfRequired(CmdCreateModel &cmd)const
 {
-  throw std::runtime_error("TODO");
+  if(parser_ptr_->isSet(CommandParamContainer::getOptionCreateModel()))
+  {
+    cmd.execute();
+  }
+}
+
+
+void CommandExecutor::setCommandLineParserPtr(QCommandLineParser *ptr)
+{
+  parser_ptr_ = ptr;
 }
