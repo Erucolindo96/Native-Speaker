@@ -139,7 +139,14 @@ HEADERS += \
     $$PWD/windows/AudioRecorderWindow.hpp \
     $$PWD/record-base/RecordFormatFactory.hpp \
     $$PWD/windows/subcontrollers/RecordsFromMicrophoneController.hpp \
-    $$PWD/windows/subcontrollers/RecordsFromMicrophoneVerificationController.hpp
+    $$PWD/windows/subcontrollers/RecordsFromMicrophoneVerificationController.hpp \
+    $$PWD/cmd-main/CliMain.hpp \
+    $$PWD/cmd-main/Command.hpp \
+    $$PWD/cmd-main/CommandExecutor.hpp \
+    $$PWD/cmd-main/CmdCreateModel.hpp \
+    $$PWD/cmd-main/CmdLearnModel.hpp \
+    $$PWD/cmd-main/CmdVerifyModel.hpp \
+    $$PWD/cmd-main/CmdListModels.hpp
 
 
 SOURCES += \
@@ -182,7 +189,14 @@ SOURCES += \
     $$PWD/windows/AudioRecorderWindow.cpp \
     $$PWD/record-base/RecordFormatFactory.cpp \
     $$PWD/windows/subcontrollers/RecordsFromMicrophoneController.cpp \
-    $$PWD/windows/subcontrollers/RecordsFromMicrophoneVerificationController.cpp
+    $$PWD/windows/subcontrollers/RecordsFromMicrophoneVerificationController.cpp \
+    $$PWD/cmd-main/CliMain.cpp \
+    $$PWD/cmd-main/Command.cpp \
+    $$PWD/cmd-main/CommandExecutor.cpp \
+    $$PWD/cmd-main/CmdCreateModel.cpp \
+    $$PWD/cmd-main/CmdLearnModel.cpp \
+    $$PWD/cmd-main/CmdVerifyModel.cpp \
+    $$PWD/cmd-main/CmdListModels.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a
