@@ -6,6 +6,9 @@ LIBS += -L$$PWD/external-libs/lib -lalize -lboost_unit_test_framework \
 #        -L/home/erucolindo/Programy/Qt/5.5/gcc/lib/QtMultimedia
 
 CONFIG += qt
+
+CONFIG(release, debug|release):DEFINES += QT_NO_DEBUG_OUTPUT
+
 INCLUDEPATH += $$PWD \
                $$PWD/external-libs/include \
 #               /home/erucolindo/Programy/Qt/5.5/gcc/include \
