@@ -63,6 +63,7 @@ void CmdLearnModel::performCommand()
   qInfo()<<("Learning Algo: " + algo_name_).toLatin1().data();
   qInfo()<<("Iteration count: " + QString::number(iters_cnt_)).toLatin1().data();
   qInfo()<<("Model containing training records: " +  record_dir_.path()).toLatin1().data();
+  qInfo()<<("Training features: " + QString().number(features.size())).toLatin1().data();
   for(int32_t i = 0; i < iters_cnt_; ++i)
   {
     algo_ptr_->learnModel(*model_ptr, features, 1);

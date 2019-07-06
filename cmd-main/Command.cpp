@@ -42,14 +42,14 @@ void Command::checkConfigExistance()
   if(!parser_ptr_->isSet(CommandParamContainer::getOptionConfigPath()))
   {
     QString msg("Path to valid configuration file was not set.");
-    qWarning() <<msg;
+    qWarning() <<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
   QFileInfo config_path(parser_ptr_->value(CommandParamContainer::getOptionConfigPath()));
   if(!config_path.exists())
   {
     QString msg("Path of configuration is invalid");
-    qWarning() <<msg;
+    qWarning() <<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
 }
