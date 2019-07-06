@@ -7,6 +7,7 @@
 class CmdCreateModel;
 class CmdLearnModel;
 class CmdDiffLLK;
+class CmdVerifyModel;
 class CommandExecutor
 {
 public:
@@ -23,6 +24,8 @@ public:
   void execIfRequired(CmdLearnModel &cmd)const;
 
   void execIfRequired(CmdDiffLLK &cmd)const;
+
+  void execIfRequired(CmdVerifyModel &cmd)const;
 
 
   void setCommandLineParserPtr(QCommandLineParser *ptr);

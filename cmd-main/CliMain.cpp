@@ -10,6 +10,7 @@ CliMain::CliMain(int &argc, char ** argv):QCoreApplication(argc, argv),
   commands_.push_back(make_unique<CmdCreateModel>());
   commands_.push_back(make_unique<CmdLearnModel> ());
   commands_.push_back(make_unique<CmdDiffLLK>    ());
+  commands_.push_back(make_unique<CmdVerifyModel>());
 
   for(unique_ptr<Command> &cmd: commands_)
   {

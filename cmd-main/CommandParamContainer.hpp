@@ -15,7 +15,7 @@ public:
   static QCommandLineOption getOptionCreateModel();
   static QCommandLineOption getOptionLearnModel();
   static QCommandLineOption getOptionDiffLLK();
-
+  static QCommandLineOption getOptionVerifyModel();
 
   static QCommandLineOption getOptionModelName();
   static QCommandLineOption getOptionDistribCnt();
@@ -24,7 +24,7 @@ public:
   static QCommandLineOption getOptionAlgoName();
   static QCommandLineOption getOptionUbmName();
   static QCommandLineOption getOptionRecordPath();
-
+  static QCommandLineOption getOptionThreshold();
 
 
 

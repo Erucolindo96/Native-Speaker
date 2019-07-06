@@ -2,6 +2,7 @@
 #include"cmd-main/CmdCreateModel.hpp"
 #include"cmd-main/CmdLearnModel.hpp"
 #include"cmd-main/CmdDiffLLK.hpp"
+#include"cmd-main/CmdVerifyModel.hpp"
 void CommandExecutor::execIfRequired(CmdCreateModel &cmd)const
 {
   if(parser_ptr_->isSet(CommandParamContainer::getOptionCreateModel()))
@@ -25,6 +26,15 @@ void CommandExecutor::execIfRequired(CmdDiffLLK &cmd)const
     cmd.execute();
   }
 }
+
+void CommandExecutor::execIfRequired(CmdVerifyModel &cmd)const
+{
+  if(parser_ptr_->isSet(CommandParamContainer::getOptionVerifyModel()))
+  {
+    cmd.execute();
+  }
+}
+
 
 
 void CommandExecutor::setCommandLineParserPtr(QCommandLineParser *ptr)

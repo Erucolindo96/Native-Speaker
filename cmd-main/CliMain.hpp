@@ -13,6 +13,7 @@
 #include"cmd-main/CmdCreateModel.hpp"
 #include"cmd-main/CmdLearnModel.hpp"
 #include"cmd-main/CmdDiffLLK.hpp"
+#include"cmd-main/CmdVerifyModel.hpp"
 #include<vector>
 #include<QDebug>
 class CliMain: public QCoreApplication
