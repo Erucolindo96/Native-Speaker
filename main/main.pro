@@ -3,7 +3,7 @@ include(../include.pri)
 
 TEMPLATE = app
 CONFIG += windows
-
+CONFIG(release):DEFINES += QT_NO_DEBUG_OUTPUT
 
 TARGET = main
 SOURCES += main.cpp \
