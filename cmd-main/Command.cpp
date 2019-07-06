@@ -56,9 +56,20 @@ void Command::checkConfigExistance()
 
 void Command::readConfig()
 {
-  config_ptr_->load(parser_ptr_->value(
-                      CommandParamContainer::getOptionConfigPath()).
-                    toStdString().c_str());
+  try
+  {
+    config_ptr_->load(parser_ptr_->value(
+                        CommandParamContainer::getOptionConfigPath()).
+                      toStdString().c_str());
+  }
+  catch(alize::InvalidDataException &e)
+  {
+    QString msg1 = "File with configuration is invalid.",
+        msg2 = "Please check than path to config is correct and config file is correct.";
+    qCritical()<<msg1.toLatin1().data();
+    qCritical()<<msg2.toLatin1().data();
+    throw ErrorCodeException((msg1+ msg2).toStdString(), -1);
+  }
 }
 
 void Command::reactOnMistakesInConfig()
@@ -66,10 +77,20 @@ void Command::reactOnMistakesInConfig()
   ConfigValidator v;
   try
   {
+    v.checkComplexityOfConfig(*config_ptr_);
     v.validateConfiguration(*config_ptr_);
+
   }catch(ParamNotValid &e)
   {
+    qWarning()<<"Invalid configuration content.";
+    qWarning()<<"Please check than config file contains all nessesery fields.";
     qWarning()<<e.what();
+    throw ErrorCodeException(e.what(), -1);
+  }
+  catch(ParamDoesNotExists &e)
+  {
+    qWarning()<<("Param named " + e.param_name_ + " does not exists.").c_str();
+    qWarning()<<"Please check that config file contains all nessecery fields.";
     throw ErrorCodeException(e.what(), -1);
   }
 }

@@ -18,6 +18,18 @@ void ConfigValidator::validateConfiguration(const ConfigManager &conf)const
   }
 }
 
+void ConfigValidator::checkComplexityOfConfig(const ConfigManager &conf)const
+{
+  for(auto param : ConfigManager::VALID_PARAMS_)
+  {
+    if(!conf.existsParam(param.second.c_str()))
+    {
+      throw ParamDoesNotExists(param.first, param.second,
+                               "Parameter named " + param.second +
+                               " does not exists in configuration");
+    }
+  }
+}
 
 //protected
 
@@ -65,7 +77,7 @@ void ConfigValidator::paramValueValidation(ConfigParam p, const  std::string &pa
 
 void ConfigValidator::vectSizeValidation(const std::string &param_val)const
 {
-  bool is_int = true;
+  bool is_int = false;
   QString param_val_qt = param_val.c_str();
   int32_t param_val_int = param_val_qt.toInt(&is_int);
   if(!is_int || param_val_int <= 0)
