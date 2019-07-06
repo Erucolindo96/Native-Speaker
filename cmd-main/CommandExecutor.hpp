@@ -6,6 +6,7 @@
 #include"cmd-main/CommandParamContainer.hpp"
 class CmdCreateModel;
 class CmdLearnModel;
+class CmdDiffLLK;
 class CommandExecutor
 {
 public:
@@ -20,6 +21,8 @@ public:
   void execIfRequired(CmdCreateModel &cmd)const;
 
   void execIfRequired(CmdLearnModel &cmd)const;
+
+  void execIfRequired(CmdDiffLLK &cmd)const;
 
 
   void setCommandLineParserPtr(QCommandLineParser *ptr);

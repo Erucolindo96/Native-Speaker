@@ -3,16 +3,21 @@
   QList<QCommandLineOption> CommandParamContainer::getAllValidParams()
   {
     QList<QCommandLineOption> ret;
+    //wczytywanie konfiguracji
     ret.append(getOptionConfigPath());
 
+    //dostepne komendy
     ret.append(getOptionCreateModel());
     ret.append(getOptionLearnModel());
-
+    ret.append(getOptionDiffLLK());
+    //parametry komend
     ret.append(getOptionDistribCnt());
     ret.append(getOptionModelName());
     ret.append(getOptionRecordsDir());
     ret.append(getOptionIterCnt());
     ret.append(getOptionAlgoName());
+    ret.append(getOptionUbmName());
+    ret.append(getOptionRecordPath());
 
     return ret;
   }
@@ -23,10 +28,24 @@
     return QCommandLineOption("c", "Path to configuration file.", "config_path");
   }
 
+
+
   QCommandLineOption CommandParamContainer::getOptionCreateModel()
   {
     return QCommandLineOption("C", "Create new model in models dir.");
   }
+
+  QCommandLineOption CommandParamContainer::getOptionLearnModel()
+  {
+    return QCommandLineOption("L", "Learn model existing in models dir");
+  }
+
+  QCommandLineOption CommandParamContainer::getOptionDiffLLK()
+  {
+    return QCommandLineOption("D", "Count difference LLK between verified model and UBM");
+  }
+
+
 
   QCommandLineOption CommandParamContainer::getOptionModelName()
   {
@@ -36,11 +55,6 @@
   QCommandLineOption CommandParamContainer::getOptionDistribCnt()
   {
     return QCommandLineOption("d", "Number of gaussian distribution in model", "distrib_cnt");
-  }
-
-  QCommandLineOption CommandParamContainer::getOptionLearnModel()
-  {
-    return QCommandLineOption("L", "Learn model existing in models dir");
   }
 
   QCommandLineOption CommandParamContainer::getOptionRecordsDir()
@@ -56,4 +70,14 @@
   QCommandLineOption CommandParamContainer::getOptionAlgoName()
   {
     return QCommandLineOption("a", "Chosen algo of learning", "algo_name");
+  }
+
+  QCommandLineOption CommandParamContainer::getOptionUbmName()
+  {
+    return QCommandLineOption("u", "Name of UBM", "ubm_name");
+  }
+
+  QCommandLineOption CommandParamContainer::getOptionRecordPath()
+  {
+    return QCommandLineOption("r", "Path to verified record", "record_path");
   }

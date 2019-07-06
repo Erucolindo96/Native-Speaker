@@ -34,10 +34,18 @@ void CmdLearnModel::readArgs()
 {
   model_man_ptr_->loadModels(*config_ptr_);
   model_name_ = parser_ptr_->value(CommandParamContainer::getOptionModelName());
+  qDebug()<<"Model name: " + model_name_;
+
   record_dir_.setPath(parser_ptr_->value(CommandParamContainer::getOptionRecordsDir()));
+  qDebug()<<"Record dir path: " + record_dir_.path();
+
   iter_is_int_ = false;
   iters_cnt_ = parser_ptr_->value(CommandParamContainer::getOptionIterCnt()).toInt(&iter_is_int_);
+  qDebug()<<"Iters cnt: " + QString::number(iters_cnt_);
+
   algo_name_ = parser_ptr_->value(CommandParamContainer::getOptionAlgoName());
+  qDebug()<<"Algo name: " + algo_name_;
+
   algo_ptr_ = AlgoManager::getAlgoByName(algo_name_);
   validateArgs();
 
