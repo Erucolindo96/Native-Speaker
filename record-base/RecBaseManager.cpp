@@ -41,3 +41,21 @@ QString RecBaseManager::getModelPath(const QString &model_name, const QString &f
   return feature_folder_path + "/" + model_name;
 }
 
+
+std::vector<Record> RecBaseManager::getWavRecordsFromDir(const QString &dir_path)
+{
+  std::vector<Record> recs;
+
+  QDir records(dir_path);
+  records.setFilter(QDir::NoDotAndDotDot| QDir::Files);
+  records.setNameFilters({"*.wav"});
+
+  Record r;
+  for(auto file: records.entryInfoList())
+  {
+    r.setPath(file.absoluteFilePath());
+    recs.push_back(r);
+  }
+  return recs;
+}
+

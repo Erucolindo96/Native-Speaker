@@ -2,7 +2,8 @@
 
 std::map<QString,AlgoType > AlgoManager::algos_names_=
 {
-  {"Expectation-Maximization Algo",EM_ALGO}
+  {"Expectation-Maximization Algo",EM_ALGO},
+  {"em-algo", EM_ALGO}
 };
 
 std::unique_ptr<LearningAlgo> AlgoManager::getAlgoByName(const QString &algo_name)

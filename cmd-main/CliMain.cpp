@@ -8,6 +8,7 @@ CliMain::CliMain(int &argc, char ** argv):QCoreApplication(argc, argv),
   config_ptr_(make_unique<ConfigManager>())
 {
   commands_.push_back(make_unique<CmdCreateModel>());
+  commands_.push_back(make_unique<CmdLearnModel> ());
 
   for(unique_ptr<Command> &cmd: commands_)
   {
@@ -33,10 +34,12 @@ void CliMain::execute()
     }
   }catch(NormallyExitException &e)
   {
+    qDebug()<<"normally exit exception handler";
     exit(0);
   }
   catch(ErrorCodeException &e)
   {
+    qDebug()<<"error code exception handler";
     exit(e.error_code_);
   }
   catch(alize::Exception &e)

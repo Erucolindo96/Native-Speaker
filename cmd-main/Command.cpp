@@ -5,6 +5,7 @@ void Command::execute()
   checkConfigExistance();
   readConfig();
   reactOnMistakesInConfig();
+  loadConfigToMembers();
   checkSyntax();
   readArgs();
   performCommand();
@@ -71,4 +72,10 @@ void Command::reactOnMistakesInConfig()
     qWarning()<<e.what();
     throw ErrorCodeException(e.what(), -1);
   }
+}
+
+void Command::loadConfigToMembers()
+{
+  f_manager_ptr_->setFeatureFolder(config_ptr_->getFeatureFolder().c_str());
+  r_base_man_ptr_->setFeatureFolderPath(config_ptr_->getFeatureFolder().c_str());
 }

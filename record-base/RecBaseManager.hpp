@@ -67,6 +67,8 @@ public:
    */
   static QString getModelPath(const QString &model_name, const QString &feature_folder_path);
 
+  static std::vector<Record> getWavRecordsFromDir(const QString &dir_path);
+
 protected:
   RecordDirManager dir_manager_;
 };

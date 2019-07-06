@@ -41,6 +41,7 @@ public:
   Command(Command &&o) = default;
   Command& operator=(Command &&o) = default;
 
+  ~Command() override = default;
 
   /**
    * @brief execute Metoda zlecająca wykonanie komendy.
@@ -118,6 +119,13 @@ public:
    * @see execute()
    */
   void reactOnMistakesInConfig();
+
+  /**
+   * @brief loadConfigToMembers Wczytuje konfigurację do managerów, do których klasa posiada wskaźniki
+   * Wołane przez execute();
+   * @see execute()
+   */
+  void loadConfigToMembers();
 
 
 

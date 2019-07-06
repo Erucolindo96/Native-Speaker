@@ -14,6 +14,14 @@ public:
   static QCommandLineOption getOptionCreateModel();
   static QCommandLineOption getOptionModelName();
   static QCommandLineOption getOptionDistribCnt();
+
+  static QCommandLineOption getOptionLearnModel();
+  static QCommandLineOption getOptionRecordsDir();
+  static QCommandLineOption getOptionIterCnt();
+  static QCommandLineOption getOptionAlgoName();
+
+
+
 };
 
 #endif // COMMANDPARAMCONTAINER_HPP

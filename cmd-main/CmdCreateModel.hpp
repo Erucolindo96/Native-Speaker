@@ -12,6 +12,7 @@ public:
   CmdCreateModel(CmdCreateModel &&o) = default;
   CmdCreateModel& operator=(CmdCreateModel &&o) = default;
 
+  ~CmdCreateModel() override = default;
   /**
    * @brief checkSyntax Sprawdza istnienie argumentów i ich poprawność.
    * Woła reakcje na błędy składni argumentów, albo ich błędną wartość

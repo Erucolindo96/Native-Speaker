@@ -11,6 +11,7 @@
 #include"configuration/ConfigManager.hpp"
 #include"record-base/RecBaseManager.hpp"
 #include"cmd-main/CmdCreateModel.hpp"
+#include"cmd-main/CmdLearnModel.hpp"
 #include<vector>
 #include<QDebug>
 class CliMain: public QCoreApplication

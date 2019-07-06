@@ -1,6 +1,6 @@
 ﻿#include "CommandExecutor.hpp"
 #include"cmd-main/CmdCreateModel.hpp"
-
+#include"cmd-main/CmdLearnModel.hpp"
 void CommandExecutor::execIfRequired(CmdCreateModel &cmd)const
 {
   if(parser_ptr_->isSet(CommandParamContainer::getOptionCreateModel()))
@@ -9,6 +9,13 @@ void CommandExecutor::execIfRequired(CmdCreateModel &cmd)const
   }
 }
 
+void CommandExecutor::execIfRequired(CmdLearnModel &cmd)const
+{
+  if(parser_ptr_->isSet(CommandParamContainer::getOptionLearnModel()))
+  {
+    cmd.execute();
+  }
+}
 
 void CommandExecutor::setCommandLineParserPtr(QCommandLineParser *ptr)
 {
