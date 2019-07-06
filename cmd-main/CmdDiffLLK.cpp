@@ -7,19 +7,19 @@ void CmdDiffLLK::checkSyntax()const
   if(!parser_ptr_->isSet(CommandParamContainer::getOptionModelName()))
   {
     QString msg("Model name was not set");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
   if(!parser_ptr_->isSet(CommandParamContainer::getOptionUbmName()))
   {
     QString msg("Ubm name was not set");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
   if(!parser_ptr_->isSet(CommandParamContainer::getOptionRecordPath()))
   {
     QString msg("Record path was not set");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
 }
@@ -67,7 +67,7 @@ void CmdDiffLLK::validateArgs()
   }catch(std::out_of_range &e)
   {
     QString msg("Model named " + model_name_ + " not found in models dir from config");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
 
@@ -78,14 +78,14 @@ void CmdDiffLLK::validateArgs()
   catch(std::out_of_range &e)
   {
     QString msg("UBM named " + ubm_name_ + " not found in models dir from config");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
 
   if(!record_path_.exists())
   {
     QString msg("Verified record " + record_path_.filePath() + " does not exists");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
 }

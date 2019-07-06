@@ -27,6 +27,7 @@ void CliMain::execute()
 {
   try
   {
+    qInfo().noquote();
     prepareParser();
     CommandExecutor executor;
     executor.setCommandLineParserPtr(parser_ptr_.get());
@@ -42,7 +43,8 @@ void CliMain::execute()
   catch(ErrorCodeException &e)
   {
     qDebug()<<"error code exception handler";
-    exit(e.error_code_);
+    parser_ptr_->showHelp(e.error_code_);
+    //exit(e.error_code_);
   }
   catch(alize::Exception &e)
   {

@@ -5,13 +5,13 @@ void CmdCreateModel::checkSyntax()const
   if(!parser_ptr_->isSet(CommandParamContainer::getOptionModelName()))
   {
     QString msg("Model name was not set");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
   if(!parser_ptr_->isSet(CommandParamContainer::getOptionDistribCnt()))
   {
     QString msg("Distribution count was not set.");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
 
@@ -24,7 +24,7 @@ void CmdCreateModel::readArgs()
   if(!is_int || d_cnt_ <= 0)
   {
     QString msg("Distribution count must be a positive integer number.");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
   model_name_ = parser_ptr_->value(CommandParamContainer::getOptionModelName());

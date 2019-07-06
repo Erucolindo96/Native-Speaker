@@ -6,7 +6,7 @@ void CmdVerifyModel::checkSyntax()const
   if(!parser_ptr_->isSet(CommandParamContainer::getOptionThreshold()))
   {
     QString msg("Threshold was not set");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
 }
@@ -46,7 +46,7 @@ void CmdVerifyModel::validateArgs()
   if(!is_threshold_double_)
   {
     QString msg("Threshold is not a number");
-    qWarning()<<msg;
+    qWarning()<<msg.toLatin1().data();
     throw ErrorCodeException(msg.toStdString(), -1);
   }
 }
