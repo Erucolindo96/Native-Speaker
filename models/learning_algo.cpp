@@ -102,6 +102,7 @@ void ExpectationMaximalizationAlgo::initializePosterioriSum(uint32_t distrib_cnt
   {
     sum_posteriori_by_features_.resize(distrib_cnt);
   }
+  posteriori_sum_ = 0;
 }
 
 void ExpectationMaximalizationAlgo::clearAfterIteration()
@@ -255,9 +256,18 @@ void ExpectationMaximalizationAlgo::learnModel(GmmModel &model,
     throw LearningModelWithoutFeatures(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
                                                 + std::string(" - try to learn model empty feature vector"));
   }
+  const auto D_CNT = model.getDistribCount(), F_CNT = feature_vec.size();
 
-  initializePropabilities(feature_vec.size(), model.getDistribCount());
-  initializePosterioriSum(model.getDistribCount());
+  if(aposteriori_propabilities_.size() != F_CNT
+     || aposteriori_propabilities_[0].size() != D_CNT )
+  {
+    initializePropabilities(F_CNT, D_CNT);
+  }
+
+  if(sum_posteriori_by_features_.size() != D_CNT)
+  {
+    initializePosterioriSum(D_CNT);
+  }
   for(uint32_t i=0; i< iterations; ++i)
   {
     performOneIteration(model, feature_vec);

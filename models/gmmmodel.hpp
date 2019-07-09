@@ -20,7 +20,6 @@ protected:
   const double MAX_LLK = 100.0, MIN_LLK = -100.0;
   std::unique_ptr<alize::MixtureServer> s_;
   std::atomic<alize::DistribType> type_;
-  std::vector<alize::Feature> features_;
   mutable std::mutex m_;
 
   alize::Config createConfig()const;
@@ -36,10 +35,6 @@ public:
 
   GmmModel(GmmModel &&other);
   GmmModel& operator =(GmmModel &&other) = delete;
-
-  void addTrainingFeature(const alize::Feature &feature);
-  void addTrainingFeature(const std::vector<alize::Feature> &vec);
-  std::vector<alize::Feature> getTrainingFeatures()const;
 
   void setName(const std::string &name);
   std::string getName()const;
@@ -63,7 +58,6 @@ public:
   virtual void setDistribCovariance(uint32_t distrib, const alize::DoubleMatrix &covariance) = 0;
 
   virtual alize::RealVector<double> getDistribCovariance(uint32_t distrib)const = 0;
-
 
   uint32_t getFeatureVectorSize()const;
 

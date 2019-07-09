@@ -32,7 +32,7 @@ alize::Mixture& GmmModel::getMixtureRef()const
  * Public
  */
 GmmModel::GmmModel(uint32_t distrib_cnt,uint32_t feature_size):QObject(),
-  DISTRIB_CNT(distrib_cnt),FEATURE_SIZE(feature_size), features_()
+  DISTRIB_CNT(distrib_cnt),FEATURE_SIZE(feature_size)
 {
   alize::Config conf = createConfig();
   s_ = std::make_unique<alize::MixtureServer>(conf);
@@ -44,21 +44,6 @@ GmmModel::GmmModel(uint32_t distrib_cnt, uint32_t feature_size, const std::strin
 
 GmmModel::GmmModel(GmmModel &&other):GmmModel(other.DISTRIB_CNT, other.FEATURE_SIZE)
 {}
-
-void GmmModel::addTrainingFeature(const alize::Feature &feature)
-{
-  features_.push_back(feature);
-}
-
-void GmmModel::addTrainingFeature(const std::vector<alize::Feature> &vec)
-{
-  features_ = vec;
-}
-
-std::vector<alize::Feature> GmmModel::getTrainingFeatures()const
-{
-  return features_;
-}
 
 void GmmModel::setName(const std::string &name)
 {

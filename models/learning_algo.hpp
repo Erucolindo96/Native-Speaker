@@ -57,19 +57,19 @@ protected:
 
   void clearAfterIteration();
 
-  double countOnePropability(const GmmModel &model,
+  inline double countOnePropability(const GmmModel &model,
                            const std::vector<alize::Feature> &feature_vec,
                            uint32_t feature_idx, uint32_t distrib_idx,
                            double current_f_lk);
 
 
-  double countWeight(uint32_t distrib_idx)const;
-  alize::RealVector<double> countMean(uint32_t distrib_idx,
+  inline double countWeight(uint32_t distrib_idx)const;
+  inline alize::RealVector<double> countMean(uint32_t distrib_idx,
                               const std::vector<alize::Feature> &feature_vec )const;
-  alize::RealVector<double> countDiagonalCovariance(uint32_t distrib_idx,
+  inline alize::RealVector<double> countDiagonalCovariance(uint32_t distrib_idx,
                                             const std::vector<alize::Feature> &feature_vec,
                                             const alize::RealVector<double> &mean)const;
-  alize::DoubleSquareMatrix countFullCovariance(uint32_t distrib_idx,
+  inline alize::DoubleSquareMatrix countFullCovariance(uint32_t distrib_idx,
                                                 const std::vector<alize::Feature> &feature_vec,
                                                 const alize::RealVector<double> &new_mean)const;
 
