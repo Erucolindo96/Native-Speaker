@@ -98,9 +98,26 @@ void MainWindow::saveParamFromSetParameterWindow()
   SetParameterWindow *ptr = dynamic_cast<SetParameterWindow*>(QObject::sender());
   if(ptr == nullptr)
   {
-    throw std::runtime_error("Sender doesnt known - it must be always CreateModelWindow!");
+    throw std::runtime_error("Sender doesnt known - it must be always SetParameterWindow!");
   }
-  conf_->setParam(ptr->getParamName().c_str(), ptr->getParamValue().c_str());
+  try
+  {
+    ConfigValidator v;
+    v.isParamValid(ptr->getParamName().c_str(), ptr->getParamValue().c_str());
+    conf_->setParam(ptr->getParamName().c_str(), ptr->getParamValue().c_str());
+    v.checkComplexityOfConfig(*conf_);
+  }
+  catch(ParamNotValid &e)
+  {
+    QMessageBox::warning(const_cast<MainWindow*>(this),
+                         "Configuration Error",
+                         e.what() ,QMessageBox::Ok);
+  }
+  catch(ParamDoesNotExists &e)
+  {
+    return;
+  }
+
   loadConfigToMembers();
 }
 
