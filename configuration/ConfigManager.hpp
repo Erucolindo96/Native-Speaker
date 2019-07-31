@@ -10,7 +10,6 @@ enum ConfigParam
 {
   VECT_SIZE,
   MODEL_DIR,
-  UBM_DIR,
   FEATURE_FOLDER,
   IS_DEBUG
 };
@@ -36,8 +35,8 @@ public:
   std::string getModelFolder()const;
   void setModelFolder(std::string folder);
 
-  std::string getUbmFolder()const;
-  void setUbmFolder(std::string folder);
+//  std::string getUbmFolder()const;
+//  void setUbmFolder(std::string folder);
 
   std::string getFeatureFolder()const;
   void setFeatureFolder(std::string folder);
@@ -50,13 +49,13 @@ public:
   bool existsParam(const alize::String &name)const;
 
   bool isEmpty()const;
-  bool haveUbmFolder()const;
+//  bool haveUbmFolder()const;
   bool haveModelFolder()const;
   bool haveFeatureFolder()const;
   bool haveVectSize()const;
   bool haveAllParams()const;
 
-  static std::string PARAM_UBM_DIR();
+//  static std::string PARAM_UBM_DIR();
   static std::string PARAM_FEATURE_FOLDER();
   static std::string PARAM_MODEL_DIR();
   static std::string PARAM_VECT_SIZE();

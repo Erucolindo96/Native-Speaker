@@ -3,7 +3,6 @@
 const std::map<ConfigParam, std::string> ConfigManager::VALID_PARAMS_ =
 {
   {VECT_SIZE, "vectSize"},
-  {UBM_DIR, "ubmDir"},
   {MODEL_DIR, "modelDir"},
   {FEATURE_FOLDER, "featureFolder"},
   {IS_DEBUG, "debug"}
@@ -47,15 +46,15 @@ void ConfigManager::setModelFolder(std::string folder)
   setParam(VALID_PARAMS_.at(MODEL_DIR).c_str(), folder.c_str());
 }
 
-std::string ConfigManager::getUbmFolder()const
-{
-  return getParam(VALID_PARAMS_.at(UBM_DIR).c_str()).c_str();
-}
+//std::string ConfigManager::getUbmFolder()const
+//{
+//  return getParam(VALID_PARAMS_.at(UBM_DIR).c_str()).c_str();
+//}
 
-void ConfigManager::setUbmFolder(std::string folder)
-{
-  setParam(VALID_PARAMS_.at(UBM_DIR).c_str(), folder.c_str());
-}
+//void ConfigManager::setUbmFolder(std::string folder)
+//{
+//  setParam(VALID_PARAMS_.at(UBM_DIR).c_str(), folder.c_str());
+//}
 
 std::string ConfigManager::getFeatureFolder()const
 {
@@ -99,10 +98,10 @@ bool ConfigManager::isEmpty()const
   return getParamCount()==0?true:false;
 }
 
-bool ConfigManager::haveUbmFolder()const
-{
-  return existsParam(VALID_PARAMS_.at(UBM_DIR).c_str());
-}
+//bool ConfigManager::haveUbmFolder()const
+//{
+//  return existsParam(VALID_PARAMS_.at(UBM_DIR).c_str());
+//}
 bool ConfigManager::haveModelFolder()const
 {
   return existsParam(VALID_PARAMS_.at(MODEL_DIR).c_str());
@@ -117,14 +116,14 @@ bool ConfigManager::haveVectSize()const
 }
 bool ConfigManager::haveAllParams()const
 {
-  return haveUbmFolder() && haveModelFolder() && haveFeatureFolder()
+  return  haveModelFolder() && haveFeatureFolder()
       && haveVectSize();
 }
 
-std::string ConfigManager::PARAM_UBM_DIR()
-{
-  return ConfigManager::VALID_PARAMS_.at(UBM_DIR);
-}
+//std::string ConfigManager::PARAM_UBM_DIR()
+//{
+//  return ConfigManager::VALID_PARAMS_.at(UBM_DIR);
+//}
 std::string ConfigManager::PARAM_FEATURE_FOLDER()
 {
   return ConfigManager::VALID_PARAMS_.at(FEATURE_FOLDER);

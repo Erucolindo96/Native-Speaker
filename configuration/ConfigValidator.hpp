@@ -38,7 +38,7 @@ protected:
 
   void vectSizeValidation(const std::string &paran_val)const;
   void modelDirValidation(const std::string &paran_val)const;
-  void ubmDirValidation(const std::string &paran_val)const;
+//  void ubmDirValidation(const std::string &paran_val)const;
   void featureFolderValidation(const std::string &paran_val)const;
   void isDebugValidation(const std::string &paran_val)const;
 

@@ -58,9 +58,6 @@ void ConfigValidator::paramValueValidation(ConfigParam p, const  std::string &pa
     case MODEL_DIR:
       modelDirValidation(param_val);
       break;
-    case UBM_DIR:
-      ubmDirValidation(param_val);
-      break;
     case FEATURE_FOLDER:
       featureFolderValidation(param_val);
       break;
@@ -89,10 +86,10 @@ void ConfigValidator::modelDirValidation(const std::string &param_val)const
 {
   dirExistanceValidation(ConfigManager::VALID_PARAMS_.at(MODEL_DIR), param_val);
 }
-void ConfigValidator::ubmDirValidation(const std::string &param_val)const
-{
-  dirExistanceValidation(ConfigManager::VALID_PARAMS_.at(UBM_DIR), param_val);
-}
+//void ConfigValidator::ubmDirValidation(const std::string &param_val)const
+//{
+//  dirExistanceValidation(ConfigManager::VALID_PARAMS_.at(UBM_DIR), param_val);
+//}
 
 void ConfigValidator::featureFolderValidation(const std::string &param_val)const
 {

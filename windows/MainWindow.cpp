@@ -131,7 +131,7 @@ bool MainWindow::checkConfiguration()const
     const std::string msg = std::string("Please insert required parametrs to configuration: ") +
                       ConfigManager::PARAM_MODEL_DIR().c_str() + ", " +
                       ConfigManager::PARAM_FEATURE_FOLDER().c_str()+ ", " +
-                      ConfigManager::PARAM_UBM_DIR().c_str()   + ", " +
+//                      ConfigManager::PARAM_UBM_DIR().c_str()   + ", " +
                       ConfigManager::PARAM_VECT_SIZE().c_str();
     QMessageBox::warning(const_cast<MainWindow*>(this),
                          "Configuration Error",
