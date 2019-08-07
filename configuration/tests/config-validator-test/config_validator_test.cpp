@@ -19,14 +19,14 @@ BOOST_AUTO_TEST_CASE( validateVectSize )
 
 }
 
-BOOST_AUTO_TEST_CASE( validateUbmDir )
-{
-  ConfigValidator validator;
-  std::string param_name = ConfigManager::VALID_PARAMS_.at(UBM_DIR), param_val = "/home";
-  BOOST_CHECK_NO_THROW(validator.isParamValid(param_name, param_val));
-  BOOST_CHECK_THROW(validator.isParamValid(param_name, "/fake_path"), ParamNotValid);
-  BOOST_CHECK_THROW(validator.isParamValid("UbmDir", "/home"), ParamNotValid);
-}
+//BOOST_AUTO_TEST_CASE( validateUbmDir )
+//{
+//  ConfigValidator validator;
+//  std::string param_name = ConfigManager::VALID_PARAMS_.at(UBM_DIR), param_val = "/home";
+//  BOOST_CHECK_NO_THROW(validator.isParamValid(param_name, param_val));
+//  BOOST_CHECK_THROW(validator.isParamValid(param_name, "/fake_path"), ParamNotValid);
+//  BOOST_CHECK_THROW(validator.isParamValid("UbmDir", "/home"), ParamNotValid);
+//}
 
 BOOST_AUTO_TEST_CASE( validateModelDir )
 {
