@@ -6,24 +6,35 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>637</width>
-    <height>480</height>
+    <width>715</width>
+    <height>476</height>
    </rect>
   </property>
+  <property name="font">
+   <font>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Learning Model Window</string>
   </property>
   <widget class="QTabWidget" name="tabWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>150</y>
-     <width>591</width>
-     <height>251</height>
+     <width>671</width>
+     <height>271</height>
     </rect>
    </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <italic>false</italic>
+    </font>
+   </property>
    <property name="currentIndex">
-    <number>1</number>
+    <number>2</number>
    </property>
    <widget class="QWidget" name="tab_fromFilesystem">
     <attribute name="title">
@@ -34,13 +45,21 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>571</width>
-       <height>194</height>
+       <width>641</width>
+       <height>221</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_filesystem">
       <item>
        <widget class="QLabel" name="label_fromFilesystem">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <italic>true</italic>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="text">
          <string>From Filesystem</string>
         </property>
@@ -82,13 +101,21 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>571</width>
-       <height>201</height>
+       <width>641</width>
+       <height>221</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_fromMicrophone">
       <item>
        <widget class="QLabel" name="label_fromMicrophone">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <italic>true</italic>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="text">
          <string>From Microphone</string>
         </property>
@@ -130,13 +157,21 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>571</width>
-       <height>201</height>
+       <width>641</width>
+       <height>221</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_fromSampleBase">
       <item>
        <widget class="QLabel" name="label_fromSampleBase">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <italic>true</italic>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="text">
          <string>From Sample Base</string>
         </property>
@@ -149,6 +184,14 @@
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
          <widget class="QLabel" name="label_from_sample_base_which_model">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+            <weight>50</weight>
+            <italic>false</italic>
+            <bold>false</bold>
+           </font>
+          </property>
           <property name="text">
            <string>display samples of model</string>
           </property>
@@ -190,17 +233,25 @@
   <widget class="QWidget" name="horizontalLayoutWidget_4">
    <property name="geometry">
     <rect>
-     <x>160</x>
-     <y>50</y>
-     <width>311</width>
-     <height>35</height>
+     <x>20</x>
+     <y>20</y>
+     <width>671</width>
+     <height>36</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
      <widget class="QLabel" name="label_model_2">
+      <property name="font">
+       <font>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <italic>false</italic>
+        <bold>false</bold>
+       </font>
+      </property>
       <property name="text">
-       <string>Choose model</string>
+       <string>Choose model:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -212,70 +263,13 @@
     </item>
    </layout>
   </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget_5">
-   <property name="geometry">
-    <rect>
-     <x>310</x>
-     <y>110</y>
-     <width>321</width>
-     <height>35</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_2">
-    <item>
-     <widget class="QLabel" name="label_algo_2">
-      <property name="text">
-       <string>Choose Algo</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QComboBox" name="comboBox_algo_2"/>
-    </item>
-   </layout>
-  </widget>
-  <widget class="QWidget" name="horizontalLayoutWidget_6">
-   <property name="geometry">
-    <rect>
-     <x>480</x>
-     <y>70</y>
-     <width>151</width>
-     <height>31</height>
-    </rect>
-   </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_3">
-    <item>
-     <widget class="QLabel" name="label_iter_2">
-      <property name="text">
-       <string>Iterations</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item>
-     <widget class="QSpinBox" name="spinBox_iter_2">
-      <property name="minimum">
-       <number>1</number>
-      </property>
-      <property name="maximum">
-       <number>100</number>
-      </property>
-     </widget>
-    </item>
-   </layout>
-  </widget>
   <widget class="QWidget" name="verticalLayoutWidget_4">
    <property name="geometry">
     <rect>
-     <x>357</x>
-     <y>420</y>
-     <width>251</width>
-     <height>29</height>
+     <x>390</x>
+     <y>430</y>
+     <width>301</width>
+     <height>30</height>
     </rect>
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_4">
@@ -292,6 +286,86 @@
        <string>Start Learning</string>
       </property>
      </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QWidget" name="verticalLayoutWidget_5">
+   <property name="geometry">
+    <rect>
+     <x>216</x>
+     <y>70</y>
+     <width>471</width>
+     <height>80</height>
+    </rect>
+   </property>
+   <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <item>
+       <widget class="QLabel" name="label_algo_2">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
+        <property name="text">
+         <string>Choose Algo:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QComboBox" name="comboBox_algo_2"/>
+      </item>
+     </layout>
+    </item>
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <widget class="QLabel" name="label_iter_2">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+          <italic>false</italic>
+         </font>
+        </property>
+        <property name="text">
+         <string>Learning iterations:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QSpinBox" name="spinBox_iter_2">
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>100</number>
+        </property>
+       </widget>
+      </item>
+     </layout>
     </item>
    </layout>
   </widget>

@@ -71,7 +71,7 @@ private slots:
   void on_actionView_sample_base_triggered();
 
 protected:
-  const int32_t MODELS_ON_PAGE =5 ;
+  const int32_t MODELS_ON_PAGE = 4 ;
   Ui::MainWindow ui_;
   std::unique_ptr<ConfigManager> conf_;
   std::unique_ptr<ModelController> models_;

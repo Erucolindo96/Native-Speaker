@@ -14,7 +14,8 @@ void MainWindow::initMainWindow()
 {
   ui_.setupUi(this);
   models_->setToolBoxPtr(ui_.models_list);
-  models_->removeToolBoxItems();
+
+
 
   learning_c_.setComboBoxPtr(ui_.comboBox_learning_models);
   learning_c_.setProgressBarPtr(ui_.progressBar);

@@ -7,6 +7,7 @@
 #include"models/ModelManager.hpp"
 #include"features/FeatureManager.hpp"
 #include"models/verificator.hpp"
+#include"features/FeatureReaderSilenceCutter.hpp"
 
 
 

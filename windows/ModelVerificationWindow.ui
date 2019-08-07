@@ -6,20 +6,20 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>596</width>
-    <height>405</height>
+    <width>671</width>
+    <height>420</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Model Verification Window</string>
   </property>
   <widget class="QWidget" name="verticalLayoutWidget">
    <property name="geometry">
     <rect>
      <x>20</x>
      <y>10</y>
-     <width>541</width>
-     <height>113</height>
+     <width>631</width>
+     <height>121</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -27,6 +27,14 @@
      <layout class="QHBoxLayout" name="horizontalLayout">
       <item>
        <widget class="QLabel" name="label_model">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Choose model:</string>
         </property>
@@ -44,6 +52,14 @@
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
        <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Choose UBM:</string>
         </property>
@@ -60,7 +76,25 @@
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_2">
       <item>
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
        <widget class="QLabel" name="label_threshold">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Choose threshhold</string>
         </property>
@@ -70,7 +104,11 @@
        </widget>
       </item>
       <item>
-       <widget class="QDoubleSpinBox" name="doubleSpinBox_threshold"/>
+       <widget class="QDoubleSpinBox" name="doubleSpinBox_threshold">
+        <property name="singleStep">
+         <double>0.100000000000000</double>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -80,10 +118,18 @@
    <property name="geometry">
     <rect>
      <x>20</x>
-     <y>130</y>
-     <width>531</width>
-     <height>221</height>
+     <y>140</y>
+     <width>631</width>
+     <height>231</height>
     </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>10</pointsize>
+     <weight>50</weight>
+     <italic>false</italic>
+     <bold>false</bold>
+    </font>
    </property>
    <property name="currentIndex">
     <number>1</number>
@@ -97,8 +143,8 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>509</width>
-       <height>165</height>
+       <width>601</width>
+       <height>181</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -121,6 +167,14 @@
           <width>16777215</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+          <weight>50</weight>
+          <italic>false</italic>
+          <bold>false</bold>
+         </font>
         </property>
         <property name="text">
          <string>Choose records to verifiing</string>
@@ -187,16 +241,16 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
-         <widget class="QPushButton" name="pushButton_remove_filesystem_2">
+         <widget class="QPushButton" name="pushButton_add_rec_filesystem_2">
           <property name="text">
-           <string>Remove Record</string>
+           <string>Add Record</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_add_rec_filesystem_2">
+         <widget class="QPushButton" name="pushButton_remove_filesystem_2">
           <property name="text">
-           <string>Add Record</string>
+           <string>Remove Record</string>
           </property>
          </widget>
         </item>
@@ -214,8 +268,8 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>509</width>
-       <height>165</height>
+       <width>601</width>
+       <height>181</height>
       </rect>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_4">
@@ -238,6 +292,11 @@
           <width>16777215</width>
           <height>30</height>
          </size>
+        </property>
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
         </property>
         <property name="text">
          <string>Choose records to verifiing</string>
@@ -304,16 +363,16 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
-         <widget class="QPushButton" name="pushButton_remove_microphone">
+         <widget class="QPushButton" name="pushButton_add_rec_microphone">
           <property name="text">
-           <string>Remove Record</string>
+           <string>Add Record</string>
           </property>
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="pushButton_add_rec_microphone">
+         <widget class="QPushButton" name="pushButton_remove_microphone">
           <property name="text">
-           <string>Add Record</string>
+           <string>Remove Record</string>
           </property>
          </widget>
         </item>
@@ -327,8 +386,8 @@
    <property name="geometry">
     <rect>
      <x>340</x>
-     <y>360</y>
-     <width>211</width>
+     <y>380</y>
+     <width>311</width>
      <height>31</height>
     </rect>
    </property>

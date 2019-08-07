@@ -36,7 +36,8 @@ std::map<QString, bool> ModelVerificationWindow::testRecords
   std::map<QString, bool> ret;
   std::shared_ptr<GmmModel> model = getModel(ui.comboBox_model),
       ubm = getModel(ui.comboBox_ubm);
-  std::vector<std::vector<alize::Feature>> records_mfcc = convertRecords(recs);
+  std::vector<std::vector<alize::Feature>> records_mfcc = convertRecords(recs );
+
   Verificator v;
   v.setThreshold(ui.doubleSpinBox_threshold->value());
 
@@ -46,6 +47,7 @@ std::map<QString, bool> ModelVerificationWindow::testRecords
     Record act_rec = recs[i];
     auto mfcc = records_mfcc[i];
     ret[act_rec.getRecordInfo().absoluteFilePath()] = v.verifyModel(*model,mfcc, *ubm );
+    cout<<v.countLogLikehood(*model, mfcc) - v.countLogLikehood(*ubm, mfcc )<<endl;
   }
   return ret;
 
@@ -57,7 +59,8 @@ std::vector<std::vector<alize::Feature>> ModelVerificationWindow::convertRecords
   std::vector<std::vector<alize::Feature>> records_mfcc;
   for(auto rec: recs)
   {
-    records_mfcc.push_back(f_man_.convertRecord(rec, F_SIZE_));
+    records_mfcc.push_back(f_man_.convertRecord(rec, F_SIZE_,
+                                                make_unique<FeatureReaderSilenceCutter>()));
   }
   return records_mfcc;
 
@@ -78,6 +81,7 @@ void ModelVerificationWindow::setSubcontrollers()
 }
 void ModelVerificationWindow::verifyRecords()
 {
+  try{
   auto recs_fs = from_fsys_controller_.getActualRecords(),
       recs_micro = from_micro_controller_.getActualRecords();
   if(!recs_fs.empty())
@@ -90,6 +94,11 @@ void ModelVerificationWindow::verifyRecords()
   {
     auto results = testRecords(recs_micro);
     from_micro_controller_.setResults(results);
+  }
+  }
+  catch(alize::Exception &e)
+  {
+    cout<<e.toString().c_str()<<endl;
   }
 }
 
