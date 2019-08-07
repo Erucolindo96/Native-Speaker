@@ -64,12 +64,15 @@ void CmdLearnModel::performCommand()
   qInfo()<<("Iteration count: " + QString::number(iters_cnt_)).toLatin1().data();
   qInfo()<<("Model containing training records: " +  record_dir_.path()).toLatin1().data();
   qInfo()<<("Training features: " + QString().number(features.size())).toLatin1().data();
+
   for(int32_t i = 0; i < iters_cnt_; ++i)
   {
     algo_ptr_->learnModel(*model_ptr, features, 1);
     qInfo()<<("Iteration " + QString::number(i) + " complete!").toLatin1().data();
   }
+  model_man_ptr_->addModel(*config_ptr_, model_ptr);//zapisuje nauczony model do bazy
   qInfo()<<"Learning complete.";
+
   for(auto r: learning_recs)
   {
     r_base_man_ptr_->setRecordToBase(r, model_name_.toStdString());
