@@ -1,22 +1,12 @@
 ﻿#include "VerificationResultController.hpp"
 #include<iostream>
-void VerificationResultController::setResultListPtr(QListWidget *result_list_ptr)
-{
-  throw std::runtime_error("To remove");
-  result_list_ = result_list_ptr;
-  connectClearResultList();
-}
+
+
+const QString VerificationResultController::TRUE_ICON_PATH  = "resources/true.png";
+const QString VerificationResultController::FALSE_ICON_PATH = "resources/false.png";
 
 void VerificationResultController::setResults(const std::map<QString, std::pair<bool, double> > &results)
 {
-  using namespace std;
-  //result_list_->clear();
-//  for(int32_t i = 0; i<getRecordsCnt(); ++i)
-//  {
-//    QString rec = getRecordElem(i), result_str;
-//    results.at(rec).first?result_str="true":result_str="false";
-//    result_list_->addItem(result_str);
-//  }
 
   QIcon false_icon(FALSE_ICON_PATH), true_icon(TRUE_ICON_PATH);
   for(int32_t i=0;i<getRecordsCnt();++i)
@@ -30,8 +20,3 @@ void VerificationResultController::setResults(const std::map<QString, std::pair<
 
 }
 
-void VerificationResultController::clearResultList()
-{
-  throw std::runtime_error("To remove");
-  result_list_->clear();
-}

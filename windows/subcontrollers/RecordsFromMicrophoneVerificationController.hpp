@@ -30,25 +30,16 @@ protected:
    * (RecordsFromMicrophoneController::record_list_)
    */
   int32_t getRecordsCnt() const override ;
+
   /**
-   * @brief getRecordElem Zwraca ścieżkę i-tego nagrania, zawartego w liście nagrań pochodzących z filesystemu
-   * (RecordsFromMicrophoneController::record_list_)
-   * @param i Indeks w liście nagrań z filesystemu
-   * @return Ścieżka i-tego nagrania, zawartego w liście nagrań z filesystemu(RecordsFromFilesystemController::record_list_)
-   * @throw std::out_of_range Jesli nie istnieje ścieżka do nagrania o takim indeksie(np jest większy niż ilośc nagrań)
+   * @brief getRecordElem Zwraca element QListWidget, która zawiera ścieżki nagrań weryfikowanych.
+   * Konieczne, aby przypisywać im ikonki True i False
+   * @param i Indeks w zbiorze nagrań weryfikowanych
+   * @return Wskaźnik do elementu QListWidget, zawierającej ścieżkę do nagrania weryfikowanego
    */
-  QString getRecordElem(int32_t i) override;
-
-
   QListWidgetItem* getRecordsListWidgetElem(int32_t i)override;
 
-  /**
-   * @brief connectClearResultList Łączy sygnał kliknięcia w przycisk dodawania i w przycisk usuwania nagrania w listy
-   * ze slotem usuwającym zawartośc listy rezultatów weryfikowacji
-   * Wołana podczas setResultListPtr()
-   * @see setResultListPtr()
-   */
-  void connectClearResultList()override;
+
 
 
 };

@@ -7,7 +7,7 @@
 #include "windows/subcontrollers/RecordsFromMicrophoneVerificationController.hpp"
 #include<iostream>
 #include"exceptions/simple_exceptions.hpp"
-
+#include<QIcon>
 
 
 
