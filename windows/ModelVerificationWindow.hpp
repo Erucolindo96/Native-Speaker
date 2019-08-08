@@ -32,7 +32,7 @@ protected:
   void initModelsInComboBox(QComboBox *box);
   std::shared_ptr<GmmModel> getModel(QComboBox *box);
 
-  std::map<QString, bool> testRecords(const std::vector<Record> &recs );
+  std::map<QString, std::pair<bool, double>> testRecords(const std::vector<Record> &recs );
   std::vector<std::vector<alize::Feature>> convertRecords(const std::vector<Record> &recs );
 
   void setSubcontrollers();

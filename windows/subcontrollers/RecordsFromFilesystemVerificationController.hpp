@@ -38,6 +38,9 @@ protected:
    * @throw std::out_of_range Jesli nie istnieje ścieżka do nagrania o takim indeksie(np jest większy niż ilośc nagrań)
    */
   QString getRecordElem(int32_t i) override;
+
+  QListWidgetItem* getRecordsListWidgetElem(int32_t i)override;
+
   /**
    * @brief connectClearResultList Łączy sygnał kliknięcia w przycisk dodawania i w przycisk usuwania nagrania w listy
    * ze slotem usuwającym zawartośc listy rezultatów weryfikowacji

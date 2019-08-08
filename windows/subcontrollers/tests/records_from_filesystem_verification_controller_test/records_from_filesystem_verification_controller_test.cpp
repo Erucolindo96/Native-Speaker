@@ -107,11 +107,12 @@ BOOST_AUTO_TEST_CASE(correctlyDisplayVerificationResultIfListPtrsWereSetAndRecor
   records.addItem(REC1);
   records.addItem(REC2);
 
-  std::map<QString, bool> result_map = {{REC1, false}, {REC2, true}};
+  std::map<QString, std::pair<bool, double>> result_map = {{REC1, {false, 0.0}}, {REC2, {true, 0.1}}};
   BOOST_REQUIRE_NO_THROW(controller.setResults(result_map));
   BOOST_REQUIRE_EQUAL(results.count(), REC_CNT);
   BOOST_CHECK_EQUAL(results.item(0)->text().toStdString(), "false");
   BOOST_CHECK_EQUAL(results.item(1)->text().toStdString(), "true");
+
   //zmieniamy liste nagrań i robimy weryfikacje jeszcze raz
   const QString REC3 = "/koleje/mazowieckie.mp3";
   records.clear();
@@ -119,12 +120,14 @@ BOOST_AUTO_TEST_CASE(correctlyDisplayVerificationResultIfListPtrsWereSetAndRecor
   records.addItem(REC3);
   records.addItem(REC1);
 
-  std::map<QString, bool> result_map2 = {{REC2, true}, {REC3, false}, {REC1, false}};
+  std::map<QString, std::pair<bool, double>> result_map2 = {{REC2, {true, 0.1}}, {REC3, {false, 0.2}}, {REC1, {false,0.2}}};
   BOOST_REQUIRE_NO_THROW(controller.setResults(result_map2));
   BOOST_REQUIRE_EQUAL(results.count(), REC_CNT + 1);
   BOOST_CHECK_EQUAL(results.item(0)->text().toStdString(), "true");
   BOOST_CHECK_EQUAL(results.item(1)->text().toStdString(), "false");
   BOOST_CHECK_EQUAL(results.item(2)->text().toStdString(), "false");
+
+
 }
 
 BOOST_AUTO_TEST_CASE(throwOutOfRangeIfInResultMapArentOneRecordInRecordList)
@@ -141,7 +144,7 @@ BOOST_AUTO_TEST_CASE(throwOutOfRangeIfInResultMapArentOneRecordInRecordList)
   records.addItem(REC1);
   records.addItem(REC2);
 
-  std::map<QString, bool> result_map = {{REC1, false}},
+  std::map<QString, std::pair<bool, double>> result_map = {{REC1, {false,0.1}}},
   result_map2;
   BOOST_CHECK_THROW(controller.setResults(result_map), out_of_range);
   BOOST_CHECK_THROW(controller.setResults(result_map2), out_of_range);

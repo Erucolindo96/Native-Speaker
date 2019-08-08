@@ -1,6 +1,7 @@
 ﻿#ifndef VERIFICATIONRESULTCONTROLLER_HPP
 #define VERIFICATIONRESULTCONTROLLER_HPP
 #include<QListWidget>
+#include<tuple>
 /**
  * @brief The VerificationResultController class Klasa, odpowiadająca za wyświetlanie wyników weryfikacji
  * Za pomocą metody setResult można zlecić jej wyświetlenie zadanych wyników, będących mapą String->bool
@@ -9,6 +10,9 @@
 class VerificationResultController
 {
 public:
+
+  const QString TRUE_ICON_PATH  = "resources/true.png";
+  const QString FALSE_ICON_PATH = "resources/false.png";
   VerificationResultController()=default;
   VerificationResultController(const VerificationResultController &other) = default;
 
@@ -41,7 +45,7 @@ public:
    * @see getRecordElem()
    * @see getRecordsCnt()
    */
-  void setResults(const std::map<QString, bool> &results);
+  void setResults(const std::map<QString, std::pair<bool, double>> &results);
 
   /**
    * @brief clearResultList Usuwa zawartość listy wyników weryfikacji
@@ -63,6 +67,15 @@ protected:
    * @return I-te nagranie weryfikowane(zawarte w liście nagrań weryfikowanych)
    */
   virtual QString getRecordElem(int32_t i) = 0;
+
+  /**
+   * @brief getRecordElem Zwraca element QListWidget, która zawiera ścieżki nagrań weryfikowanych.
+   * Konieczne, aby przypisywać im ikonki True i False
+   * @param i Indeks w zbiorze nagrań weryfikowanych
+   * @return Wskaźnik do elementu QListWidget, zawierającej ścieżkę do nagrania weryfikowanego
+   */
+  virtual QListWidgetItem* getRecordsListWidgetElem(int32_t i) = 0;
+
   /**
    * @brief connectClearResultList Łączy sygnał pochodzący od list z weryfikowanymi nagraniami, informujący o dodaniu nowego elementu
    * ze slotem usuwającym zawartośc listy rezultatów weryfikowacji

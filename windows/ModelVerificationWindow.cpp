@@ -30,10 +30,10 @@ std::shared_ptr<GmmModel> ModelVerificationWindow::getModel(QComboBox *box)
   return models_man_ref_[box->currentText().toStdString()];
 }
 
-std::map<QString, bool> ModelVerificationWindow::testRecords
+std::map<QString, std::pair<bool, double>> ModelVerificationWindow::testRecords
 (const std::vector<Record> &recs )
 {
-  std::map<QString, bool> ret;
+  std::map<QString, std::pair<bool, double>> ret;
   std::shared_ptr<GmmModel> model = getModel(ui.comboBox_model),
       ubm = getModel(ui.comboBox_ubm);
   std::vector<std::vector<alize::Feature>> records_mfcc = convertRecords(recs );
@@ -41,12 +41,15 @@ std::map<QString, bool> ModelVerificationWindow::testRecords
   Verificator v;
   v.setThreshold(ui.doubleSpinBox_threshold->value());
 
-
+  std::pair<bool, double> elem;
   for(uint32_t i=0; i<recs.size(); ++i)
   {
     Record act_rec = recs[i];
     auto mfcc = records_mfcc[i];
-    ret[act_rec.getRecordInfo().absoluteFilePath()] = v.verifyModel(*model,mfcc, *ubm );
+
+    elem.first = v.verifyModel(*model,mfcc, *ubm );
+    elem.second = v.countLogLikehood(*model, mfcc) - v.countLogLikehood(*ubm, mfcc );
+    ret[act_rec.getRecordInfo().absoluteFilePath()] = elem;
     cout<<v.countLogLikehood(*model, mfcc) - v.countLogLikehood(*ubm, mfcc )<<endl;
   }
   return ret;
@@ -71,12 +74,12 @@ void ModelVerificationWindow::setSubcontrollers()
   from_fsys_controller_.setAddButtonPtr(ui.pushButton_add_rec_filesystem_2);
   from_fsys_controller_.setRemoveButtonPtr(ui.pushButton_remove_filesystem_2);
   from_fsys_controller_.setRecordListPtr(ui.listWidget_records_filesystem_2);
-  from_fsys_controller_.setResultListPtr(ui.listWidget_results_filesystem_2);
+  //from_fsys_controller_.setResultListPtr(ui.listWidget_results_filesystem_2);
 
   from_micro_controller_.setAddButtonPtr(ui.pushButton_add_rec_microphone);
   from_micro_controller_.setRemoveButtonPtr(ui.pushButton_remove_microphone);
   from_micro_controller_.setRecordListPtr(ui.listWidget_records_microphone);
-  from_micro_controller_.setResultListPtr(ui.listWidget_results_microphone);
+  //from_micro_controller_.setResultListPtr(ui.listWidget_results_microphone);
 
 }
 void ModelVerificationWindow::verifyRecords()
@@ -104,8 +107,8 @@ void ModelVerificationWindow::verifyRecords()
 
 void ModelVerificationWindow::on_pushButton_verify_released()
 {
-  from_fsys_controller_.clearResultList();
-  from_micro_controller_.clearResultList();
+  //from_fsys_controller_.clearResultList();
+  //from_micro_controller_.clearResultList();
   verifyRecords();
 }
 
