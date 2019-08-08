@@ -151,7 +151,8 @@ HEADERS += \
     $$PWD/cmd-main/CmdVerifyModel.hpp \
     $$PWD/cmd-main/CmdListModels.hpp \
     $$PWD/cmd-main/CommandParamContainer.hpp \
-    $$PWD/cmd-main/CmdDiffLLK.hpp
+    $$PWD/cmd-main/CmdDiffLLK.hpp \
+    $$PWD/windows/subcontrollers/RecordsInSampleBaseController.hpp
 
 
 SOURCES += \
@@ -203,7 +204,8 @@ SOURCES += \
     $$PWD/cmd-main/CmdVerifyModel.cpp \
     $$PWD/cmd-main/CmdListModels.cpp \
     $$PWD/cmd-main/CommandParamContainer.cpp \
-    $$PWD/cmd-main/CmdDiffLLK.cpp
+    $$PWD/cmd-main/CmdDiffLLK.cpp \
+    $$PWD/windows/subcontrollers/RecordsInSampleBaseController.cpp
 
 DISTFILES += \
     $$PWD/external-libs/lib/libalize.a

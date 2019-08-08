@@ -3,6 +3,8 @@
 
 #include "ui_RecordBaseDisplayingWindow.h"
 #include"record-base/RecBaseManager.hpp"
+#include"subcontrollers/RecordsInSampleBaseController.hpp"
+
 class RecordBaseDisplayingWindow : public QDialog
 {
   Q_OBJECT
@@ -13,18 +15,21 @@ public:
 
   void setModelsList(const std::vector<std::string> &models);
 
-
+  ~RecordBaseDisplayingWindow()override = default;
 private slots:
   void on_pushButton_released();
 
-  void on_comboBox_model_currentIndexChanged(const QString &arg1);
+//  void on_comboBox_model_currentIndexChanged(const QString &arg1);
 
-  void on_pushButton_remove_from_sample_base_released();
+//  void on_pushButton_remove_from_sample_base_released();
 
 private:
-  std::vector<std::string> models_list_;
+  RecordsInSampleBaseController sample_base_controller_;
   RecBaseManager &sample_base_man_;
   Ui::RecordBaseDisplayingWindow ui;
+
+  void initControllers();
+
 };
 
 #endif // RECORDBASEDISPLAYINGWINDOW_HPP
