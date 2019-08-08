@@ -9,6 +9,7 @@
 #include<sys/wait.h>
 #include<QProcess>
 #include"utils/utils.hpp"
+#include"resource-container/ResourceContainer.hpp"
 
 #include"features/SPro4File.hpp"
 /**

@@ -119,7 +119,8 @@ SPro4File MfccConverterWav::convertToSPro4(const Record &source_record)const
                                 + std::string(" source record is not a wav file"));
   }
 
-  const QString COMMAND_SFBCEP = "sfbcep",COMMAND_SOX = "sox",
+  const QString COMMAND_SFBCEP = ResourceContainer::getSfbcepPath(),
+      COMMAND_SOX = "sox",
       SOURCE_FILE = source_record.getRecordInfo().absoluteFilePath(),
       DEST_FILE = source_record.getRecordInfo().absolutePath() + "/" +
                   source_record.getRecordInfo().baseName() + SPro4File::VALID_EXT;
