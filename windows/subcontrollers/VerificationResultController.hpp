@@ -2,6 +2,7 @@
 #define VERIFICATIONRESULTCONTROLLER_HPP
 #include<QListWidget>
 #include<tuple>
+#include"resource-container/ResourceContainer.hpp"
 /**
  * @brief The VerificationResultController class Klasa, odpowiadająca za wyświetlanie wyników weryfikacji
  * Za pomocą metody setResult można zlecić jej wyświetlenie zadanych wyników, będących mapą String->bool
@@ -11,8 +12,7 @@ class VerificationResultController
 {
 public:
 
-  static const QString TRUE_ICON_PATH  ;
-  static const QString FALSE_ICON_PATH;
+
   VerificationResultController()=default;
   VerificationResultController(const VerificationResultController &other) = default;
 

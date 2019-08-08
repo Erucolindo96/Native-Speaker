@@ -2,13 +2,11 @@
 #include<iostream>
 
 
-const QString VerificationResultController::TRUE_ICON_PATH  = "resources/true.png";
-const QString VerificationResultController::FALSE_ICON_PATH = "resources/false.png";
-
 void VerificationResultController::setResults(const std::map<QString, std::pair<bool, double> > &results)
 {
 
-  QIcon false_icon(FALSE_ICON_PATH), true_icon(TRUE_ICON_PATH);
+  QIcon false_icon(ResourceContainer::getFalseImagePath()),
+      true_icon(ResourceContainer::getTrueImagePath());
   for(int32_t i=0;i<getRecordsCnt();++i)
   {
     QListWidgetItem* item = getRecordsListWidgetElem(i);
