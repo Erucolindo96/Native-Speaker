@@ -68,6 +68,13 @@ public:
    * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
    */
   void rename(const QString new_name);
+
+  /**
+   * @brief remove Usuwa plik z filesystemu
+   * @throw FileNotFound jeśli plik wskazywany przez klasę nie istnieje
+   */
+  void remove();
+
   /**
    * @brief exists Zwraca informację, czy plik na który wskazuje klasa istnieje
    * @return True jeżeli istnieje, false w przeciwnym razie
@@ -82,6 +89,8 @@ public:
    * Jeśli nie ma klasy, która umie konwertować dany plik, zwraca nullptra
   */
   std::unique_ptr<MfccConverter> getConverter()const;
+
+
 
 protected:
 

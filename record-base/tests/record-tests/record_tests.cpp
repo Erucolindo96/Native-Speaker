@@ -274,6 +274,26 @@ BOOST_AUTO_TEST_CASE( throwFileNotFoundAtGettingConverterIfFilePathWasNotSet )
 
 }
 
+BOOST_AUTO_TEST_CASE(correctlyRemoveRecordIfFileExists)
+{
+  const QString REC_PATH = "feature-folder/to_remove.wav";
+  Record r;
+  r.setPath(REC_PATH);
+  BOOST_REQUIRE_NO_THROW(r.remove());
+  QFileInfo file(REC_PATH);
+  BOOST_CHECK(!file.exists());
+  BOOST_CHECK_THROW(r.remove(), FileNotFound);//rzuca wyjątek bo pliku juz nie ma
+  //przywracamy plik, aby istniał
+  QFile file_new(REC_PATH);
+  file_new.open(QFile::ReadWrite);
+  BOOST_CHECK(file.exists());
+}
+
+BOOST_AUTO_TEST_CASE(throwFileNotFoundAtRemovingFileIfFilePathWasNotSet)
+{
+  Record r;
+  BOOST_CHECK_THROW(r.remove(), FileNotFound);
+}
 
 
 

@@ -52,6 +52,13 @@ void Record::rename(const QString new_name)
 
 }
 
+void Record::remove()
+{
+  checkFileExistance();
+  QFile rec_file(record_path_.absoluteFilePath());
+  rec_file.remove();
+}
+
 bool Record::exists()const
 {
   record_path_.refresh();
