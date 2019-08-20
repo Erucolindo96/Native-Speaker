@@ -6,79 +6,137 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>401</width>
-    <height>484</height>
+    <width>412</width>
+    <height>511</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Record Speech</string>
   </property>
   <widget class="QWidget" name="gridLayoutWidget">
    <property name="geometry">
     <rect>
      <x>9</x>
      <y>19</y>
-     <width>381</width>
-     <height>211</height>
+     <width>391</width>
+     <height>224</height>
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="2" column="1">
+    <item row="3" column="1">
      <widget class="QComboBox" name="comboBox_s_rate"/>
     </item>
-    <item row="3" column="0">
+    <item row="4" column="0">
      <widget class="QLabel" name="label_rec_path">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
-       <string>Record Output Path</string>
+       <string>Record Output Path:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
+    <item row="4" column="1">
      <widget class="QLineEdit" name="lineEdit_rec_path"/>
     </item>
     <item row="0" column="0">
      <widget class="QLabel" name="label_device">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
-       <string>Record Device</string>
+       <string>Record Device:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
     <item row="1" column="0">
-     <widget class="QLabel" name="label_out_format">
+     <widget class="QLabel" name="label_out_codec">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
-       <string>Record Output Format</string>
+       <string>Record Output Codec:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
-    <item row="2" column="0">
+    <item row="3" column="0">
      <widget class="QLabel" name="label_s_rate">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
-       <string>Sample Rate</string>
+       <string>Sample Rate:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
     <item row="1" column="1">
-     <widget class="QComboBox" name="comboBox_out_format"/>
+     <widget class="QComboBox" name="comboBox_out_codec"/>
     </item>
     <item row="0" column="1">
      <widget class="QComboBox" name="comboBox_device"/>
     </item>
-    <item row="3" column="2">
+    <item row="4" column="2">
      <widget class="QToolButton" name="toolButton">
       <property name="text">
        <string>...</string>
       </property>
      </widget>
     </item>
-    <item row="4" column="0">
+    <item row="5" column="0">
      <widget class="QLabel" name="label_bitrate">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
       <property name="text">
-       <string>Bitrate</string>
+       <string>Bitrate:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
+    <item row="5" column="1">
      <widget class="QComboBox" name="comboBox_bitrate"/>
+    </item>
+    <item row="2" column="0">
+     <widget class="QLabel" name="label_out_container">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Record Output Container:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <widget class="QComboBox" name="comboBox_out_container"/>
     </item>
    </layout>
   </widget>
@@ -87,11 +145,38 @@
     <rect>
      <x>20</x>
      <y>380</y>
-     <width>351</width>
-     <height>80</height>
+     <width>371</width>
+     <height>121</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
+    <item>
+     <layout class="QHBoxLayout" name="horizontalLayout">
+      <item>
+       <widget class="QPushButton" name="pushButton_play">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Play</string>
+        </property>
+        <property name="checkable">
+         <bool>false</bool>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="pushButton_pause_play">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="text">
+         <string>Pause</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </item>
     <item>
      <layout class="QHBoxLayout" name="horizontalLayout_3">
       <item>
@@ -117,8 +202,16 @@
      <layout class="QHBoxLayout" name="horizontalLayout_4">
       <item>
        <widget class="QLabel" name="label_rec_time">
+        <property name="font">
+         <font>
+          <pointsize>10</pointsize>
+         </font>
+        </property>
         <property name="text">
-         <string>Record time</string>
+         <string>Record time:</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignCenter</set>
         </property>
        </widget>
       </item>
@@ -141,7 +234,7 @@
     <rect>
      <x>10</x>
      <y>240</y>
-     <width>381</width>
+     <width>391</width>
      <height>131</height>
     </rect>
    </property>
