@@ -113,12 +113,12 @@
      <widget class="QComboBox" name="comboBox_distrib_type">
       <item>
        <property name="text">
-        <string>Diagonalna macierz kowariancji</string>
+        <string>Diagonal Covariance Matrix</string>
        </property>
       </item>
       <item>
        <property name="text">
-        <string>Pełna macierz kowariancji</string>
+        <string>Full Covariance Matrix</string>
        </property>
       </item>
      </widget>
