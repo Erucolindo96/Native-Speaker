@@ -2,7 +2,7 @@
 #define LEARNING_ALGO_HPP
 
 #include<vector>
-#include<alize/alize.h>
+#include<alize.h>
 #include"models/gmmmodel.hpp"
 #include"utils/utils.hpp"
 #include <stdexcept>

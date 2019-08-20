@@ -1,6 +1,6 @@
 ﻿#ifndef UTILS
 #define UTILS
-#include<alize/alize.h>
+#include<alize.h>
 #include<vector>
 #include<stdexcept>
 #include"exceptions/simple_exceptions.hpp"

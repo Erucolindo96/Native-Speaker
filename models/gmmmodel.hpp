@@ -1,7 +1,7 @@
 ﻿#ifndef GMMMODEL_HPP
 #define GMMMODEL_HPP
 
-#include <alize/alize.h>
+#include <alize.h>
 #include<memory>
 #include <stdexcept>
 #include <vector>

@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(CorrectMoveAssignVerificatorFromAnotherIfAnotherIsValid)
   const double THRESHOLD = 15.5;
   Verificator v(THRESHOLD);
   Verificator other;
-  other = move(v);
+  other = std::move(v);
   BOOST_CHECK_EQUAL(other.getThreshold(), THRESHOLD);
 }
 

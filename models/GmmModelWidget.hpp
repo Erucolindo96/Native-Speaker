@@ -2,7 +2,7 @@
 #define GMMMODELWIDGET_HPP
 
 #include "ui_GmmModelWidget.h"
-#include<alize/alize.h>
+#include<alize.h>
 #include<QtWidgets/QLabel>
 #include<QtWidgets/QTextBrowser>
 

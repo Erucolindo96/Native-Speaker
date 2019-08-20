@@ -256,7 +256,8 @@ void ExpectationMaximalizationAlgo::learnModel(GmmModel &model,
     throw LearningModelWithoutFeatures(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
                                                 + std::string(" - try to learn model empty feature vector"));
   }
-  const auto D_CNT = model.getDistribCount(), F_CNT = feature_vec.size();
+  const auto D_CNT = model.getDistribCount();
+  const auto F_CNT = feature_vec.size();
 
   if(aposteriori_propabilities_.size() != F_CNT
      || aposteriori_propabilities_[0].size() != D_CNT )

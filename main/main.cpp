@@ -1,4 +1,4 @@
-﻿#include<alize/alize.h>
+﻿#include<alize.h>
 
 #include"models/diagonal_model.hpp"
 #include"models/verificator.hpp"

@@ -1,6 +1,6 @@
 ﻿#ifndef MODELDAO_HPP
 #define MODELDAO_HPP
-#include<alize/alize.h>
+#include<alize.h>
 #include"models/gmmmodel.hpp"
 class ModelDao
 {

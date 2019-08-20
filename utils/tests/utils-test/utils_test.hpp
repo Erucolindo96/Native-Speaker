@@ -3,7 +3,7 @@
 #define BOOST_TEST_DYN_LINK
 
 #include<boost/test/unit_test.hpp>
-#include<alize/alize.h>
+#include<alize.h>
 #include <typeinfo>
 #include <random>
 #include<iostream>

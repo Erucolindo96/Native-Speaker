@@ -2,7 +2,7 @@
 #define DIAGONALMODEL_HPP
 
 #include "models/gmmmodel.hpp"
-#include<alize/alize.h>
+#include<alize.h>
 
 class DiagonalModel : public GmmModel
 {

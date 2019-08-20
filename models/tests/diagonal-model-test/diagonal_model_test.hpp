@@ -6,7 +6,7 @@
 #include"exceptions/simple_exceptions.hpp"
 #include<boost/test/test_tools.hpp>
 #include<boost/test/unit_test.hpp>
-#include<alize/alize.h>
+#include<alize.h>
 #include"models/diagonal_model.hpp"
 #include"models/learning_algo.hpp"
 #include <typeinfo>
