@@ -43,11 +43,8 @@ Project of application, that would be able to recognize Speakers and aggregging 
 4. Deploy-app.sh create tar.gz archieve with application. You can copy this package on some other machines and run app in another place.
 
 #### App installation
-Application doesn't require installation sensu stricto - you can unpack archieve and run application in unpack dir. One thing is mandatory - you have to run script install.sh - t  
+To install application on target machine, unpack deploy archieve and run script *install.sh*. Script will install sox library - if they aren't installed - and set qt.conf file, required by Qt. After that, app is able to run. It's recommended to run them by *native-speaker.sh* script - this bash file will set LD_LIBRARY_DIR before running application automatically.
 
  
-
-###How deploy and install app
-
 
 
