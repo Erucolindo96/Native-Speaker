@@ -7,19 +7,23 @@ function without_sudo()
 }
 
 
-INSTALL_DIR="/opt/native-speaker"
+#instalacja zależnych paczek
+sudo apt install sox -y || without_sudo
 
-QT_PATH=$(head -n 1 qt-path)
+appname=`basename $0 | sed s,\.sh$,,`
 
-mkdir -p $INSTALL_DIR || without_sudo   
-install -m 755 native-speaker -t $INSTALL_DIR || exit
-cp -d -r resources $INSTALL_DIR/. || exit
-install -m 755 resources/bin/sfbcep -t $INSTALL_DIR/resources/bin || exit
+dirname=`dirname $0`
+tmp="${dirname#?}"
 
-for lib in libs/*
-do
-	install -m 755 $lib -t $QT_PATH || exit
-done
+if [ "${dirname%$tmp}" != "/" ]; then
+		dirname=$PWD/$dirname
+fi
 
+
+#create qt.conf file
+echo "[Paths]" >> qt.conf
+echo "Prefix = $dirname/resources" >> qt.conf
+echo "Lib = lib" >> qt.conf
+echo "Plugins = plugins" >> qt.conf
 
 
