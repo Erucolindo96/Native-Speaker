@@ -6,10 +6,10 @@ void LearningController::startLearning(std::shared_ptr<GmmModel> m,
                                       std::vector<alize::Feature> &f_vec,
                                       uint32_t iter_cnt )
 {
-  {;
-    removeDoneThreads();
-    checkForRunningThread(m);
-    l_thread_list_.push_back(LearningThread(m));
+
+  removeDoneThreads();
+  checkForRunningThread(m);
+  l_thread_list_.push_back(LearningThread(m));
 
   connect(&(l_thread_list_.back()), SIGNAL(iterationComplete(const QString, const qint32,const qint32)),
           this,SLOT(actualizeProgressBarByLearningThread(const QString,const qint32,const qint32)),
@@ -18,7 +18,7 @@ void LearningController::startLearning(std::shared_ptr<GmmModel> m,
           this,SLOT(saveModelLearnedFromLearningThread(QObject*)),
           Qt::QueuedConnection );
 
-  }
+
   l_thread_combo_box_->addItem(m->getName().c_str());
   l_thread_list_.back().run(std::move(algo), f_vec, iter_cnt);//wątek uruchomiony
   actualizeProgressBarByMainThread();//aby zainicjalizować progress bar
@@ -63,6 +63,7 @@ void LearningController::removeDoneThreads()
   {
     if(t.isDone())
     {
+      cout<<"Thread named "<<t.getModelPtr()->getName()<<"is done"<<endl;
       findAndRemoveFromComboBox(t.getModelPtr()->getName().c_str());
     }
   }
@@ -71,6 +72,7 @@ void LearningController::removeDoneThreads()
 
 void LearningController::findAndRemoveFromComboBox(const QString &model_name)
 {
+  cout<<"Removing from combo box"<<endl;
   for(int32_t i=0; i< l_thread_combo_box_->count(); ++i)
   {
     if(l_thread_combo_box_->itemText(i) == model_name)
@@ -78,6 +80,7 @@ void LearningController::findAndRemoveFromComboBox(const QString &model_name)
       l_thread_combo_box_->removeItem(i);
     }
   }
+  cout<<"After removing"<<endl;
 }
 
 void LearningController::actualizeProgressBarByLearningThread(const QString model_name,
@@ -101,12 +104,15 @@ void LearningController::actualizeProgressBarByMainThread()//const QString &disp
     return t.getModelPtr()->getName().c_str() == l_thread_combo_box_->currentText();
   });
 
+  cout<<"After searching l_thread"<<endl;
   if(th_iter == l_thread_list_.end())
   {
     throw std::runtime_error(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
                              + std::string(" - no learning thread, which learn model in combo box named "
                                            + l_thread_combo_box_->currentText().toStdString()));
   }
+
+  cout<<"Found threat"<<endl;
   l_thread_prog_bar_->setMaximum(th_iter->getIterCnt());
   l_thread_prog_bar_->setValue(th_iter->getIter());
 }

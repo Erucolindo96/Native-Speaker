@@ -36,6 +36,7 @@ std::map<QString, std::pair<bool, double>> ModelVerificationWindow::testRecords
   std::map<QString, std::pair<bool, double>> ret;
   std::shared_ptr<GmmModel> model = getModel(ui.comboBox_model),
       ubm = getModel(ui.comboBox_ubm);
+
   std::vector<std::vector<alize::Feature>> records_mfcc = convertRecords(recs );
 
   Verificator v;
@@ -84,7 +85,6 @@ void ModelVerificationWindow::setSubcontrollers()
 }
 void ModelVerificationWindow::verifyRecords()
 {
-  try{
   auto recs_fs = from_fsys_controller_.getActualRecords(),
       recs_micro = from_micro_controller_.getActualRecords();
   if(!recs_fs.empty())
@@ -98,18 +98,35 @@ void ModelVerificationWindow::verifyRecords()
     auto results = testRecords(recs_micro);
     from_micro_controller_.setResults(results);
   }
-  }
-  catch(alize::Exception &e)
-  {
-    cout<<e.toString().c_str()<<endl;
-  }
 }
 
 void ModelVerificationWindow::on_pushButton_verify_released()
 {
   //from_fsys_controller_.clearResultList();
   //from_micro_controller_.clearResultList();
-  verifyRecords();
+  try
+  {
+    verifyRecords();
+  }
+  catch(alize::Exception &e)
+  {
+    std::cerr<<e.toString().c_str()<<std::endl;
+  }
+  catch(UnableToConvertToMfcc &e)
+  {
+    QMessageBox::warning(this, "Cannot convert records",
+                         "Records cannot be converted to MFCC. Maybe there are no sfbcep program to run ?", QMessageBox::Ok);
+    return;
+  }
+  catch(FileNotFound &e)
+  {
+    QMessageBox::warning(this, "File not found",
+                         "Records to convert cannot be found.", QMessageBox::Ok);
+    return;
+  }
+
+
+
 }
 
 void ModelVerificationWindow::on_pushButton_cancell_released()

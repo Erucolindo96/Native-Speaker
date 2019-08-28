@@ -68,30 +68,47 @@ void LearningModelWindow::performLearning()
                    ui.comboBox_model_2->currentText().toStdString()];
 
   auto algo_name = ui.comboBox_algo_2->currentText();
-  auto records_filesystem = from_fsys_controller_.getActualRecords(),
-      records_sample_base = from_sample_base_controller_.getActualRecords(),
-      records_microphone = from_microphone_controller_.getActualRecords();
+  try
+  {
+    auto records_filesystem = from_fsys_controller_.getActualRecords(),
+        records_sample_base = from_sample_base_controller_.getActualRecords(),
+        records_microphone = from_microphone_controller_.getActualRecords();
 
-  saveRecordsToRecordBase(model_ptr->getName(), records_filesystem,
-                          records_microphone, records_sample_base);
-
-  auto mfcc_vecs_fs = f_man_ref_.convertRecord(records_filesystem,
-                                            config_.getVectSize()),
-      mfcc_vecs_micro = f_man_ref_.convertRecord(records_microphone,
+    auto mfcc_vecs_fs = f_man_ref_.convertRecord(records_filesystem,
                                                  config_.getVectSize()),
-      mfcc_vecs_base = f_man_ref_.convertRecord(records_sample_base,
-                                                config_.getVectSize());
-  auto all_mfcc =  mfcc_vecs_fs + mfcc_vecs_micro + mfcc_vecs_base   ;
-  auto iterations = ui.spinBox_iter_2->value();
+        mfcc_vecs_micro = f_man_ref_.convertRecord(records_microphone,
+                                                   config_.getVectSize()),
+        mfcc_vecs_base = f_man_ref_.convertRecord(records_sample_base,
+                                                  config_.getVectSize());
 
-  cout<<"Mfcc cnt: "<<all_mfcc.size()<<endl;
-  cout<<"Mfcc size: "<<all_mfcc[0].getVectSize();
-  cout<<"Model ptr: "<<model_ptr.get()<<endl;
+    saveRecordsToRecordBase(model_ptr->getName(), records_filesystem,
+                            records_microphone, records_sample_base);
 
-  learning_c_ref_.startLearning(model_ptr, AlgoManager::getAlgoByName(algo_name),
-                                all_mfcc, iterations);
+    auto all_mfcc =  mfcc_vecs_fs + mfcc_vecs_micro + mfcc_vecs_base   ;
+    auto iterations = ui.spinBox_iter_2->value();
 
-  cout<<"Learning of model "<<model_ptr->getName()<<"runned! "<<endl;
+    cout<<"Mfcc cnt: "<<all_mfcc.size()<<endl;
+    cout<<"Mfcc size: "<<all_mfcc[0].getVectSize();
+    cout<<"Model ptr: "<<model_ptr.get()<<endl;
+
+    learning_c_ref_.startLearning(model_ptr, AlgoManager::getAlgoByName(algo_name),
+                                  all_mfcc, iterations);
+
+    cout<<"Learning of model "<<model_ptr->getName()<<"runned! "<<endl;
+
+  }
+  catch(UnableToConvertToMfcc &e)
+  {
+    QMessageBox::warning(this, "Cannot convert records",
+                         "Records cannot be converted to MFCC. Maybe there are no sfbcep program to run ?", QMessageBox::Ok);
+    return;
+  }
+  catch(FileNotFound &e)
+  {
+    QMessageBox::warning(this, "File not found",
+                         "Records to convert cannot be found.", QMessageBox::Ok);
+    return;
+  }
 }
 
 void LearningModelWindow::saveRecordsToRecordBase(const std::string &model,

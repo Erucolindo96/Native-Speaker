@@ -146,12 +146,21 @@ bool MainWindow::checkConfiguration()const
 
 void MainWindow::on_toolButton_refresh_released()
 {
+  try
+  {
     if(checkConfiguration())
     {
       models_->loadModels(*conf_);
       models_->refreshDisplayedModels();
       actualizePage();
     }
+  }
+  catch (...)
+  {
+    QMessageBox::warning(this, "Cannot load models",
+                         "Models cannot be loaded. Please check that vectSize in config is equal models vectSize",
+                         QMessageBox::Ok);
+  }
 }
 
 void MainWindow::actualizePage()
