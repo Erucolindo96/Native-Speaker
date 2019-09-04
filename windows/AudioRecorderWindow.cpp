@@ -5,10 +5,8 @@ AudioRecorderWindow::AudioRecorderWindow(QWidget *parent) :
   player_(std::make_unique<QMediaPlayer>()),
   rec_timer_(std::make_shared<QTimer>())
 {
-  cout<<"przed ui"<<endl;
   ui_.setupUi(this);
   initalizeUi();
-  cout<<"initialize ui"<<endl;
 
   rec_timer_->setInterval(1000);//aby odliczał sekundy nagrania
   connect(recorder_.get(), SIGNAL(stateChanged(QMediaRecorder::State)),
@@ -23,7 +21,6 @@ AudioRecorderWindow::AudioRecorderWindow(QWidget *parent) :
           this, SLOT(recordErrorHandler(QMediaRecorder::Error)) );
   connect(player_.get(), SIGNAL(error(QMediaPlayer::Error)),
           this, SLOT(playingErrorHandler(QMediaPlayer::Error))  );
-  cout<<"po connectach"<<endl;
 
 //  QMediaPlayer p;
 //  QMediaPlaylist *list = new QMediaPlaylist;
@@ -54,8 +51,6 @@ void AudioRecorderWindow::on_pushButton_record_released()
   {
     setSettingToRecorder();
     recorder_->record();
-    cout<<"Error code: "<<recorder_->error()<<endl;
-    cout<<"State: "<<recorder_->state()<<endl;
   }
   else
   {

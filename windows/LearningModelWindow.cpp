@@ -87,14 +87,8 @@ void LearningModelWindow::performLearning()
     auto all_mfcc =  mfcc_vecs_fs + mfcc_vecs_micro + mfcc_vecs_base   ;
     auto iterations = ui.spinBox_iter_2->value();
 
-    cout<<"Mfcc cnt: "<<all_mfcc.size()<<endl;
-    cout<<"Mfcc size: "<<all_mfcc[0].getVectSize();
-    cout<<"Model ptr: "<<model_ptr.get()<<endl;
-
     learning_c_ref_.startLearning(model_ptr, AlgoManager::getAlgoByName(algo_name),
                                   all_mfcc, iterations);
-
-    cout<<"Learning of model "<<model_ptr->getName()<<"runned! "<<endl;
 
   }
   catch(UnableToConvertToMfcc &e)

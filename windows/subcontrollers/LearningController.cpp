@@ -63,7 +63,6 @@ void LearningController::removeDoneThreads()
   {
     if(t.isDone())
     {
-      cout<<"Thread named "<<t.getModelPtr()->getName()<<"is done"<<endl;
       findAndRemoveFromComboBox(t.getModelPtr()->getName().c_str());
     }
   }
@@ -72,7 +71,6 @@ void LearningController::removeDoneThreads()
 
 void LearningController::findAndRemoveFromComboBox(const QString &model_name)
 {
-  cout<<"Removing from combo box"<<endl;
   for(int32_t i=0; i< l_thread_combo_box_->count(); ++i)
   {
     if(l_thread_combo_box_->itemText(i) == model_name)
@@ -80,7 +78,6 @@ void LearningController::findAndRemoveFromComboBox(const QString &model_name)
       l_thread_combo_box_->removeItem(i);
     }
   }
-  cout<<"After removing"<<endl;
 }
 
 void LearningController::actualizeProgressBarByLearningThread(const QString model_name,
@@ -104,7 +101,6 @@ void LearningController::actualizeProgressBarByMainThread()//const QString &disp
     return t.getModelPtr()->getName().c_str() == l_thread_combo_box_->currentText();
   });
 
-  cout<<"After searching l_thread"<<endl;
   if(th_iter == l_thread_list_.end())
   {
     throw std::runtime_error(__FILE__ + std::string(", line: ") + std::to_string(__LINE__)
@@ -112,7 +108,6 @@ void LearningController::actualizeProgressBarByMainThread()//const QString &disp
                                            + l_thread_combo_box_->currentText().toStdString()));
   }
 
-  cout<<"Found threat"<<endl;
   l_thread_prog_bar_->setMaximum(th_iter->getIterCnt());
   l_thread_prog_bar_->setValue(th_iter->getIter());
 }
