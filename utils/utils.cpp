@@ -87,4 +87,21 @@ namespace utils
     return ret;
   }
 
+  QString generateNextRecordNameWav()
+  {
+    const QString PREFIX = "clip", TMP_DIR = "/tmp", EXT = ".wav";
+    QFileInfo rec_file;
+    uint32_t num = 0;
+    do
+    {
+        QString full_name = TMP_DIR + "/" + PREFIX + QString::number(num) + EXT;
+        rec_file.setFile(full_name);
+        rec_file.refresh();
+        num++;
+    }
+    while(rec_file.exists());
+
+    return rec_file.absoluteFilePath();
+  }
+
 }//namespace utils
