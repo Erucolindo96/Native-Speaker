@@ -12,12 +12,13 @@
 #include<QFileDialog>
 #include<QMediaPlayer>
 #include<QMediaPlaylist>
+#include<QAudioInput>
 class AudioRecorderWindow : public QDialog
 {
   Q_OBJECT
 
 public:
-  explicit AudioRecorderWindow(QWidget *parent = 0);
+  explicit AudioRecorderWindow(QWidget *parent = nullptr);
 
   std::vector<Record> getRegisteredRecords()const;
 
@@ -30,12 +31,12 @@ private slots:
   void on_pushButton_play_released();
   void on_pushButton_pause_play_released();
 
-  void onStateChange(const QMediaRecorder::State s);
+  void onStateChange(const QAudio::State s);
   void onStateChange(const QMediaPlayer::State s);
 
   void incrementRecordTime();
 
-  void recordErrorHandler(QMediaRecorder::Error error);
+  void recordErrorHandler(QAudio::Error error);
   void playingErrorHandler(QMediaPlayer::Error error);
 
 
@@ -43,7 +44,9 @@ private slots:
 private:
   Ui::AudioRecorderWindow ui_;
   //std::vector<Record> registered_records_;
-  std::unique_ptr<QAudioRecorder> recorder_;
+  //std::unique_ptr<QAudioRecorder> recorder_;
+  QAudioInput *recorder_;
+  QFile rec_file_;
   std::unique_ptr<QMediaPlayer> player_;
   std::shared_ptr<QTimer> rec_timer_;
   const QString STOP_TEXT_BUTTON = "Stop", REC_TEXT_BUTTON = "Record",
@@ -51,10 +54,14 @@ private:
   PLAY_TEXT_BUTTON = "Play";
 
   void initalizeUi();
-  void setSettingToRecorder();
   void setSettingToPlayer();
+  void createRecorder();
+  void prepareFileToRecord();
+  void convertRecordToContainer();
   void addRecordToRegistered();
   bool checkOutputPath(const QString validating_path);
+
+  void connectRecorderSlot();
 
 
 };

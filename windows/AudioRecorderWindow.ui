@@ -23,8 +23,14 @@
     </rect>
    </property>
    <layout class="QGridLayout" name="gridLayout">
-    <item row="3" column="1">
-     <widget class="QComboBox" name="comboBox_s_rate"/>
+    <item row="4" column="1">
+     <widget class="QLineEdit" name="lineEdit_rec_path"/>
+    </item>
+    <item row="1" column="1">
+     <widget class="QComboBox" name="comboBox_out_codec"/>
+    </item>
+    <item row="5" column="1">
+     <widget class="QComboBox" name="comboBox_sample_size"/>
     </item>
     <item row="4" column="0">
      <widget class="QLabel" name="label_rec_path">
@@ -35,39 +41,6 @@
       </property>
       <property name="text">
        <string>Record Output Path:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="4" column="1">
-     <widget class="QLineEdit" name="lineEdit_rec_path"/>
-    </item>
-    <item row="0" column="0">
-     <widget class="QLabel" name="label_device">
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Record Device:</string>
-      </property>
-      <property name="alignment">
-       <set>Qt::AlignCenter</set>
-      </property>
-     </widget>
-    </item>
-    <item row="1" column="0">
-     <widget class="QLabel" name="label_out_codec">
-      <property name="font">
-       <font>
-        <pointsize>10</pointsize>
-       </font>
-      </property>
-      <property name="text">
-       <string>Record Output Codec:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
@@ -89,36 +62,56 @@
       </property>
      </widget>
     </item>
-    <item row="1" column="1">
-     <widget class="QComboBox" name="comboBox_out_codec"/>
+    <item row="3" column="1">
+     <widget class="QComboBox" name="comboBox_s_rate"/>
     </item>
-    <item row="0" column="1">
-     <widget class="QComboBox" name="comboBox_device"/>
-    </item>
-    <item row="4" column="2">
-     <widget class="QToolButton" name="toolButton">
-      <property name="text">
-       <string>...</string>
-      </property>
-     </widget>
-    </item>
-    <item row="5" column="0">
-     <widget class="QLabel" name="label_bitrate">
+    <item row="1" column="0">
+     <widget class="QLabel" name="label_out_codec">
       <property name="font">
        <font>
         <pointsize>10</pointsize>
        </font>
       </property>
       <property name="text">
-       <string>Bitrate:</string>
+       <string>Record Output Codec:</string>
       </property>
       <property name="alignment">
        <set>Qt::AlignCenter</set>
       </property>
      </widget>
     </item>
-    <item row="5" column="1">
-     <widget class="QComboBox" name="comboBox_bitrate"/>
+    <item row="0" column="0">
+     <widget class="QLabel" name="label_device">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Record Device:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="0" column="1">
+     <widget class="QComboBox" name="comboBox_device"/>
+    </item>
+    <item row="5" column="0">
+     <widget class="QLabel" name="label_sample_size">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Sample Size:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
     </item>
     <item row="2" column="0">
      <widget class="QLabel" name="label_out_container">
@@ -137,6 +130,35 @@
     </item>
     <item row="2" column="1">
      <widget class="QComboBox" name="comboBox_out_container"/>
+    </item>
+    <item row="4" column="2">
+     <widget class="QToolButton" name="toolButton">
+      <property name="text">
+       <string>...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="0">
+     <widget class="QLabel" name="label_sample_format">
+      <property name="font">
+       <font>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Sample Format:</string>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+     </widget>
+    </item>
+    <item row="6" column="1">
+     <widget class="QComboBox" name="comboBox_sample_size_2">
+      <property name="enabled">
+       <bool>false</bool>
+      </property>
+     </widget>
     </item>
    </layout>
   </widget>

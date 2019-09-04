@@ -1,7 +1,7 @@
 ﻿#include "AudioRecorderWindow.hpp"
 
 AudioRecorderWindow::AudioRecorderWindow(QWidget *parent) :
-  QDialog(parent), recorder_(std::make_unique<QAudioRecorder>()),
+  QDialog(parent), recorder_(nullptr),
   player_(std::make_unique<QMediaPlayer>()),
   rec_timer_(std::make_shared<QTimer>())
 {
@@ -11,16 +11,14 @@ AudioRecorderWindow::AudioRecorderWindow(QWidget *parent) :
   cout<<"initialize ui"<<endl;
 
   rec_timer_->setInterval(1000);//aby odliczał sekundy nagrania
-  connect(recorder_.get(), SIGNAL(stateChanged(QMediaRecorder::State)),
-          this, SLOT(onStateChange(QMediaRecorder::State)));
+
   connect(player_.get(), SIGNAL(stateChanged(QMediaPlayer::State)),
           this, SLOT(onStateChange(QMediaPlayer::State)) );
 
   connect(rec_timer_.get(), SIGNAL(timeout()),
           this, SLOT(incrementRecordTime()));
 
-  connect(recorder_.get(), SIGNAL(error(QMediaRecorder::Error)),
-          this, SLOT(recordErrorHandler(QMediaRecorder::Error)) );
+
   connect(player_.get(), SIGNAL(error(QMediaPlayer::Error)),
           this, SLOT(playingErrorHandler(QMediaPlayer::Error))  );
   cout<<"po connectach"<<endl;
@@ -50,31 +48,47 @@ std::vector<Record> AudioRecorderWindow::getRegisteredRecords()const
 
 void AudioRecorderWindow::on_pushButton_record_released()
 {
-  if(recorder_->state() == QMediaRecorder::StoppedState)
-  {
-    setSettingToRecorder();
-    recorder_->record();
-    cout<<"Error code: "<<recorder_->error()<<endl;
-    cout<<"State: "<<recorder_->state()<<endl;
-  }
-  else
-  {
-    recorder_->stop();
-    addRecordToRegistered();
-  }
+    if(recorder_ != nullptr && recorder_->state() == QAudio::ActiveState)//nagrywa
+    {//trzeba zatrzymac
+        recorder_->stop();
+        addRecordToRegistered();
+        rec_file_.close();
+        convertRecordToContainer();
+    }
+    else if(recorder_ == nullptr || recorder_->state() == QAudio::StoppedState)
+    {//albo nie byl uruchamiany, albo byl ale zostal zatrzymany
+        //wiec trzeba ruszyc nagrywanie
+        prepareFileToRecord();
+        createRecorder();
+        recorder_->start(&rec_file_);
+    }
+    else
+    {
+        QMessageBox::warning(this, "Error", "State not defined while clicking on record/stop button. Rec abort.", QMessageBox::Ok);
+        if(recorder_ != nullptr)
+        {
+            qWarning()<<"State number: "<<recorder_->state();
+            recorder_->stop();
+            rec_file_.close();
+            delete recorder_;
+        }
+    }
 
 }
 
 void AudioRecorderWindow::on_pushButton_pause_released()
 {
-  if(recorder_->state() == QAudioRecorder::RecordingState)
-  {
-    recorder_->pause();
-  }
-  else if(recorder_->state() == QAudioRecorder::PausedState)
-  {
-    recorder_->record();
-  }
+    if(recorder_ != nullptr)
+    {
+        if(recorder_->state() == QAudio::ActiveState)
+        {
+            recorder_->suspend();
+        }
+        else if(recorder_->state() == QAudio::SuspendedState)
+        {
+            recorder_->resume();
+        }
+    }
 }
 
 void AudioRecorderWindow::on_toolButton_released()
@@ -97,6 +111,7 @@ void AudioRecorderWindow::on_pushButton_play_released()
     player_->stop();
   }
 }
+
 void AudioRecorderWindow::on_pushButton_pause_play_released()
 {
   if(player_->state() == QMediaPlayer::PlayingState)
@@ -112,31 +127,32 @@ void AudioRecorderWindow::on_pushButton_pause_play_released()
 
 
 
-void AudioRecorderWindow::onStateChange(const QMediaRecorder::State s)
+void AudioRecorderWindow::onStateChange(const QAudio::State s)
 {
   //3 stany - brak nagrywania, nagrywanie, pauza
   switch(s)
   {
-    case QAudioRecorder::StoppedState:
+    case QAudio::StoppedState:
       ui_.pushButton_record->setText(REC_TEXT_BUTTON);
       ui_.pushButton_pause->setDisabled(true);
       ui_.lineEdit_rec_path->clear();
       rec_timer_->stop();
       ui_.lcdNumber_rec_time->display(0);
       break;
-    case QAudioRecorder::RecordingState:
+    case QAudio::ActiveState:
       ui_.pushButton_record->setText(STOP_TEXT_BUTTON);
       ui_.pushButton_pause->setEnabled(true);
       ui_.pushButton_pause->setText(PAUSE_TEXT_BUTTON);
       rec_timer_->start();
       break;
-    case QAudioRecorder::PausedState:
+    case QAudio::SuspendedState:
       ui_.pushButton_record->setText(STOP_TEXT_BUTTON);
       ui_.pushButton_pause->setEnabled(true);
       ui_.pushButton_pause->setText(CONTINUE_TEXT_BUTTON);
       rec_timer_->stop();
       break;
     default:
+      qWarning()<<"unexpected state: "<<s;
       break;
   }
 }
@@ -172,12 +188,13 @@ void AudioRecorderWindow::incrementRecordTime()
   ui_.lcdNumber_rec_time->display(act_time + 1);
 }
 
-void AudioRecorderWindow::recordErrorHandler(QMediaRecorder::Error error)
+void AudioRecorderWindow::recordErrorHandler(QAudio::Error error)
 {
   rec_timer_->stop();
   QMessageBox::warning(this, "Error",
                        "Error occur while recording. Recording abort.",
                        QMessageBox::Ok);
+  qWarning()<<"Error while recording: "<<error;
 
 }
 
@@ -193,42 +210,85 @@ void AudioRecorderWindow::playingErrorHandler(QMediaPlayer::Error error)
 void AudioRecorderWindow::initalizeUi()
 {
   //devices
-  const QStringList DEVICES = recorder_->audioInputs();
-  ui_.comboBox_device->insertItems(0, DEVICES);
+  const auto DEVICES = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+  QStringList DEVICES_STR;
+  for(auto dev: DEVICES)
+  {
+      DEVICES_STR.append(dev.deviceName());
+  }
+  ui_.comboBox_device->insertItems(0, DEVICES_STR);
   //formats
-  ui_.comboBox_out_codec->insertItems(0,
-                                      recorder_->supportedAudioCodecs()
-                                      );
-  ui_.comboBox_out_container->insertItems(0,
-                                          recorder_->supportedContainers());
+  ui_.comboBox_out_codec->insertItem(0, "audio/pcm");
+
+  ui_.comboBox_out_container->insertItem(0,"wav");
+
   //sample rates
-  const QStringList S_RATES = {"8000", "11025", "22050", "44100", "48000"};
+  const QStringList S_RATES = {"8000", "11025","16000", "22050", "44100"};
   ui_.comboBox_s_rate->insertItems(0, S_RATES);
+  //sample_size
+  const QStringList S_SIZES = {"16"};
+  ui_.comboBox_sample_size->insertItems(0, S_SIZES);
 
-  //bitrates
-  const QStringList BITRATES = {"32000"};
-  ui_.comboBox_bitrate->insertItems(0,BITRATES );
+
+//  //bitrates
+//  const QStringList BITRATES = {"32000"};
+//  ui_.comboBox_bitrate->insertItems(0,BITRATES );
 
 }
 
 
-void AudioRecorderWindow::setSettingToRecorder()
+void AudioRecorderWindow::createRecorder()
 {
-  recorder_->setAudioInput(ui_.comboBox_device->currentText());
+    QAudioFormat format;
+    format.setCodec(ui_.comboBox_out_codec->currentText());
+    format.setByteOrder(QAudioFormat::LittleEndian);
+    format.setSampleRate(ui_.comboBox_s_rate->currentText().toInt());
+    format.setSampleSize(ui_.comboBox_sample_size->currentText().toInt());
+    format.setChannelCount(1);
+    format.setSampleType(QAudioFormat::SignedInt);
+    QString dev_str = ui_.comboBox_device->currentText();
+    auto devices = QAudioDeviceInfo::availableDevices(QAudio::AudioInput);
+    auto dev_iter = std::find_if(devices.begin(), devices.end(),
+                                 [dev_str](auto d)->bool
+    {
+        return dev_str == d.deviceName();
+    });
 
-  QAudioEncoderSettings s;
-  s.setCodec(ui_.comboBox_out_codec->currentText());
-  s.setSampleRate(ui_.comboBox_s_rate->currentText().toInt());
-  s.setBitRate(ui_.comboBox_bitrate->currentText().toInt());
-  s.setEncodingMode(QMultimedia::ConstantBitRateEncoding);
-  auto container = ui_.comboBox_out_container->currentText();
+    QAudioDeviceInfo dev_to_record;
+    if(dev_iter == devices.end())
+    {
+        QMessageBox::warning(this, "Device error", "No such device like checked by user. Try to use default.", QMessageBox::Ok);
+        qWarning()<<"Dev not found: "<<dev_str;
+        dev_to_record = QAudioDeviceInfo::defaultInputDevice();
+    }
+    else
+    {
+        dev_to_record = *dev_iter;
+    }
+    if (!dev_to_record.isFormatSupported(format)) {
+        qWarning() << "Default format not supported";
+    }
 
-  s.setChannelCount(1);
-  recorder_->setEncodingSettings(s, QVideoEncoderSettings(), container);
+    if(recorder_ != nullptr)
+    {
+        delete recorder_;
+    }
+    recorder_ = new QAudioInput(dev_to_record, format);
+    connectRecorderSlot();
+}
 
-  recorder_->setOutputLocation(QUrl(ui_.lineEdit_rec_path->text()));
+void AudioRecorderWindow::prepareFileToRecord()
+{
+    rec_file_.setFileName(ui_.lineEdit_rec_path->text() + ".raw");
+    rec_file_.open(QFile::WriteOnly | QFile::Truncate);
+}
+
+
+void AudioRecorderWindow::convertRecordToContainer()
+{
 
 }
+
 
 void AudioRecorderWindow::setSettingToPlayer()
 {
@@ -251,11 +311,11 @@ void AudioRecorderWindow::addRecordToRegistered()
 {
   Record r;
   try{
-    r.setPath(recorder_->outputLocation().toLocalFile());
+    r.setPath(rec_file_.fileName());
   }catch(FileNotFound &e)
   {
     QMessageBox::warning(this, "Record was not correctly save",
-                         "Record was not correctly save. Maybe yow have no rights to save record at that path?",
+                         "Record was not correctly save. Try to rerun recording.",
                          QMessageBox::Ok);
     return;
   }
@@ -264,6 +324,10 @@ void AudioRecorderWindow::addRecordToRegistered()
 }
 
 
-
+  void AudioRecorderWindow::connectRecorderSlot()
+  {
+      connect(recorder_, SIGNAL(stateChanged(QAudio::State)),
+              this, SLOT(onStateChange(QAudio::State)));
+  }
 
 
