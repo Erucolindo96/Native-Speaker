@@ -56,7 +56,6 @@ void AudioRecorderWindow::on_pushButton_record_released()
         QMessageBox::warning(this, "Error", "State not defined while clicking on record/stop button. Rec abort.", QMessageBox::Ok);
         if(recorder_ != nullptr)
         {
-            qWarning()<<"State number: "<<recorder_->state();
             recorder_->stop();
             delete recorder_;
         }
@@ -302,7 +301,6 @@ void AudioRecorderWindow::createFileInfo()
     {
         rec_path_ = utils::generateNextRecordNameWav();
     }
-    qDebug()<<rec_path_;
 }
 
 
