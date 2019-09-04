@@ -1,7 +1,7 @@
 ﻿#include "AudioRecorderWindow.hpp"
 
 AudioRecorderWindow::AudioRecorderWindow(QWidget *parent) :
-  QDialog(parent), recorder_(nullptr),
+  QDialog(parent), recorder_(nullptr), sox_proc_(nullptr),
   player_(std::make_unique<QMediaPlayer>()),
   rec_timer_(std::make_shared<QTimer>())
 {
@@ -48,19 +48,21 @@ std::vector<Record> AudioRecorderWindow::getRegisteredRecords()const
 
 void AudioRecorderWindow::on_pushButton_record_released()
 {
-    if(recorder_ != nullptr && recorder_->state() == QAudio::ActiveState)//nagrywa
+    if(recorder_ != nullptr && sox_proc_ != nullptr && recorder_->state() == QAudio::ActiveState)//nagrywa
     {//trzeba zatrzymac
         recorder_->stop();
+        sox_proc_->close();
+        sox_proc_->waitForFinished();
         addRecordToRegistered();
-        rec_file_.close();
-        convertRecordToContainer();
+//        convertRecordToContainer();
     }
     else if(recorder_ == nullptr || recorder_->state() == QAudio::StoppedState)
     {//albo nie byl uruchamiany, albo byl ale zostal zatrzymany
         //wiec trzeba ruszyc nagrywanie
-        prepareFileToRecord();
+        createSoxProc();
+        createFileInfo();
         createRecorder();
-        recorder_->start(&rec_file_);
+        recorder_->start(sox_proc_);
     }
     else
     {
@@ -69,9 +71,16 @@ void AudioRecorderWindow::on_pushButton_record_released()
         {
             qWarning()<<"State number: "<<recorder_->state();
             recorder_->stop();
-            rec_file_.close();
             delete recorder_;
         }
+        if(sox_proc_ != nullptr)
+        {
+            qWarning()<<"State number: "<<recorder_->state();
+            sox_proc_->close();
+            sox_proc_->waitForFinished();
+            delete sox_proc_;
+        }
+
     }
 
 }
@@ -94,7 +103,7 @@ void AudioRecorderWindow::on_pushButton_pause_released()
 void AudioRecorderWindow::on_toolButton_released()
 {
   auto out_path = QFileDialog::getSaveFileName(this, QString(), QString(), "Wav (*.wav)");
-  ui_.lineEdit_rec_path->setText(out_path);
+  ui_.lineEdit_rec_path->setText(out_path + ".wav" );
 }
 
 
@@ -277,15 +286,38 @@ void AudioRecorderWindow::createRecorder()
     connectRecorderSlot();
 }
 
-void AudioRecorderWindow::prepareFileToRecord()
+void AudioRecorderWindow::createSoxProc()
 {
-    rec_file_.setFileName(ui_.lineEdit_rec_path->text() + ".raw");
-    rec_file_.open(QFile::WriteOnly | QFile::Truncate);
+    if(sox_proc_ != nullptr)
+    {
+        delete sox_proc_;
+    }
+    sox_proc_ = new QProcess();
+    QStringList lst("-e");
+    lst.append("signed-integer");
+    lst.append("-b");
+    lst.append(ui_.comboBox_sample_size->currentText());
+    lst.append("-c");
+    lst.append("1");
+    lst.append("-r");
+    lst.append(ui_.comboBox_s_rate->currentText());
+    lst.append("-t");
+    lst.append("raw");
+    lst.append("-");
+    lst.append(ui_.lineEdit_rec_path->text());
+    sox_proc_->setProcessChannelMode(QProcess::ForwardedChannels);
+    sox_proc_->start("sox", lst, QIODevice::WriteOnly);
 }
 
+void AudioRecorderWindow::createFileInfo()
+{
+    rec_path_.setFile(ui_.lineEdit_rec_path->text());
+}
 
 void AudioRecorderWindow::convertRecordToContainer()
-{
+{/*
+    QProcess sox_proc;
+    sox_proc.*/
 
 }
 
@@ -311,7 +343,7 @@ void AudioRecorderWindow::addRecordToRegistered()
 {
   Record r;
   try{
-    r.setPath(rec_file_.fileName());
+    r.setPath(rec_path_.absoluteFilePath());
   }catch(FileNotFound &e)
   {
     QMessageBox::warning(this, "Record was not correctly save",

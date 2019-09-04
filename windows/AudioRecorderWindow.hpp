@@ -13,6 +13,7 @@
 #include<QMediaPlayer>
 #include<QMediaPlaylist>
 #include<QAudioInput>
+#include<QProcess>
 class AudioRecorderWindow : public QDialog
 {
   Q_OBJECT
@@ -46,7 +47,8 @@ private:
   //std::vector<Record> registered_records_;
   //std::unique_ptr<QAudioRecorder> recorder_;
   QAudioInput *recorder_;
-  QFile rec_file_;
+  QProcess *sox_proc_;
+  QFileInfo rec_path_;
   std::unique_ptr<QMediaPlayer> player_;
   std::shared_ptr<QTimer> rec_timer_;
   const QString STOP_TEXT_BUTTON = "Stop", REC_TEXT_BUTTON = "Record",
@@ -56,7 +58,8 @@ private:
   void initalizeUi();
   void setSettingToPlayer();
   void createRecorder();
-  void prepareFileToRecord();
+  void createSoxProc();
+  void createFileInfo();
   void convertRecordToContainer();
   void addRecordToRegistered();
   bool checkOutputPath(const QString validating_path);
