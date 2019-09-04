@@ -59,8 +59,8 @@ void AudioRecorderWindow::on_pushButton_record_released()
     else if(recorder_ == nullptr || recorder_->state() == QAudio::StoppedState)
     {//albo nie byl uruchamiany, albo byl ale zostal zatrzymany
         //wiec trzeba ruszyc nagrywanie
-        createSoxProc();
         createFileInfo();
+        createSoxProc();
         createRecorder();
         recorder_->start(sox_proc_);
     }
@@ -304,14 +304,19 @@ void AudioRecorderWindow::createSoxProc()
     lst.append("-t");
     lst.append("raw");
     lst.append("-");
-    lst.append(ui_.lineEdit_rec_path->text());
+    lst.append(rec_path_);
     sox_proc_->setProcessChannelMode(QProcess::ForwardedChannels);
     sox_proc_->start("sox", lst, QIODevice::WriteOnly);
 }
 
 void AudioRecorderWindow::createFileInfo()
 {
-    rec_path_.setFile(ui_.lineEdit_rec_path->text());
+    rec_path_ = ui_.lineEdit_rec_path->text();
+    if(rec_path_.isEmpty())
+    {
+        rec_path_ = utils::generateNextRecordNameWav();
+    }
+    qDebug()<<rec_path_;
 }
 
 void AudioRecorderWindow::convertRecordToContainer()
@@ -343,7 +348,7 @@ void AudioRecorderWindow::addRecordToRegistered()
 {
   Record r;
   try{
-    r.setPath(rec_path_.absoluteFilePath());
+    r.setPath(rec_path_);
   }catch(FileNotFound &e)
   {
     QMessageBox::warning(this, "Record was not correctly save",

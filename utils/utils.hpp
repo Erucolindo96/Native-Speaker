@@ -6,6 +6,7 @@
 #include"exceptions/simple_exceptions.hpp"
 #include<iostream>
 #include<algorithm>
+#include<QFileInfo>
 
 namespace utils
 {
@@ -32,6 +33,8 @@ namespace utils
   double avoidNaNInLk(double lk);
   std::vector<alize::Feature> operator+(const std::vector<alize::Feature> &f1,
                                         const std::vector<alize::Feature> &f2);
+
+  QString generateNextRecordNameWav();
 }//namespace utils
 
 
