@@ -103,7 +103,12 @@ void AudioRecorderWindow::on_pushButton_pause_released()
 void AudioRecorderWindow::on_toolButton_released()
 {
   auto out_path = QFileDialog::getSaveFileName(this, QString(), QString(), "Wav (*.wav)");
-  ui_.lineEdit_rec_path->setText(out_path + ".wav" );
+  if(!out_path.endsWith(".wav"))
+  {
+    out_path += ".wav";
+  }
+  ui_.lineEdit_rec_path->setText(out_path );
+
 }
 
 
