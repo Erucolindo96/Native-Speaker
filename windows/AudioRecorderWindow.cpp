@@ -5,10 +5,8 @@ AudioRecorderWindow::AudioRecorderWindow(QWidget *parent) :
   player_(std::make_unique<QMediaPlayer>()),
   rec_timer_(std::make_shared<QTimer>())
 {
-  cout<<"przed ui"<<endl;
   ui_.setupUi(this);
   initalizeUi();
-  cout<<"initialize ui"<<endl;
 
   rec_timer_->setInterval(1000);//aby odliczał sekundy nagrania
 
@@ -18,18 +16,8 @@ AudioRecorderWindow::AudioRecorderWindow(QWidget *parent) :
   connect(rec_timer_.get(), SIGNAL(timeout()),
           this, SLOT(incrementRecordTime()));
 
-
   connect(player_.get(), SIGNAL(error(QMediaPlayer::Error)),
           this, SLOT(playingErrorHandler(QMediaPlayer::Error))  );
-  cout<<"po connectach"<<endl;
-
-//  QMediaPlayer p;
-//  QMediaPlaylist *list = new QMediaPlaylist;
-//  list->addMedia(QUrl::fromLocalFile("home/erucolindo/clip_0013.wav"));
-//  p.setPlaylist(list);
-//  p.play();
-//  qDebug()<<p.state();
-//  qDebug()<<p.error();
 
 }
 
@@ -48,17 +36,16 @@ std::vector<Record> AudioRecorderWindow::getRegisteredRecords()const
 
 void AudioRecorderWindow::on_pushButton_record_released()
 {
-    if(recorder_ != nullptr && sox_proc_ != nullptr && recorder_->state() == QAudio::ActiveState)//nagrywa
-    {//trzeba zatrzymac
+    if(recorder_ != nullptr && sox_proc_ != nullptr &&
+            (recorder_->state() == QAudio::ActiveState || recorder_->state() == QAudio::SuspendedState))//nagrywa
+    {
         recorder_->stop();
         sox_proc_->close();
         sox_proc_->waitForFinished();
         addRecordToRegistered();
-//        convertRecordToContainer();
     }
     else if(recorder_ == nullptr || recorder_->state() == QAudio::StoppedState)
-    {//albo nie byl uruchamiany, albo byl ale zostal zatrzymany
-        //wiec trzeba ruszyc nagrywanie
+    {
         createFileInfo();
         createSoxProc();
         createRecorder();
@@ -75,7 +62,6 @@ void AudioRecorderWindow::on_pushButton_record_released()
         }
         if(sox_proc_ != nullptr)
         {
-            qWarning()<<"State number: "<<recorder_->state();
             sox_proc_->close();
             sox_proc_->waitForFinished();
             delete sox_proc_;
@@ -243,11 +229,6 @@ void AudioRecorderWindow::initalizeUi()
   const QStringList S_SIZES = {"16"};
   ui_.comboBox_sample_size->insertItems(0, S_SIZES);
 
-
-//  //bitrates
-//  const QStringList BITRATES = {"32000"};
-//  ui_.comboBox_bitrate->insertItems(0,BITRATES );
-
 }
 
 
@@ -324,12 +305,6 @@ void AudioRecorderWindow::createFileInfo()
     qDebug()<<rec_path_;
 }
 
-void AudioRecorderWindow::convertRecordToContainer()
-{/*
-    QProcess sox_proc;
-    sox_proc.*/
-
-}
 
 
 void AudioRecorderWindow::setSettingToPlayer()
@@ -366,10 +341,10 @@ void AudioRecorderWindow::addRecordToRegistered()
 }
 
 
-  void AudioRecorderWindow::connectRecorderSlot()
-  {
-      connect(recorder_, SIGNAL(stateChanged(QAudio::State)),
-              this, SLOT(onStateChange(QAudio::State)));
-  }
+void AudioRecorderWindow::connectRecorderSlot()
+{
+    connect(recorder_, SIGNAL(stateChanged(QAudio::State)),
+            this, SLOT(onStateChange(QAudio::State)));
+}
 
 

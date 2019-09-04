@@ -49,8 +49,7 @@ private slots:
 
 private:
   Ui::AudioRecorderWindow ui_;
-  //std::vector<Record> registered_records_;
-  //std::unique_ptr<QAudioRecorder> recorder_;
+
   QAudioInput *recorder_;
   QProcess *sox_proc_;
   QString rec_path_;
@@ -65,9 +64,7 @@ private:
   void createRecorder();
   void createSoxProc();
   void createFileInfo();
-  void convertRecordToContainer();
   void addRecordToRegistered();
-  bool checkOutputPath(const QString validating_path);
 
   void connectRecorderSlot();
 
