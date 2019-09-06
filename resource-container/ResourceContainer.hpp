@@ -2,6 +2,7 @@
 #define RESOURCECONTAINER_HPP
 
 #include<QString>
+#include<QLibraryInfo>
 class ResourceContainer
 {
 public:

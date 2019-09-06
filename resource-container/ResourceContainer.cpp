@@ -2,15 +2,17 @@
 
 QString ResourceContainer::getFalseImagePath()
 {
-  return "resources/images/false.png";
+  return QLibraryInfo::location(QLibraryInfo::PrefixPath) + "/images/false.png";
+
+
 }
 
 QString ResourceContainer::getTrueImagePath()
 {
-  return "resources/images/true.png";
+  return QLibraryInfo::location(QLibraryInfo::PrefixPath) + "/images/true.png";
 }
 
 QString ResourceContainer::getSfbcepPath()
 {
-  return "./resources/bin/sfbcep";
+  return QLibraryInfo::location(QLibraryInfo::PrefixPath) + "/bin/sfbcep";
 }
