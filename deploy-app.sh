@@ -36,10 +36,11 @@ then
 	cp $PATH_TO_BUILD/main/main $D_DIR/native-speaker || exit
 	cp $N_SPEAKER_DIR/install.sh $D_DIR/. || exit
 	cp $N_SPEAKER_DIR/native-speaker.sh $D_DIR/. || exit
-	for lib in "${QT_LIBS[@]}"
-	do
-		install -m 755 $PATH_TO_QT/lib/$lib -t $D_DIR/resources/lib || exit
-	done
+	#for lib in "${QT_LIBS[@]}"
+	#do
+	#	install -m 755 $PATH_TO_QT/lib/$lib -t $D_DIR/resources/lib || exit
+	#done
+	cp -d -r $PATH_TO_QT/lib $D_DIR/resources
 	cp -d -r $PATH_TO_QT/plugins $D_DIR/resources
 	
 
