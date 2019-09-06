@@ -13,7 +13,7 @@ sudo apt install sox -y || without_sudo
 #jesli 64 bity - instalacja bibliotek 
 ARCH=`uname -m`
 echo "arch: "$ARCH
-if [ "$ARCH" = "x64_86" ]; then
+if [ "$ARCH" = "x86_64" ]; then
 	sudo dpkg --add-architecture i386
 	sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386
 fi
