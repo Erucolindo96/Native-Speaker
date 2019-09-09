@@ -14,7 +14,7 @@ INCLUDEPATH += $$PWD \
 QMAKE_CXXFLAGS += -std=c++14
 QMAKE_CXXFLAGS += -Werror=return-type
 
-#QMAKE_LFLAGS += -Wl,-rpath,./lib
+QMAKE_LFLAGS += -Wl,-rpath,./resources/lib
 
 HEADERS += \
     $$PWD/utils/utils.hpp \
