@@ -15,7 +15,7 @@ ARCH=`uname -m`
 echo "arch: "$ARCH
 if [ "$ARCH" = "x86_64" ]; then
 	sudo dpkg --add-architecture i386
-	sudo apt-get install libc6:i386 libncurses5:i386 libstdc++6:i386
+	sudo apt install libc6:i386 libncurses5:i386 libstdc++6:i386
 fi
 
 appname=`basename $0 | sed s,\.sh$,,`
@@ -29,6 +29,12 @@ fi
 
 
 #create qt.conf file
+
+if [ -f "qt.conf" ]
+then
+	rm qt.conf
+fi
+
 echo "[Paths]" >> qt.conf
 echo "Prefix = $dirname/resources" >> qt.conf
 echo "Lib = lib" >> qt.conf
