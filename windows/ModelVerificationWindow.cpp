@@ -41,7 +41,6 @@ std::map<QString, std::pair<bool, double>> ModelVerificationWindow::testRecords
 
   Verificator v;
   v.setThreshold(ui.doubleSpinBox_threshold->value());
-
   std::pair<bool, double> elem;
   for(uint32_t i=0; i<recs.size(); ++i)
   {
@@ -51,7 +50,8 @@ std::map<QString, std::pair<bool, double>> ModelVerificationWindow::testRecords
     elem.first = v.verifyModel(*model,mfcc, *ubm );
     elem.second = v.countLogLikehood(*model, mfcc) - v.countLogLikehood(*ubm, mfcc );
     ret[act_rec.getRecordInfo().absoluteFilePath()] = elem;
-    cout<<v.countLogLikehood(*model, mfcc) - v.countLogLikehood(*ubm, mfcc )<<endl;
+//    cout<<v.countLogLikehood(*model, mfcc) - v.countLogLikehood(*ubm, mfcc )<<endl;
+//    cout<<v.verifyModel(*model, mfcc, *ubm)<<endl;
   }
   return ret;
 
